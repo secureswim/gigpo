@@ -1,6 +1,13 @@
 # Linux training-machine handoff
 
-Run these commands from the transferred project root. The repository is already included at the paper-era commit; do not run `git pull` before the baseline experiments.
+After the owner grants access to this private repository, clone it on the Linux machine:
+
+```bash
+git clone https://github.com/secureswim/gigpo.git
+cd gigpo
+```
+
+Run the remaining commands from this project root. The vendored upstream source is already included at the paper-era commit; do not update it before the baseline experiments.
 
 ## 1. Verify the source
 

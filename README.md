@@ -8,7 +8,12 @@ The non-GPU preparation is complete: the official code has been archived at a pa
 
 ## Quick start on the Linux machine
 
-Clone this repository and work from its root. Do not update `upstream-verl-agent/` before the baseline runs.
+The repository is private. Ask the owner for collaborator access, then clone it and work from its root. Do not update `upstream-verl-agent/` before the baseline runs.
+
+```bash
+git clone https://github.com/secureswim/gigpo.git
+cd gigpo
+```
 
 ```bash
 python3 week1/check_baseline_scripts.py
