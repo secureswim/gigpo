@@ -1,0 +1,26 @@
+# Training outputs and downloaded assets
+runs/
+wandb/
+checkpoints/
+data/
+*.log
+*.parquet
+*.pt
+*.pth
+*.safetensors
+
+# Local configuration
+.env
+.env.*
+!.env.example
+
+# Python and editor state
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+.idea/
+.vscode/
+
+# Upstream snapshot should remain a plain directory
+upstream-verl-agent/.git/
