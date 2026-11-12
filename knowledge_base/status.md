@@ -1,6 +1,6 @@
 # Status and decision ledger
 
-Last local audit: 7 November 2026.
+Last local audit: 12 November 2026.
 
 ## Completed and verified locally
 
@@ -10,10 +10,14 @@ Last local audit: 7 November 2026.
 - Confirmed the pinned GiGPO and GRPO ALFWorld scripts agree on 20 shared settings using `python3 week1/check_baseline_scripts.py`.
 - Prepared the Linux installation instructions, an ALFWorld reset/step check, and a one-epoch GiGPO smoke script. Python syntax and the shell script syntax were checked locally.
 - Separated unrelated quiz application files from this repository. No quiz files are part of the handoff.
+- Read the IIIT Delhi server's policy and manual. The smoke script now requests
+  two GPUs through the mandatory `gpurun` scheduler. The cluster itself has not
+  yet been accessed from this workspace.
 
 ## Pending on the Linux GPU machine
 
 - Install the pinned Python/CUDA packages and download ALFWorld data.
+- Verify the account's connection method and actual quota with `gpurun --status`.
 - Execute `python3 week1/check_alfworld.py` and capture its output.
 - Execute `bash week1/smoke_gigpo.sh`; verify an optimizer update and validation result, then retain `runs/week1_smoke/metadata.txt` and `train.log`.
 - Record actual runtime, package deviations, hardware, and any errors.

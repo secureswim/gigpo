@@ -4,7 +4,7 @@ This repository is the handoff for a reinforcement-learning course project. The 
 
 ## Current status
 
-The non-GPU preparation is complete: the official code has been archived at a paper-era revision, the baseline settings have been compared, an ALFWorld reset/step check is ready, and a one-epoch GiGPO smoke script is ready. **Package installation, environment data download, the ALFWorld check, and training still need to run on the Linux GPU machine.** See the [status ledger](knowledge_base/status.md) for verified and pending work.
+The non-GPU preparation is complete: the official code has been archived at a paper-era revision, the baseline settings have been compared, an ALFWorld reset/step check is ready, and a one-epoch GiGPO smoke script is ready. The IIIT Delhi cluster policy and manual have been reviewed, and the smoke script now requests its two GPUs through `gpurun`. **Cluster login, package installation, environment data download, the ALFWorld check, and training still need to be verified on the Linux GPU machine.** See the [status ledger](knowledge_base/status.md) for verified and pending work.
 
 ## Quick start on the Linux machine
 
@@ -19,14 +19,14 @@ cd gigpo
 python3 week1/check_baseline_scripts.py
 ```
 
-Follow [the GPU-machine handoff](week1/gpu_machine_handoff.md) to install the pinned dependencies and download ALFWorld. Then run:
+Read the [cluster guide](knowledge_base/cluster_guide.md) and follow [the GPU-machine handoff](week1/gpu_machine_handoff.md) to install the pinned dependencies and download ALFWorld. Then run:
 
 ```bash
 python3 week1/check_alfworld.py
 bash week1/smoke_gigpo.sh
 ```
 
-The smoke script captures package versions and console output under `runs/week1_smoke/`. Check that the log shows a completed training update and validation result. The one-epoch run only verifies the pipeline. It cannot establish the paper's success rate.
+The smoke script runs the GPU command through the cluster's mandatory `gpurun -g 2` wrapper and captures package versions and console output under `runs/week1_smoke/`. Check that the log shows a completed training update and validation result. The one-epoch run only verifies the pipeline. It cannot establish the paper's success rate.
 
 ## Repository map
 
@@ -34,7 +34,7 @@ The smoke script captures package versions and console output under `runs/week1_
 | --- | --- |
 | `upstream-verl-agent/` | Unmodified source snapshot from the official repository at commit `f974dc5977908d6007ad178c9f3c48f0c7b39331` |
 | `week1/` | Baseline settings, Linux handoff, static checker, ALFWorld check, and GiGPO smoke run |
-| `knowledge_base/` | Method explanation, code map, experiment protocol, extension design, decisions, and status |
+| `knowledge_base/` | Method explanation, code map, cluster guide, experiment protocol, extension design, decisions, and status |
 | `results/TEMPLATE.md` | Record for each GPU run; copy and fill it after execution |
 | `UPSTREAM_SHA256SUMS.txt` | Checksums for key files in the upstream snapshot |
 

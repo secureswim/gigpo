@@ -1,5 +1,12 @@
 # Linux training-machine handoff
 
+This handoff targets the IIIT Delhi GPU server at `192.168.3.214`. Read the
+[cluster-specific guide](../knowledge_base/cluster_guide.md) and the server's
+[usage policy](http://192.168.3.214/usage_policy.html) and
+[user manual](http://192.168.3.214/user-manual.html) before starting. The server
+requires GPU work to be launched through `gpurun`; never run the upstream
+training script directly on a GPU outside that quota system.
+
 After the owner grants access to this private repository, clone it on the Linux machine:
 
 ```bash
@@ -47,6 +54,18 @@ The automated check resets the text environment, takes one admissible action, an
 
 ## 4. Run one GiGPO epoch
 
+First check the current quota and GPU allocation:
+
+```bash
+gpurun --status
+gpurun nvidia-smi
+```
+
+The original configuration requests two GPUs. The wrapper below requests both
+through `gpurun`, so usage is charged at two GPU-hours per elapsed hour and may
+queue while either GPU is occupied. Start it from `tmux` or `screen` so a remote
+disconnect does not interrupt the session.
+
 ```bash
 bash week1/smoke_gigpo.sh
 ```
@@ -54,6 +73,10 @@ bash week1/smoke_gigpo.sh
 The script keeps the repository's model and ALFWorld settings, overrides the run to one epoch, enables validation at that step, and uses console logging so a W&B login is unnecessary. It writes `runs/week1_smoke/metadata.txt` and `runs/week1_smoke/train.log`.
 
 Success means the log contains an optimizer update and a validation result. An ALFWorld launch alone is insufficient. The run may download the model and a small placeholder dataset on first use. If it fails, preserve the complete log and record the fix before rerunning.
+
+If the scheduler assigns a job ID, retain it in the run record. Stop a stuck job
+with `gpurun --kill <job_id>` and check `gpurun --status` afterward. Do not run
+the underlying script directly as a workaround.
 
 ## 5. Hand back the evidence
 
