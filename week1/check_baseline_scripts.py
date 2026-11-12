@@ -33,7 +33,10 @@ def main() -> int:
     for line in (ROOT / "UPSTREAM_SHA256SUMS.txt").read_text(encoding="utf-8").splitlines():
         expected_digest, relative_path = line.split("  ", 1)
         actual_digest = sha256((REPO / relative_path).read_bytes()).hexdigest()
-        if actual_digest != expected_digest:
+        # Original manifest was generated with CRLF; Git may check out LF.
+        canonical_crlf = (REPO / relative_path).read_bytes().replace(b"\r\n", b"\n").replace(b"\n", b"\r\n")
+        crlf_digest = sha256(canonical_crlf).hexdigest()
+        if expected_digest not in (actual_digest, crlf_digest):
             print(f"Upstream snapshot differs: {relative_path}", file=sys.stderr)
             return 1
 

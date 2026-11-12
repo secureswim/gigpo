@@ -1,10 +1,14 @@
 # GiGPO: ALFWorld reproduction and anchor-group study
 
-This repository is the handoff for a reinforcement-learning course project. The core experiment reproduces **GiGPO versus GRPO** on text ALFWorld using `Qwen/Qwen2.5-1.5B-Instruct`. The proposed extension asks whether selecting informative step-level anchor groups improves GiGPO. The proposal is included as [`GIGPO - RL.pptx`](GIGPO%20-%20RL.pptx). No training result is claimed in this repository yet.
+This repository is the handoff for a reinforcement-learning course project. The core experiment reproduces **GiGPO versus GRPO** on text ALFWorld using `Qwen/Qwen2.5-1.5B-Instruct`. The proposed extension asks whether selecting informative step-level anchor groups improves GiGPO. The proposal is included as [`GIGPO - RL.pptx`](GIGPO%20-%20RL.pptx). A single-iteration GiGPO smoke test has passed on Omni; full matched baseline results remain pending.
 
 ## Current status
 
-The non-GPU preparation is complete: the official code has been archived at a paper-era revision, the baseline settings have been compared, an ALFWorld reset/step check is ready, and a one-epoch GiGPO smoke script is ready. The IIIT Delhi cluster policy and manual have been reviewed, and the smoke script now requests its two GPUs through `gpurun`. **Cluster login, package installation, environment data download, the ALFWorld check, and training still need to be verified on the Linux GPU machine.** See the [status ledger](knowledge_base/status.md) for verified and pending work.
+**12 November 2026: the GiGPO smoke test passed on Omni job 10333.** It completed one training iteration and validation on 128 examples with exit code 0. The successful attempt took 33 minutes 10 seconds and reported 6.25% validation success. This verifies the pipeline; it is not a full-training result.
+
+See the **[smoke-test README](results/omni-short-10333/README.md)** for batch sizes, GPU/RAM allocation, exact configuration, package versions, timing breakdown, fixes, and committed logs. Full matched GiGPO/GRPO training remains pending. See the [status ledger](knowledge_base/status.md) for the remaining work.
+
+The separate IIIT Delhi `gpurun` workflow is documented in the [cluster guide](knowledge_base/cluster_guide.md). The verified Omni Slurm workflow and its single-MIG profile are in [cluster/README.md](cluster/README.md).
 
 ## Quick start on the Linux machine
 

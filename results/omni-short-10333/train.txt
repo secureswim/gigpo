@@ -1,0 +1,1419 @@
++ ENGINE=vllm
++ shift
++ export VLLM_ATTENTION_BACKEND=XFORMERS
++ VLLM_ATTENTION_BACKEND=XFORMERS
++ train_data_size=16
++ val_data_size=128
++ group_size=8
++ mode=mean_std_norm
++ python3 -m verl.trainer.main_ppo algorithm.adv_estimator=gigpo data.train_files=/home/vansh23580/data/verl-agent/text/train.parquet data.val_files=/home/vansh23580/data/verl-agent/text/test.parquet data.train_batch_size=16 data.val_batch_size=128 data.max_prompt_length=2048 data.max_response_length=512 data.filter_overlong_prompts=True data.truncation=error data.return_raw_chat=True actor_rollout_ref.model.path=Qwen/Qwen2.5-1.5B-Instruct actor_rollout_ref.actor.optim.lr=1e-6 actor_rollout_ref.model.use_remove_padding=True actor_rollout_ref.actor.ppo_mini_batch_size=256 actor_rollout_ref.actor.ppo_micro_batch_size_per_gpu=32 actor_rollout_ref.actor.use_kl_loss=True actor_rollout_ref.actor.kl_loss_coef=0.01 actor_rollout_ref.actor.kl_loss_type=low_var_kl actor_rollout_ref.model.enable_gradient_checkpointing=True actor_rollout_ref.actor.fsdp_config.param_offload=False actor_rollout_ref.actor.fsdp_config.optimizer_offload=False actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=32 actor_rollout_ref.rollout.tensor_model_parallel_size=2 actor_rollout_ref.rollout.name=vllm actor_rollout_ref.rollout.gpu_memory_utilization=0.6 actor_rollout_ref.rollout.enable_chunked_prefill=False actor_rollout_ref.rollout.enforce_eager=False actor_rollout_ref.rollout.free_cache_engine=False actor_rollout_ref.rollout.val_kwargs.temperature=0.4 actor_rollout_ref.rollout.val_kwargs.do_sample=True actor_rollout_ref.ref.log_prob_micro_batch_size_per_gpu=32 actor_rollout_ref.ref.fsdp_config.param_offload=True actor_rollout_ref.actor.use_invalid_action_penalty=True actor_rollout_ref.actor.invalid_action_penalty_coef=0.1 algorithm.use_kl_in_reward=False algorithm.gamma=0.95 algorithm.gigpo.step_advantage_w=1.0 algorithm.gigpo.mode=mean_std_norm env.env_name=alfworld/AlfredTWEnv env.seed=0 env.max_steps=50 env.rollout.n=8 trainer.critic_warmup=0 'trainer.logger=[console,wandb]' trainer.project_name=verl_agent_alfworld trainer.experiment_name=gigpo_qwen2.5_1.5b trainer.n_gpus_per_node=2 trainer.nnodes=1 trainer.save_freq=-1 trainer.test_freq=5 trainer.total_epochs=150 trainer.val_before_train=True trainer.n_gpus_per_node=1 data.train_batch_size=4 data.val_batch_size=8 actor_rollout_ref.actor.ppo_mini_batch_size=32 actor_rollout_ref.rollout.tensor_model_parallel_size=1 actor_rollout_ref.actor.ppo_micro_batch_size_per_gpu=1 actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=1 actor_rollout_ref.ref.log_prob_micro_batch_size_per_gpu=1 actor_rollout_ref.rollout.gpu_memory_utilization=0.45 actor_rollout_ref.actor.fsdp_config.param_offload=False actor_rollout_ref.actor.fsdp_config.optimizer_offload=False actor_rollout_ref.ref.fsdp_config.param_offload=False trainer.total_epochs=1 trainer.total_training_steps=1 trainer.test_freq=1 trainer.val_before_train=False 'trainer.logger=['\''console'\'']' trainer.experiment_name=omni_mig_smoke trainer.default_local_dir=/home/vansh23580/rl-project/gigpo/runs/omni-10333/checkpoints
+2026-11-12 19:40:06,364	INFO worker.py:1832 -- Started a local Ray instance. View the dashboard at http://127.0.0.1:8265
+(TaskRunner pid=974377) {'actor_rollout_ref': {'actor': {'checkpoint': {'contents': ['model',
+(TaskRunner pid=974377)                                                              'optimizer',
+(TaskRunner pid=974377)                                                              'extra']},
+(TaskRunner pid=974377)                                  'clip_ratio': 0.2,
+(TaskRunner pid=974377)                                  'clip_ratio_high': 0.2,
+(TaskRunner pid=974377)                                  'clip_ratio_low': 0.2,
+(TaskRunner pid=974377)                                  'entropy_coeff': 0.001,
+(TaskRunner pid=974377)                                  'fsdp_config': {'fsdp_size': -1,
+(TaskRunner pid=974377)                                                  'optimizer_offload': False,
+(TaskRunner pid=974377)                                                  'param_offload': False,
+(TaskRunner pid=974377)                                                  'wrap_policy': {'min_num_params': 0}},
+(TaskRunner pid=974377)                                  'grad_clip': 1.0,
+(TaskRunner pid=974377)                                  'invalid_action_penalty_coef': 0.1,
+(TaskRunner pid=974377)                                  'kl_loss_coef': 0.01,
+(TaskRunner pid=974377)                                  'kl_loss_type': 'low_var_kl',
+(TaskRunner pid=974377)                                  'optim': {'lr': 1e-06,
+(TaskRunner pid=974377)                                            'lr_warmup_steps': -1,
+(TaskRunner pid=974377)                                            'lr_warmup_steps_ratio': 0.0,
+(TaskRunner pid=974377)                                            'min_lr_ratio': None,
+(TaskRunner pid=974377)                                            'total_training_steps': -1,
+(TaskRunner pid=974377)                                            'warmup_style': 'constant'},
+(TaskRunner pid=974377)                                  'ppo_epochs': 1,
+(TaskRunner pid=974377)                                  'ppo_max_token_len_per_gpu': 16384,
+(TaskRunner pid=974377)                                  'ppo_micro_batch_size': None,
+(TaskRunner pid=974377)                                  'ppo_micro_batch_size_per_gpu': 1,
+(TaskRunner pid=974377)                                  'ppo_mini_batch_size': 32,
+(TaskRunner pid=974377)                                  'shuffle': False,
+(TaskRunner pid=974377)                                  'strategy': 'fsdp',
+(TaskRunner pid=974377)                                  'ulysses_sequence_parallel_size': 1,
+(TaskRunner pid=974377)                                  'use_dynamic_bsz': False,
+(TaskRunner pid=974377)                                  'use_invalid_action_penalty': True,
+(TaskRunner pid=974377)                                  'use_kl_loss': True,
+(TaskRunner pid=974377)                                  'use_torch_compile': True},
+(TaskRunner pid=974377)                        'hybrid_engine': True,
+(TaskRunner pid=974377)                        'model': {'enable_gradient_checkpointing': True,
+(TaskRunner pid=974377)                                  'external_lib': None,
+(TaskRunner pid=974377)                                  'override_config': {},
+(TaskRunner pid=974377)                                  'path': 'Qwen/Qwen2.5-1.5B-Instruct',
+(TaskRunner pid=974377)                                  'use_remove_padding': True},
+(TaskRunner pid=974377)                        'ref': {'fsdp_config': {'param_offload': False,
+(TaskRunner pid=974377)                                                'wrap_policy': {'min_num_params': 0}},
+(TaskRunner pid=974377)                                'log_prob_max_token_len_per_gpu': 16384,
+(TaskRunner pid=974377)                                'log_prob_micro_batch_size': None,
+(TaskRunner pid=974377)                                'log_prob_micro_batch_size_per_gpu': 1,
+(TaskRunner pid=974377)                                'log_prob_use_dynamic_bsz': False,
+(TaskRunner pid=974377)                                'ulysses_sequence_parallel_size': 1},
+(TaskRunner pid=974377)                        'rollout': {'disable_log_stats': True,
+(TaskRunner pid=974377)                                    'do_sample': True,
+(TaskRunner pid=974377)                                    'dtype': 'bfloat16',
+(TaskRunner pid=974377)                                    'enable_chunked_prefill': False,
+(TaskRunner pid=974377)                                    'enforce_eager': False,
+(TaskRunner pid=974377)                                    'free_cache_engine': False,
+(TaskRunner pid=974377)                                    'gpu_memory_utilization': 0.45,
+(TaskRunner pid=974377)                                    'ignore_eos': False,
+(TaskRunner pid=974377)                                    'load_format': 'dummy_dtensor',
+(TaskRunner pid=974377)                                    'log_prob_max_token_len_per_gpu': 16384,
+(TaskRunner pid=974377)                                    'log_prob_micro_batch_size': None,
+(TaskRunner pid=974377)                                    'log_prob_micro_batch_size_per_gpu': 1,
+(TaskRunner pid=974377)                                    'log_prob_use_dynamic_bsz': False,
+(TaskRunner pid=974377)                                    'max_model_len': None,
+(TaskRunner pid=974377)                                    'max_num_batched_tokens': 8192,
+(TaskRunner pid=974377)                                    'max_num_seqs': 1024,
+(TaskRunner pid=974377)                                    'n': 1,
+(TaskRunner pid=974377)                                    'name': 'vllm',
+(TaskRunner pid=974377)                                    'prompt_length': 2048,
+(TaskRunner pid=974377)                                    'response_length': 512,
+(TaskRunner pid=974377)                                    'temperature': 1.0,
+(TaskRunner pid=974377)                                    'tensor_model_parallel_size': 1,
+(TaskRunner pid=974377)                                    'top_k': -1,
+(TaskRunner pid=974377)                                    'top_p': 1,
+(TaskRunner pid=974377)                                    'use_fire_sampling': False,
+(TaskRunner pid=974377)                                    'val_kwargs': {'do_sample': True,
+(TaskRunner pid=974377)                                                   'n': 1,
+(TaskRunner pid=974377)                                                   'temperature': 0.4,
+(TaskRunner pid=974377)                                                   'top_k': -1,
+(TaskRunner pid=974377)                                                   'top_p': 1.0}}},
+(TaskRunner pid=974377)  'algorithm': {'adv_estimator': 'gigpo',
+(TaskRunner pid=974377)                'filter_groups': {'enable': False, 'max_num_gen_batches': 10},
+(TaskRunner pid=974377)                'gamma': 0.95,
+(TaskRunner pid=974377)                'gigpo': {'mode': 'mean_std_norm', 'step_advantage_w': 1.0},
+(TaskRunner pid=974377)                'kl_ctrl': {'horizon': 10000,
+(TaskRunner pid=974377)                            'kl_coef': 0.001,
+(TaskRunner pid=974377)                            'target_kl': 0.1,
+(TaskRunner pid=974377)                            'type': 'fixed'},
+(TaskRunner pid=974377)                'kl_penalty': 'kl',
+(TaskRunner pid=974377)                'lam': 1.0,
+(TaskRunner pid=974377)                'use_kl_in_reward': False},
+(TaskRunner pid=974377)  'critic': {'checkpoint': {'contents': ['model', 'optimizer', 'extra']},
+(TaskRunner pid=974377)             'cliprange_value': 0.5,
+(TaskRunner pid=974377)             'forward_max_token_len_per_gpu': 32768,
+(TaskRunner pid=974377)             'forward_micro_batch_size': None,
+(TaskRunner pid=974377)             'forward_micro_batch_size_per_gpu': None,
+(TaskRunner pid=974377)             'grad_clip': 1.0,
+(TaskRunner pid=974377)             'model': {'enable_gradient_checkpointing': True,
+(TaskRunner pid=974377)                       'external_lib': None,
+(TaskRunner pid=974377)                       'fsdp_config': {'fsdp_size': -1,
+(TaskRunner pid=974377)                                       'optimizer_offload': False,
+(TaskRunner pid=974377)                                       'param_offload': False,
+(TaskRunner pid=974377)                                       'wrap_policy': {'min_num_params': 0}},
+(TaskRunner pid=974377)                       'override_config': {},
+(TaskRunner pid=974377)                       'path': '~/models/deepseek-llm-7b-chat',
+(TaskRunner pid=974377)                       'tokenizer_path': 'Qwen/Qwen2.5-1.5B-Instruct',
+(TaskRunner pid=974377)                       'use_remove_padding': False},
+(TaskRunner pid=974377)             'optim': {'lr': 1e-05,
+(TaskRunner pid=974377)                       'lr_warmup_steps_ratio': 0.0,
+(TaskRunner pid=974377)                       'min_lr_ratio': None,
+(TaskRunner pid=974377)                       'total_training_steps': -1,
+(TaskRunner pid=974377)                       'warmup_style': 'constant'},
+(TaskRunner pid=974377)             'ppo_epochs': 1,
+(TaskRunner pid=974377)             'ppo_max_token_len_per_gpu': 32768,
+(TaskRunner pid=974377)             'ppo_micro_batch_size': None,
+(TaskRunner pid=974377)             'ppo_micro_batch_size_per_gpu': None,
+(TaskRunner pid=974377)             'ppo_mini_batch_size': 32,
+(TaskRunner pid=974377)             'rollout_n': 1,
+(TaskRunner pid=974377)             'shuffle': False,
+(TaskRunner pid=974377)             'strategy': 'fsdp',
+(TaskRunner pid=974377)             'ulysses_sequence_parallel_size': 1,
+(TaskRunner pid=974377)             'use_dynamic_bsz': False},
+(TaskRunner pid=974377)  'custom_reward_function': {'name': 'compute_score', 'path': None},
+(TaskRunner pid=974377)  'data': {'filter_overlong_prompts': True,
+(TaskRunner pid=974377)           'image_key': 'images',
+(TaskRunner pid=974377)           'max_prompt_length': 2048,
+(TaskRunner pid=974377)           'max_response_length': 512,
+(TaskRunner pid=974377)           'prompt_key': 'prompt',
+(TaskRunner pid=974377)           'return_raw_chat': True,
+(TaskRunner pid=974377)           'return_raw_input_ids': False,
+(TaskRunner pid=974377)           'shuffle': True,
+(TaskRunner pid=974377)           'tokenizer': None,
+(TaskRunner pid=974377)           'train_batch_size': 4,
+(TaskRunner pid=974377)           'train_files': '/home/vansh23580/data/verl-agent/text/train.parquet',
+(TaskRunner pid=974377)           'truncation': 'error',
+(TaskRunner pid=974377)           'val_batch_size': 8,
+(TaskRunner pid=974377)           'val_files': '/home/vansh23580/data/verl-agent/text/test.parquet'},
+(TaskRunner pid=974377)  'env': {'env_name': 'alfworld/AlfredTWEnv',
+(TaskRunner pid=974377)          'max_steps': 50,
+(TaskRunner pid=974377)          'rollout': {'n': 8},
+(TaskRunner pid=974377)          'seed': 0,
+(TaskRunner pid=974377)          'sokoban': {'dim_room': [6, 6],
+(TaskRunner pid=974377)                      'mode': 'tiny_rgb_array',
+(TaskRunner pid=974377)                      'num_boxes': 1,
+(TaskRunner pid=974377)                      'search_depth': 30},
+(TaskRunner pid=974377)          'webshop': {'human_goals': False, 'use_small': True}},
+(TaskRunner pid=974377)  'reward_model': {'enable': False,
+(TaskRunner pid=974377)                   'forward_max_token_len_per_gpu': 32768,
+(TaskRunner pid=974377)                   'max_length': None,
+(TaskRunner pid=974377)                   'micro_batch_size': None,
+(TaskRunner pid=974377)                   'micro_batch_size_per_gpu': None,
+(TaskRunner pid=974377)                   'model': {'external_lib': None,
+(TaskRunner pid=974377)                             'fsdp_config': {'fsdp_size': -1,
+(TaskRunner pid=974377)                                             'param_offload': False,
+(TaskRunner pid=974377)                                             'wrap_policy': {'min_num_params': 0}},
+(TaskRunner pid=974377)                             'input_tokenizer': 'Qwen/Qwen2.5-1.5B-Instruct',
+(TaskRunner pid=974377)                             'path': '~/models/FsfairX-LLaMA3-RM-v0.1',
+(TaskRunner pid=974377)                             'use_remove_padding': False},
+(TaskRunner pid=974377)                   'reward_manager': 'episode',
+(TaskRunner pid=974377)                   'strategy': 'fsdp',
+(TaskRunner pid=974377)                   'ulysses_sequence_parallel_size': 1,
+(TaskRunner pid=974377)                   'use_dynamic_bsz': False},
+(TaskRunner pid=974377)  'trainer': {'balance_batch': True,
+(TaskRunner pid=974377)              'critic_warmup': 0,
+(TaskRunner pid=974377)              'default_hdfs_dir': None,
+(TaskRunner pid=974377)              'default_local_dir': '/home/vansh23580/rl-project/gigpo/runs/omni-10333/checkpoints',
+(TaskRunner pid=974377)              'del_local_ckpt_after_load': False,
+(TaskRunner pid=974377)              'experiment_name': 'omni_mig_smoke',
+(TaskRunner pid=974377)              'log_val_generations': 0,
+(TaskRunner pid=974377)              'logger': ['console'],
+(TaskRunner pid=974377)              'max_actor_ckpt_to_keep': None,
+(TaskRunner pid=974377)              'max_critic_ckpt_to_keep': None,
+(TaskRunner pid=974377)              'n_gpus_per_node': 1,
+(TaskRunner pid=974377)              'nnodes': 1,
+(TaskRunner pid=974377)              'project_name': 'verl_agent_alfworld',
+(TaskRunner pid=974377)              'resume_from_path': None,
+(TaskRunner pid=974377)              'resume_mode': 'auto',
+(TaskRunner pid=974377)              'save_freq': -1,
+(TaskRunner pid=974377)              'test_freq': 1,
+(TaskRunner pid=974377)              'total_epochs': 1,
+(TaskRunner pid=974377)              'total_training_steps': 1,
+(TaskRunner pid=974377)              'val_before_train': False}}
+(TaskRunner pid=974377) Initializing AlfredTWEnv...
+(TaskRunner pid=974377)
+  0%|          | 0/8810 [00:00<?, ?it/s]
+(TaskRunner pid=974377)
+  1%|          | 73/8810 [00:00<00:12, 724.01it/s]
+(TaskRunner pid=974377)
+  2%|▏         | 146/8810 [00:00<00:13, 655.14it/s]
+(TaskRunner pid=974377)
+  3%|▎         | 230/8810 [00:00<00:11, 731.71it/s]
+(TaskRunner pid=974377)
+  3%|▎         | 304/8810 [00:00<00:12, 693.40it/s]
+(TaskRunner pid=974377)
+  5%|▍         | 423/8810 [00:00<00:09, 860.57it/s]
+(TaskRunner pid=974377)
+  6%|▌         | 525/8810 [00:00<00:09, 903.19it/s]
+(TaskRunner pid=974377)
+  7%|▋         | 617/8810 [00:00<00:09, 822.96it/s]
+(TaskRunner pid=974377)
+  8%|▊         | 702/8810 [00:00<00:09, 820.66it/s]
+(TaskRunner pid=974377)
+  9%|▉         | 786/8810 [00:00<00:10, 793.21it/s]
+(TaskRunner pid=974377)
+ 10%|▉         | 867/8810 [00:01<00:10, 781.08it/s]
+(TaskRunner pid=974377)
+ 11%|█         | 948/8810 [00:01<00:09, 787.55it/s]
+(TaskRunner pid=974377)
+ 12%|█▏        | 1028/8810 [00:01<00:11, 698.09it/s]
+(TaskRunner pid=974377)
+ 13%|█▎        | 1117/8810 [00:01<00:10, 741.09it/s]
+(TaskRunner pid=974377)
+ 14%|█▎        | 1193/8810 [00:01<00:11, 675.86it/s]
+(TaskRunner pid=974377)
+ 14%|█▍        | 1263/8810 [00:01<00:15, 490.76it/s]
+(TaskRunner pid=974377)
+ 15%|█▌        | 1342/8810 [00:01<00:13, 554.11it/s]
+(TaskRunner pid=974377)
+ 16%|█▌        | 1414/8810 [00:02<00:12, 589.24it/s]
+(TaskRunner pid=974377)
+ 17%|█▋        | 1484/8810 [00:02<00:11, 615.56it/s]
+ 18%|█▊        | 1556/8810 [00:02<00:11, 642.42it/s]
+(TaskRunner pid=974377)
+ 19%|█▊        | 1633/8810 [00:02<00:10, 675.31it/s]
+(TaskRunner pid=974377)
+ 20%|█▉        | 1739/8810 [00:02<00:09, 782.22it/s]
+(TaskRunner pid=974377)
+ 21%|██        | 1821/8810 [00:02<00:09, 712.68it/s]
+(TaskRunner pid=974377)
+ 22%|██▏       | 1896/8810 [00:02<00:10, 653.83it/s]
+(TaskRunner pid=974377)
+ 23%|██▎       | 1994/8810 [00:02<00:09, 734.69it/s]
+(TaskRunner pid=974377)
+ 24%|██▎       | 2083/8810 [00:02<00:08, 773.09it/s]
+(TaskRunner pid=974377)
+ 25%|██▍       | 2199/8810 [00:03<00:07, 876.82it/s]
+(TaskRunner pid=974377)
+ 26%|██▌       | 2290/8810 [00:03<00:07, 858.14it/s]
+(TaskRunner pid=974377)
+ 27%|██▋       | 2378/8810 [00:03<00:08, 742.70it/s]
+(TaskRunner pid=974377)
+ 28%|██▊       | 2457/8810 [00:03<00:08, 711.70it/s]
+(TaskRunner pid=974377)
+ 29%|██▉       | 2541/8810 [00:03<00:08, 742.73it/s]
+(TaskRunner pid=974377)
+ 30%|██▉       | 2625/8810 [00:03<00:08, 768.42it/s]
+(TaskRunner pid=974377)
+ 31%|███       | 2704/8810 [00:03<00:08, 688.55it/s]
+(TaskRunner pid=974377)
+ 32%|███▏      | 2790/8810 [00:03<00:08, 731.23it/s]
+(TaskRunner pid=974377)
+ 33%|███▎      | 2868/8810 [00:03<00:07, 743.60it/s]
+(TaskRunner pid=974377)
+ 33%|███▎      | 2945/8810 [00:04<00:10, 560.79it/s]
+(TaskRunner pid=974377)
+ 35%|███▍      | 3063/8810 [00:04<00:08, 701.62it/s]
+(TaskRunner pid=974377)
+ 36%|███▌      | 3162/8810 [00:04<00:07, 772.04it/s]
+(TaskRunner pid=974377)
+ 37%|███▋      | 3248/8810 [00:04<00:07, 713.07it/s]
+(TaskRunner pid=974377)
+ 38%|███▊      | 3326/8810 [00:04<00:07, 722.80it/s]
+(TaskRunner pid=974377)
+ 39%|███▊      | 3403/8810 [00:04<00:07, 732.32it/s]
+(TaskRunner pid=974377)
+ 40%|███▉      | 3482/8810 [00:04<00:07, 739.32it/s]
+(TaskRunner pid=974377)
+ 41%|████      | 3587/8810 [00:04<00:06, 817.92it/s]
+(TaskRunner pid=974377)
+ 42%|████▏     | 3677/8810 [00:05<00:06, 839.99it/s]
+(TaskRunner pid=974377)
+ 43%|████▎     | 3798/8810 [00:05<00:05, 941.45it/s]
+(TaskRunner pid=974377)
+ 44%|████▍     | 3894/8810 [00:05<00:05, 928.31it/s]
+(TaskRunner pid=974377)
+ 45%|████▌     | 3988/8810 [00:05<00:05, 916.59it/s]
+(TaskRunner pid=974377)
+ 46%|████▋     | 4081/8810 [00:05<00:05, 904.99it/s]
+(TaskRunner pid=974377)
+ 47%|████▋     | 4173/8810 [00:05<00:05, 888.62it/s]
+(TaskRunner pid=974377)
+ 48%|████▊     | 4263/8810 [00:05<00:05, 872.27it/s]
+(TaskRunner pid=974377)
+ 49%|████▉     | 4351/8810 [00:05<00:05, 837.57it/s]
+(TaskRunner pid=974377)
+ 50%|█████     | 4436/8810 [00:05<00:05, 828.28it/s]
+(TaskRunner pid=974377)
+ 52%|█████▏    | 4547/8810 [00:06<00:04, 904.60it/s]
+(TaskRunner pid=974377)
+ 53%|█████▎    | 4638/8810 [00:06<00:07, 532.12it/s]
+(TaskRunner pid=974377)
+ 54%|█████▍    | 4741/8810 [00:06<00:06, 627.66it/s]
+(TaskRunner pid=974377)
+ 55%|█████▍    | 4826/8810 [00:06<00:05, 675.11it/s]
+(TaskRunner pid=974377)
+ 56%|█████▌    | 4928/8810 [00:06<00:05, 752.36it/s]
+(TaskRunner pid=974377)
+ 57%|█████▋    | 5016/8810 [00:06<00:04, 775.49it/s]
+(TaskRunner pid=974377)
+ 58%|█████▊    | 5116/8810 [00:06<00:04, 829.11it/s]
+(TaskRunner pid=974377)
+ 59%|█████▉    | 5206/8810 [00:06<00:04, 813.93it/s]
+(TaskRunner pid=974377)
+ 60%|██████    | 5293/8810 [00:07<00:04, 789.30it/s]
+(TaskRunner pid=974377)
+ 61%|██████    | 5390/8810 [00:07<00:04, 833.35it/s]
+(TaskRunner pid=974377)
+ 62%|██████▏   | 5477/8810 [00:07<00:04, 790.43it/s]
+(TaskRunner pid=974377)
+ 63%|██████▎   | 5559/8810 [00:07<00:04, 736.10it/s]
+(TaskRunner pid=974377)
+ 65%|██████▍   | 5690/8810 [00:07<00:03, 882.80it/s]
+(TaskRunner pid=974377)
+ 66%|██████▌   | 5782/8810 [00:07<00:03, 878.72it/s]
+(TaskRunner pid=974377)
+ 67%|██████▋   | 5873/8810 [00:07<00:03, 837.18it/s]
+(TaskRunner pid=974377)
+ 68%|██████▊   | 5969/8810 [00:07<00:03, 866.76it/s]
+(TaskRunner pid=974377)
+ 69%|██████▉   | 6066/8810 [00:07<00:03, 894.04it/s]
+(TaskRunner pid=974377)
+ 70%|██████▉   | 6157/8810 [00:08<00:02, 885.90it/s]
+(TaskRunner pid=974377)
+ 71%|███████   | 6266/8810 [00:08<00:02, 941.18it/s]
+(TaskRunner pid=974377)
+ 72%|███████▏  | 6368/8810 [00:08<00:02, 962.18it/s]
+(TaskRunner pid=974377)
+ 73%|███████▎  | 6465/8810 [00:08<00:04, 573.21it/s]
+(TaskRunner pid=974377)
+ 75%|███████▍  | 6564/8810 [00:08<00:03, 652.05it/s]
+(TaskRunner pid=974377)
+ 76%|███████▌  | 6665/8810 [00:08<00:02, 728.67it/s]
+(TaskRunner pid=974377)
+ 77%|███████▋  | 6753/8810 [00:08<00:02, 746.40it/s]
+(TaskRunner pid=974377)
+ 78%|███████▊  | 6839/8810 [00:09<00:02, 729.99it/s]
+(TaskRunner pid=974377)
+ 79%|███████▉  | 6941/8810 [00:09<00:02, 799.09it/s]
+(TaskRunner pid=974377)
+ 80%|███████▉  | 7030/8810 [00:09<00:02, 819.66it/s]
+(TaskRunner pid=974377)
+ 81%|████████  | 7117/8810 [00:09<00:02, 803.11it/s]
+(TaskRunner pid=974377)
+ 82%|████████▏ | 7216/8810 [00:09<00:01, 853.91it/s]
+(TaskRunner pid=974377)
+ 83%|████████▎ | 7320/8810 [00:09<00:01, 904.47it/s]
+(TaskRunner pid=974377)
+ 84%|████████▍ | 7413/8810 [00:09<00:01, 904.60it/s]
+(TaskRunner pid=974377)
+ 85%|████████▌ | 7513/8810 [00:09<00:01, 931.42it/s]
+(TaskRunner pid=974377)
+ 86%|████████▋ | 7620/8810 [00:09<00:01, 968.35it/s]
+(TaskRunner pid=974377)
+ 88%|████████▊ | 7718/8810 [00:09<00:01, 959.60it/s]
+(TaskRunner pid=974377)
+ 89%|████████▉ | 7834/8810 [00:10<00:00, 1016.46it/s]
+(TaskRunner pid=974377)
+ 90%|█████████ | 7937/8810 [00:10<00:00, 892.93it/s]
+(TaskRunner pid=974377)
+ 91%|█████████ | 8030/8810 [00:10<00:01, 668.75it/s]
+(TaskRunner pid=974377)
+ 92%|█████████▏| 8120/8810 [00:10<00:00, 716.69it/s]
+(TaskRunner pid=974377)
+ 93%|█████████▎| 8229/8810 [00:10<00:00, 805.84it/s]
+(TaskRunner pid=974377)
+ 95%|█████████▍| 8344/8810 [00:10<00:00, 891.36it/s]
+(TaskRunner pid=974377)
+ 96%|█████████▌| 8442/8810 [00:10<00:00, 914.12it/s]
+(TaskRunner pid=974377)
+ 97%|█████████▋| 8539/8810 [00:10<00:00, 879.95it/s]
+(TaskRunner pid=974377)
+ 98%|█████████▊| 8632/8810 [00:11<00:00, 890.07it/s]
+(TaskRunner pid=974377)
+ 99%|█████████▉| 8731/8810 [00:11<00:00, 916.88it/s]
+(TaskRunner pid=974377)
+100%|██████████| 8810/8810 [00:11<00:00, 780.71it/s]
+(TaskRunner pid=974377) Overall we have 3553 games in split=train
+(TaskRunner pid=974377) Training with 3553 games
+(TaskRunner pid=974377) use_expert = False
+(TaskRunner pid=974377) Initializing AlfredTWEnv...
+(TaskRunner pid=974377)
+  0%|          | 0/494 [00:00<?, ?it/s]
+(TaskRunner pid=974377)
+ 13%|█▎        | 62/494 [00:00<00:00, 607.51it/s]
+(TaskRunner pid=974377)
+ 36%|███▌      | 177/494 [00:00<00:00, 922.14it/s]
+(TaskRunner pid=974377)
+ 55%|█████▍    | 270/494 [00:00<00:00, 812.07it/s]
+(TaskRunner pid=974377)
+ 75%|███████▍  | 370/494 [00:00<00:00, 875.09it/s]
+(TaskRunner pid=974377)
+100%|██████████| 494/494 [00:00<00:00, 924.25it/s]
+(TaskRunner pid=974377) Overall we have 140 games in split=eval_in_distribution
+(TaskRunner pid=974377) Evaluating with 140 games
+(TaskRunner pid=974377) use_expert = False
+(TaskRunner pid=974377) WARNING: val_batch_size is deprecated. Validation datasets are sent to inference engines as a whole batch, which will schedule the memory themselves.
+(TaskRunner pid=974377) [validate_config] All configuration checks passed successfully!
+(TaskRunner pid=974377) DeprecationWarning: `ray.state.available_resources_per_node` is a private attribute and access will be removed in a future Ray version.
+(TaskRunner pid=974377) dataset len: 16
+(TaskRunner pid=974377) filter dataset len: 16
+(TaskRunner pid=974377) dataset len: 128
+(TaskRunner pid=974377) filter dataset len: 128
+(TaskRunner pid=974377) Size of train dataloader: 4
+(TaskRunner pid=974377) Total training steps: 1
+(WorkerDict pid=978030) Model config after override: Qwen2Config {
+(WorkerDict pid=978030)   "architectures": [
+(WorkerDict pid=978030)     "Qwen2ForCausalLM"
+(WorkerDict pid=978030)   ],
+(WorkerDict pid=978030)   "attention_dropout": 0.0,
+(WorkerDict pid=978030)   "eos_token_id": 151645,
+(WorkerDict pid=978030)   "hidden_act": "silu",
+(WorkerDict pid=978030)   "hidden_size": 1536,
+(WorkerDict pid=978030)   "initializer_range": 0.02,
+(WorkerDict pid=978030)   "intermediate_size": 8960,
+(WorkerDict pid=978030)   "max_position_embeddings": 32768,
+(WorkerDict pid=978030)   "max_window_layers": 21,
+(WorkerDict pid=978030)   "model_type": "qwen2",
+(WorkerDict pid=978030)   "num_attention_heads": 12,
+(WorkerDict pid=978030)   "num_hidden_layers": 28,
+(WorkerDict pid=978030)   "num_key_value_heads": 2,
+(WorkerDict pid=978030)   "pad_token_id": 151643,
+(WorkerDict pid=978030)   "rms_norm_eps": 1e-06,
+(WorkerDict pid=978030)   "rope_scaling": null,
+(WorkerDict pid=978030)   "rope_theta": 1000000.0,
+(WorkerDict pid=978030)   "sliding_window": 32768,
+(WorkerDict pid=978030)   "tie_word_embeddings": true,
+(WorkerDict pid=978030)   "torch_dtype": "bfloat16",
+(WorkerDict pid=978030)   "transformers_version": "4.51.1",
+(WorkerDict pid=978030)   "use_cache": true,
+(WorkerDict pid=978030)   "use_sliding_window": false,
+(WorkerDict pid=978030)   "vocab_size": 151936
+(WorkerDict pid=978030) }
+(WorkerDict pid=978030)
+(WorkerDict pid=978030) You are attempting to use Flash Attention 2.0 with a model not initialized on GPU. Make sure to move the model to GPU after initializing it on CPU with `model.to('cuda')`.
+(WorkerDict pid=978030) Monkey patch _flash_attention_forward in transformers.integrations.flash_attention
+(WorkerDict pid=978030) NCCL version 2.21.5+cuda12.4
+(WorkerDict pid=978030) [rank0]:[W1112 19:41:06.163755653 ProcessGroupNCCL.cpp:4561] [PG ID 0 PG GUID 0 Rank 0]  using GPU 0 to perform barrier as devices used by this process are currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect. Specify device_ids in barrier() to force use of a particular device, or call init_process_group() with a device_id.
+(WorkerDict pid=978030) Qwen2ForCausalLM contains 1.54B parameters
+(WorkerDict pid=978030) wrap_policy: functools.partial(<function _or_policy at 0x1525204802c0>, policies=[functools.partial(<function transformer_auto_wrap_policy at 0x152520480180>, transformer_layer_cls={<class 'transformers.models.qwen2.modeling_qwen2.Qwen2DecoderLayer'>})])
+(WorkerDict pid=978030) /home/vansh23580/rl-project/envs/gigpo/lib/python3.12/site-packages/torch/distributed/fsdp/_init_utils.py:444: UserWarning: FSDP is switching to use `NO_SHARD` instead of ShardingStrategy.FULL_SHARD since the world size is 1.
+(WorkerDict pid=978030)   warnings.warn(
+(WorkerDict pid=978030) Actor use_remove_padding=True
+(WorkerDict pid=978030) Model config after override: Qwen2Config {
+(WorkerDict pid=978030)   "architectures": [
+(WorkerDict pid=978030)     "Qwen2ForCausalLM"
+(WorkerDict pid=978030)   ],
+(WorkerDict pid=978030)   "attention_dropout": 0.0,
+(WorkerDict pid=978030)   "eos_token_id": 151645,
+(WorkerDict pid=978030)   "hidden_act": "silu",
+(WorkerDict pid=978030)   "hidden_size": 1536,
+(WorkerDict pid=978030)   "initializer_range": 0.02,
+(WorkerDict pid=978030)   "intermediate_size": 8960,
+(WorkerDict pid=978030)   "max_position_embeddings": 32768,
+(WorkerDict pid=978030)   "max_window_layers": 21,
+(WorkerDict pid=978030)   "model_type": "qwen2",
+(WorkerDict pid=978030)   "num_attention_heads": 12,
+(WorkerDict pid=978030)   "num_hidden_layers": 28,
+(WorkerDict pid=978030)   "num_key_value_heads": 2,
+(WorkerDict pid=978030)   "pad_token_id": 151643,
+(WorkerDict pid=978030)   "rms_norm_eps": 1e-06,
+(WorkerDict pid=978030)   "rope_scaling": null,
+(WorkerDict pid=978030)   "rope_theta": 1000000.0,
+(WorkerDict pid=978030)   "sliding_window": 32768,
+(WorkerDict pid=978030)   "tie_word_embeddings": true,
+(WorkerDict pid=978030)   "torch_dtype": "bfloat16",
+(WorkerDict pid=978030)   "transformers_version": "4.51.1",
+(WorkerDict pid=978030)   "use_cache": true,
+(WorkerDict pid=978030)   "use_sliding_window": false,
+(WorkerDict pid=978030)   "vocab_size": 151936
+(WorkerDict pid=978030) }
+(WorkerDict pid=978030)
+(WorkerDict pid=978030) Flash Attention 2.0 only supports torch.float16 and torch.bfloat16 dtypes, but the current dype in Qwen2ForCausalLM is torch.float32. You should run training or inference using Automatic Mixed-Precision via the `with torch.autocast(device_type='torch_device'):` decorator, or load the model with the `torch_dtype` argument. Example: `model = AutoModel.from_pretrained("openai/whisper-tiny", attn_implementation="flash_attention_2", torch_dtype=torch.float16)`
+(WorkerDict pid=978030) Monkey patch _flash_attention_forward in transformers.integrations.flash_attention
+(WorkerDict pid=978030) Qwen2ForCausalLM contains 1.54B parameters
+(WorkerDict pid=978030) wrap_policy: functools.partial(<function _or_policy at 0x1525204802c0>, policies=[functools.partial(<function transformer_auto_wrap_policy at 0x152520480180>, transformer_layer_cls={<class 'transformers.models.qwen2.modeling_qwen2.Qwen2DecoderLayer'>})])
+(WorkerDict pid=978030) /home/vansh23580/rl-project/envs/gigpo/lib/python3.12/site-packages/torch/distributed/fsdp/_init_utils.py:444: UserWarning: FSDP is switching to use `NO_SHARD` instead of ShardingStrategy.FULL_SHARD since the world size is 1.
+(WorkerDict pid=978030)   warnings.warn(
+(WorkerDict pid=978030) Total steps: 1, num_warmup_steps: 0
+(WorkerDict pid=978030) Actor use_remove_padding=True
+(WorkerDict pid=978030) Before building vllm rollout, memory allocated (GB): 8.64726972579956, memory reserved (GB): 10.0078125
+(WorkerDict pid=978030)
+Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+(WorkerDict pid=978030)
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:00<00:00,  1.86it/s]
+(WorkerDict pid=978030)
+Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:00<00:00,  1.86it/s]
+(WorkerDict pid=978030)
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:   0%|          | 0/35 [00:00<?, ?it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:   3%|▎         | 1/35 [00:00<00:16,  2.01it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:   6%|▌         | 2/35 [00:00<00:15,  2.11it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:   9%|▊         | 3/35 [00:01<00:15,  2.12it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  11%|█▏        | 4/35 [00:01<00:14,  2.13it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  14%|█▍        | 5/35 [00:02<00:13,  2.15it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  17%|█▋        | 6/35 [00:02<00:13,  2.16it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  20%|██        | 7/35 [00:03<00:12,  2.16it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  23%|██▎       | 8/35 [00:03<00:12,  2.16it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  26%|██▌       | 9/35 [00:04<00:12,  2.16it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  29%|██▊       | 10/35 [00:04<00:12,  2.07it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  31%|███▏      | 11/35 [00:05<00:11,  2.09it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  34%|███▍      | 12/35 [00:05<00:10,  2.10it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  37%|███▋      | 13/35 [00:06<00:10,  2.12it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  40%|████      | 14/35 [00:06<00:09,  2.12it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  43%|████▎     | 15/35 [00:07<00:09,  2.13it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  46%|████▌     | 16/35 [00:07<00:08,  2.15it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  49%|████▊     | 17/35 [00:07<00:08,  2.16it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  51%|█████▏    | 18/35 [00:08<00:07,  2.16it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  54%|█████▍    | 19/35 [00:08<00:07,  2.16it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  57%|█████▋    | 20/35 [00:09<00:06,  2.16it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  60%|██████    | 21/35 [00:09<00:06,  2.16it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  63%|██████▎   | 22/35 [00:10<00:06,  2.17it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  66%|██████▌   | 23/35 [00:10<00:05,  2.16it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  69%|██████▊   | 24/35 [00:11<00:05,  2.16it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  71%|███████▏  | 25/35 [00:11<00:04,  2.11it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  74%|███████▍  | 26/35 [00:12<00:04,  2.10it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  77%|███████▋  | 27/35 [00:12<00:03,  2.12it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  80%|████████  | 28/35 [00:13<00:03,  2.09it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  83%|████████▎ | 29/35 [00:13<00:02,  2.11it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  86%|████████▌ | 30/35 [00:14<00:02,  2.12it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  89%|████████▊ | 31/35 [00:14<00:01,  2.13it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  91%|█████████▏| 32/35 [00:15<00:01,  2.14it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  94%|█████████▍| 33/35 [00:15<00:00,  2.14it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes:  97%|█████████▋| 34/35 [00:15<00:00,  2.14it/s]
+(WorkerDict pid=978030)
+Capturing CUDA graph shapes: 100%|██████████| 35/35 [00:16<00:00,  2.09it/s]
+Capturing CUDA graph shapes: 100%|██████████| 35/35 [00:16<00:00,  2.13it/s]
+(TaskRunner pid=974377)
+Training Progress:   0%|          | 0/1 [00:00<?, ?it/s]
+(TaskRunner pid=974377) Using LocalLogger is deprecated. The constructor API will change
+(TaskRunner pid=974377) Checkpoint tracker file does not exist: %s /home/vansh23580/rl-project/gigpo/runs/omni-10333/checkpoints/latest_checkpointed_iteration.txt
+(TaskRunner pid=974377) Training from scratch
+(WorkerDict pid=978030) kwargs: {'n': 1, 'logprobs': 0, 'max_tokens': 512, 'detokenize': False, 'temperature': 1.0, 'top_k': -1, 'top_p': 1, 'ignore_eos': False}
+(WorkerDict pid=978030) After building vllm rollout, memory allocated (GB): 38.6131157875061, memory reserved (GB): 39.13671875
+(WorkerDict pid=978030) After building sharding manager, memory allocated (GB): 38.6131157875061, memory reserved (GB): 39.13671875
+(WorkerDict pid=978030) /home/vansh23580/rl-project/envs/gigpo/lib/python3.12/site-packages/torch/distributed/fsdp/fully_sharded_data_parallel.py:690: FutureWarning: FSDP.state_dict_type() and FSDP.set_state_dict_type() are being deprecated. Please use APIs, get_state_dict() and set_state_dict(), which can support different parallelisms, FSDP1, FSDP2, DDP. API doc: https://pytorch.org/docs/stable/distributed.checkpoint.html#torch.distributed.checkpoint.state_dict.get_state_dict .Tutorial: https://pytorch.org/tutorials/recipes/distributed_checkpoint_recipe.html .
+(WorkerDict pid=978030)   warnings.warn(
+(WorkerDict pid=978030) /home/vansh23580/rl-project/envs/gigpo/lib/python3.12/site-packages/torch/distributed/fsdp/_state_dict_utils.py:773: UserWarning: When using ``NO_SHARD`` for ``ShardingStrategy``, full_state_dict willbe returned.
+(WorkerDict pid=978030)   warnings.warn(
+(WorkerDict pid=978030) /home/vansh23580/rl-project/envs/gigpo/lib/python3.12/site-packages/torch/distributed/fsdp/_state_dict_utils.py:711: UserWarning: When using ``NO_SHARD`` for ``ShardingStrategy``, full_state_dict willbe returned.
+(WorkerDict pid=978030)   warnings.warn(
+(TaskRunner pid=974377) Avg size of step-level group: 9.309090909090909
+(TaskRunner pid=974377) test_gen_batch meta info: {'eos_token_id': 151645, 'pad_token_id': 151643, 'recompute_log_prob': False, 'do_sample': True, 'validate': True}
+(TaskRunner pid=974377) validation generation end
+(TaskRunner pid=974377) [prompt] <|im_start|>system
+(TaskRunner pid=974377) You are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>
+(TaskRunner pid=974377) <|im_start|>user
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) You are an expert agent operating in the ALFRED Embodied Environment. Your task is to: put a book in sofa.
+(TaskRunner pid=974377) Prior to this step, you have already taken 12 step(s). Below are the most recent 2 observaitons and the corresponding actions you took: [Observation 11: 'On the sofa 1, you see a keychain 3, a keychain 2, and a pillow 1.', Action 11: 'examine sofa 1']
+(TaskRunner pid=974377) [Observation 12: 'On the sofa 1, you see a keychain 3, a keychain 2, and a pillow 1.', Action 12: 'put book on sofa 1']
+(TaskRunner pid=974377) You are now at step 13 and your current observation is: Nothing happens.
+(TaskRunner pid=974377) Your admissible actions of the current situation are: ['examine sofa 1'
+(TaskRunner pid=974377)  'go to armchair 1'
+(TaskRunner pid=974377)  'go to coffeetable 1'
+(TaskRunner pid=974377)  'go to drawer 1'
+(TaskRunner pid=974377)  'go to drawer 2'
+(TaskRunner pid=974377)  'go to drawer 3'
+(TaskRunner pid=974377)  'go to drawer 4'
+(TaskRunner pid=974377)  'go to dresser 1'
+(TaskRunner pid=974377)  'go to garbagecan 1'
+(TaskRunner pid=974377)  'go to sidetable 1'
+(TaskRunner pid=974377)  'go to sidetable 2'
+(TaskRunner pid=974377)  'go to sidetable 3'
+(TaskRunner pid=974377)  'inventory'
+(TaskRunner pid=974377)  'look'
+(TaskRunner pid=974377)  'take keychain 2 from sofa 1'
+(TaskRunner pid=974377)  'take keychain 3 from sofa 1'
+(TaskRunner pid=974377)  'take pillow 1 from sofa 1'].
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) Now it's your turn to take an action.
+(TaskRunner pid=974377) You should first reason step-by-step about the current situation. This reasoning process MUST be enclosed within <think> </think> tags.
+(TaskRunner pid=974377) Once you've finished your reasoning, you should choose an admissible action for current step and present it within <action> </action> tags.
+(TaskRunner pid=974377) <|im_end|>
+(TaskRunner pid=974377) <|im_start|>assistant
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) [response] <think>
+(TaskRunner pid=974377) The current situation is that I am at step 13, and I have already taken 12 steps. I have already put a book on the sofa. The last observation was that nothing happened. This suggests that the book is not on the sofa, but I cannot be certain without checking the sofa again.
+(TaskRunner pid=974377) </think>
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) <action>examine sofa 1</action><|im_end|>
+(TaskRunner pid=974377) [score] 0.0
+(TaskRunner pid=974377) test_gen_batch meta info: {'eos_token_id': 151645, 'pad_token_id': 151643, 'recompute_log_prob': False, 'do_sample': True, 'validate': True}
+(TaskRunner pid=974377) validation generation end
+(TaskRunner pid=974377) [prompt] <|im_start|>system
+(TaskRunner pid=974377) You are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>
+(TaskRunner pid=974377) <|im_start|>user
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) You are an expert agent operating in the ALFRED Embodied Environment.
+(TaskRunner pid=974377) Your current observation is: -= Welcome to TextWorld, ALFRED! =-
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) You are in the middle of a room. Looking quickly around you, you see a cabinet 9, a cabinet 8, a cabinet 7, a cabinet 6, a cabinet 5, a cabinet 4, a cabinet 3, a cabinet 2, a cabinet 1, a coffeemachine 1, a countertop 3, a countertop 2, a countertop 1, a drawer 9, a drawer 8, a drawer 7, a drawer 6, a drawer 5, a drawer 4, a drawer 3, a drawer 2, a drawer 1, a fridge 1, a garbagecan 1, a microwave 1, a shelf 3, a shelf 2, a shelf 1, a sinkbasin 1, a stoveburner 4, a stoveburner 3, a stoveburner 2, a stoveburner 1, and a toaster 1.
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) Your task is to: put a hot mug in coffeemachine.
+(TaskRunner pid=974377) Your admissible actions of the current situation are: ['go to cabinet 1'
+(TaskRunner pid=974377)  'go to cabinet 2'
+(TaskRunner pid=974377)  'go to cabinet 3'
+(TaskRunner pid=974377)  'go to cabinet 4'
+(TaskRunner pid=974377)  'go to cabinet 5'
+(TaskRunner pid=974377)  'go to cabinet 6'
+(TaskRunner pid=974377)  'go to cabinet 7'
+(TaskRunner pid=974377)  'go to cabinet 8'
+(TaskRunner pid=974377)  'go to cabinet 9'
+(TaskRunner pid=974377)  'go to coffeemachine 1'
+(TaskRunner pid=974377)  'go to countertop 1'
+(TaskRunner pid=974377)  'go to countertop 2'
+(TaskRunner pid=974377)  'go to countertop 3'
+(TaskRunner pid=974377)  'go to drawer 1'
+(TaskRunner pid=974377)  'go to drawer 2'
+(TaskRunner pid=974377)  'go to drawer 3'
+(TaskRunner pid=974377)  'go to drawer 4'
+(TaskRunner pid=974377)  'go to drawer 5'
+(TaskRunner pid=974377)  'go to drawer 6'
+(TaskRunner pid=974377)  'go to drawer 7'
+(TaskRunner pid=974377)  'go to drawer 8'
+(TaskRunner pid=974377)  'go to drawer 9'
+(TaskRunner pid=974377)  'go to fridge 1'
+(TaskRunner pid=974377)  'go to garbagecan 1'
+(TaskRunner pid=974377)  'go to microwave 1'
+(TaskRunner pid=974377)  'go to shelf 1'
+(TaskRunner pid=974377)  'go to shelf 2'
+(TaskRunner pid=974377)  'go to shelf 3'
+(TaskRunner pid=974377)  'go to sinkbasin 1'
+(TaskRunner pid=974377)  'go to stoveburner 1'
+(TaskRunner pid=974377)  'go to stoveburner 2'
+(TaskRunner pid=974377)  'go to stoveburner 3'
+(TaskRunner pid=974377)  'go to stoveburner 4'
+(TaskRunner pid=974377)  'go to toaster 1'
+(TaskRunner pid=974377)  'inventory'
+(TaskRunner pid=974377)  'look'].
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) Now it's your turn to take an action.
+(TaskRunner pid=974377) You should first reason step-by-step about the current situation. This reasoning process MUST be enclosed within <think> </think> tags.
+(TaskRunner pid=974377) Once you've finished your reasoning, you should choose an admissible action for current step and present it within <action> </action> tags.
+(TaskRunner pid=974377) <|im_end|>
+(TaskRunner pid=974377) <|im_start|>assistant
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) [response] <think>
+(TaskRunner pid=974377)   The task is to put a hot mug in the coffeemachine.
+(TaskRunner pid=974377)   First, I need to find a mug.
+(TaskRunner pid=974377)   The mug could be in a cabinet, countertop, drawer, or shelf.
+(TaskRunner pid=974377)   I will check the cabinets, countertops, drawers, and shelves one by one.
+(TaskRunner pid=974377) </think>
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) <action>go to cabinet 1</action><|im_end|>
+(TaskRunner pid=974377) [score] 0.0
+(TaskRunner pid=974377) test_gen_batch meta info: {'eos_token_id': 151645, 'pad_token_id': 151643, 'recompute_log_prob': False, 'do_sample': True, 'validate': True}
+(TaskRunner pid=974377) validation generation end
+(TaskRunner pid=974377) [prompt] <|im_start|>system
+(TaskRunner pid=974377) You are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>
+(TaskRunner pid=974377) <|im_start|>user
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) You are an expert agent operating in the ALFRED Embodied Environment. Your task is to: clean some mug and put it in coffeemachine.
+(TaskRunner pid=974377) Prior to this step, you have already taken 2 step(s). Below are the most recent 2 observaitons and the corresponding actions you took: [Observation 1: '-= Welcome to TextWorld, ALFRED! =-
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) You are in the middle of a room. Looking quickly around you, you see a cabinet 10, a cabinet 9, a cabinet 8, a cabinet 7, a cabinet 6, a cabinet 5, a cabinet 4, a cabinet 3, a cabinet 2, a cabinet 1, a coffeemachine 1, a countertop 2, a countertop 1, a diningtable 2, a diningtable 1, a drawer 3, a drawer 2, a drawer 1, a fridge 1, a garbagecan 1, a microwave 1, a sinkbasin 1, a stoveburner 4, a stoveburner 3, a stoveburner 2, a stoveburner 1, and a toaster 1.
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) Your task is to: clean some mug and put it in coffeemachine.', Action 1: 'go to countertop 1']
+(TaskRunner pid=974377) [Observation 2: 'You arrive at countertop 1. On the countertop 1, you see a mug 2, a potato 1, a soapbottle 1, a spoon 1, and a tomato 1.', Action 2: 'take mug 2 from countertop 1']
+(TaskRunner pid=974377) You are now at step 3 and your current observation is: You pick up the mug 2 from the countertop 1.
+(TaskRunner pid=974377) Your admissible actions of the current situation are: ['examine countertop 1'
+(TaskRunner pid=974377)  'examine mug 2'
+(TaskRunner pid=974377)  'go to cabinet 1'
+(TaskRunner pid=974377)  'go to cabinet 10'
+(TaskRunner pid=974377)  'go to cabinet 2'
+(TaskRunner pid=974377)  'go to cabinet 3'
+(TaskRunner pid=974377)  'go to cabinet 4'
+(TaskRunner pid=974377)  'go to cabinet 5'
+(TaskRunner pid=974377)  'go to cabinet 6'
+(TaskRunner pid=974377)  'go to cabinet 7'
+(TaskRunner pid=974377)  'go to cabinet 8'
+(TaskRunner pid=974377)  'go to cabinet 9'
+(TaskRunner pid=974377)  'go to coffeemachine 1'
+(TaskRunner pid=974377)  'go to countertop 2'
+(TaskRunner pid=974377)  'go to diningtable 1'
+(TaskRunner pid=974377)  'go to diningtable 2'
+(TaskRunner pid=974377)  'go to drawer 1'
+(TaskRunner pid=974377)  'go to drawer 2'
+(TaskRunner pid=974377)  'go to drawer 3'
+(TaskRunner pid=974377)  'go to fridge 1'
+(TaskRunner pid=974377)  'go to garbagecan 1'
+(TaskRunner pid=974377)  'go to microwave 1'
+(TaskRunner pid=974377)  'go to sinkbasin 1'
+(TaskRunner pid=974377)  'go to stoveburner 1'
+(TaskRunner pid=974377)  'go to stoveburner 2'
+(TaskRunner pid=974377)  'go to stoveburner 3'
+(TaskRunner pid=974377)  'go to stoveburner 4'
+(TaskRunner pid=974377)  'go to toaster 1'
+(TaskRunner pid=974377)  'inventory'
+(TaskRunner pid=974377)  'look'
+(TaskRunner pid=974377)  'move mug 2 to countertop 1'].
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) Now it's your turn to take an action.
+(TaskRunner pid=974377) You should first reason step-by-step about the current situation. This reasoning process MUST be enclosed within <think> </think> tags.
+(TaskRunner pid=974377) Once you've finished your reasoning, you should choose an admissible action for current step and present it within <action> </action> tags.
+(TaskRunner pid=974377) <|im_end|>
+(TaskRunner pid=974377) <|im_start|>assistant
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) [response] <think>
+(TaskRunner pid=974377)   The current situation is that I have picked up the mug 2 from the countertop 1.
+(TaskRunner pid=974377)   My task is to clean the mug and put it in the coffeemachine.
+(TaskRunner pid=974377) </think>
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) <action>examine mug 2</action><|im_end|>
+(TaskRunner pid=974377) [score] 0.0
+(TaskRunner pid=974377) test_gen_batch meta info: {'eos_token_id': 151645, 'pad_token_id': 151643, 'recompute_log_prob': False, 'do_sample': True, 'validate': True}
+(TaskRunner pid=974377) validation generation end
+(TaskRunner pid=974377) [prompt] <|im_start|>system
+(TaskRunner pid=974377) You are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>
+(TaskRunner pid=974377) <|im_start|>user
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) You are an expert agent operating in the ALFRED Embodied Environment. Your task is to: put a spraybottle in cabinet.
+(TaskRunner pid=974377) Prior to this step, you have already taken 11 step(s). Below are the most recent 2 observaitons and the corresponding actions you took: [Observation 10: 'Nothing happens.', Action 10: 'go to cabinet 1']
+(TaskRunner pid=974377) [Observation 11: 'Nothing happens.', Action 11: 'close cabinet 1']
+(TaskRunner pid=974377) You are now at step 12 and your current observation is: You close the cabinet 1.
+(TaskRunner pid=974377) Your admissible actions of the current situation are: ['examine cabinet 1'
+(TaskRunner pid=974377)  'examine cloth 1'
+(TaskRunner pid=974377)  'go to bathtubbasin 1'
+(TaskRunner pid=974377)  'go to cabinet 2'
+(TaskRunner pid=974377)  'go to cabinet 3'
+(TaskRunner pid=974377)  'go to cabinet 4'
+(TaskRunner pid=974377)  'go to countertop 1'
+(TaskRunner pid=974377)  'go to drawer 1'
+(TaskRunner pid=974377)  'go to drawer 2'
+(TaskRunner pid=974377)  'go to drawer 3'
+(TaskRunner pid=974377)  'go to drawer 4'
+(TaskRunner pid=974377)  'go to dresser 1'
+(TaskRunner pid=974377)  'go to garbagecan 1'
+(TaskRunner pid=974377)  'go to handtowelholder 1'
+(TaskRunner pid=974377)  'go to sinkbasin 1'
+(TaskRunner pid=974377)  'go to sinkbasin 2'
+(TaskRunner pid=974377)  'go to toilet 1'
+(TaskRunner pid=974377)  'go to toiletpaperhanger 1'
+(TaskRunner pid=974377)  'go to towelholder 1'
+(TaskRunner pid=974377)  'inventory'
+(TaskRunner pid=974377)  'look'
+(TaskRunner pid=974377)  'open cabinet 1'].
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) Now it's your turn to take an action.
+(TaskRunner pid=974377) You should first reason step-by-step about the current situation. This reasoning process MUST be enclosed within <think> </think> tags.
+(TaskRunner pid=974377) Once you've finished your reasoning, you should choose an admissible action for current step and present it within <action> </action> tags.
+(TaskRunner pid=974377) <|im_end|>
+(TaskRunner pid=974377) <|im_start|>assistant
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) [response] <think>
+(TaskRunner pid=974377) 在上一步中，我们已经关闭了柜子1。现在需要将喷雾瓶放入柜子中。我们需要确认喷雾瓶的位置和柜子的开口方向是否正确。如果喷雾瓶在柜子中，我们可以直接将其放入柜子中；如果喷雾瓶不在柜子中，我们需要找到喷雾瓶并将其放入柜子中。此外，我们需要确保柜子的开口方向是面向我们的，以便我们能够顺利将喷雾瓶放入柜子中。
+(TaskRunner pid=974377) </think>
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) <action>go to cabinet 1</action><|im_end|>
+(TaskRunner pid=974377) [score] 0.0
+(TaskRunner pid=974377) test_gen_batch meta info: {'eos_token_id': 151645, 'pad_token_id': 151643, 'recompute_log_prob': False, 'do_sample': True, 'validate': True}
+(TaskRunner pid=974377) validation generation end
+(TaskRunner pid=974377) [prompt] <|im_start|>system
+(TaskRunner pid=974377) You are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>
+(TaskRunner pid=974377) <|im_start|>user
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) You are an expert agent operating in the ALFRED Embodied Environment. Your task is to: put some mug on dresser.
+(TaskRunner pid=974377) Prior to this step, you have already taken 24 step(s). Below are the most recent 2 observaitons and the corresponding actions you took: [Observation 23: 'Nothing happens.', Action 23: 'take mug from table 1']
+(TaskRunner pid=974377) [Observation 24: 'Nothing happens.', Action 24: 'examine dresser 1']
+(TaskRunner pid=974377) You are now at step 25 and your current observation is: On the dresser 1, you see a cd 1, a remotecontrol 1, and a television 1.
+(TaskRunner pid=974377) Your admissible actions of the current situation are: ['examine dresser 1'
+(TaskRunner pid=974377)  'go to armchair 1'
+(TaskRunner pid=974377)  'go to armchair 2'
+(TaskRunner pid=974377)  'go to bed 1'
+(TaskRunner pid=974377)  'go to countertop 1'
+(TaskRunner pid=974377)  'go to diningtable 1'
+(TaskRunner pid=974377)  'go to drawer 1'
+(TaskRunner pid=974377)  'go to drawer 2'
+(TaskRunner pid=974377)  'go to garbagecan 1'
+(TaskRunner pid=974377)  'go to laundryhamper 1'
+(TaskRunner pid=974377)  'go to sidetable 1'
+(TaskRunner pid=974377)  'inventory'
+(TaskRunner pid=974377)  'look'
+(TaskRunner pid=974377)  'take cd 1 from dresser 1'
+(TaskRunner pid=974377)  'take remotecontrol 1 from dresser 1'].
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) Now it's your turn to take an action.
+(TaskRunner pid=974377) You should first reason step-by-step about the current situation. This reasoning process MUST be enclosed within <think> </think> tags.
+(TaskRunner pid=974377) Once you've finished your reasoning, you should choose an admissible action for current step and present it within <action> </action> tags.
+(TaskRunner pid=974377) <|im_end|>
+(TaskRunner pid=974377) <|im_start|>assistant
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) [response] <think>
+(TaskRunner pid=974377)  dresser 1 contains a cd 1, a remotecontrol 1, and a television 1.
+(TaskRunner pid=974377)  Mug is not on dresser 1.
+(TaskRunner pid=974377)  Mug should be placed on dresser 1.
+(TaskRunner pid=974377) </think>
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) <Action> take mug from table 1 </Action><|im_end|>
+(TaskRunner pid=974377) [score] 0.0
+(TaskRunner pid=974377) test_gen_batch meta info: {'eos_token_id': 151645, 'pad_token_id': 151643, 'recompute_log_prob': False, 'do_sample': True, 'validate': True}
+(TaskRunner pid=974377) validation generation end
+(TaskRunner pid=974377) [prompt] <|im_start|>system
+(TaskRunner pid=974377) You are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>
+(TaskRunner pid=974377) <|im_start|>user
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) You are an expert agent operating in the ALFRED Embodied Environment. Your task is to: put two spraybottle in cabinet.
+(TaskRunner pid=974377) Prior to this step, you have already taken 6 step(s). Below are the most recent 2 observaitons and the corresponding actions you took: [Observation 5: 'The cabinet 1 is open. In it, you see a soapbottle 3, and a soapbottle 2.', Action 5: 'take spraybottle 1 from cabinet 1']
+(TaskRunner pid=974377) [Observation 6: 'Nothing happens.', Action 6: 'close cabinet 1']
+(TaskRunner pid=974377) You are now at step 7 and your current observation is: You close the cabinet 1.
+(TaskRunner pid=974377) Your admissible actions of the current situation are: ['examine cabinet 1'
+(TaskRunner pid=974377)  'go to bathtubbasin 1'
+(TaskRunner pid=974377)  'go to cabinet 2'
+(TaskRunner pid=974377)  'go to cabinet 3'
+(TaskRunner pid=974377)  'go to cabinet 4'
+(TaskRunner pid=974377)  'go to countertop 1'
+(TaskRunner pid=974377)  'go to garbagecan 1'
+(TaskRunner pid=974377)  'go to handtowelholder 1'
+(TaskRunner pid=974377)  'go to sinkbasin 1'
+(TaskRunner pid=974377)  'go to sinkbasin 2'
+(TaskRunner pid=974377)  'go to toilet 1'
+(TaskRunner pid=974377)  'go to toiletpaperhanger 1'
+(TaskRunner pid=974377)  'go to towelholder 1'
+(TaskRunner pid=974377)  'inventory'
+(TaskRunner pid=974377)  'look'
+(TaskRunner pid=974377)  'open cabinet 1'].
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) Now it's your turn to take an action.
+(TaskRunner pid=974377) You should first reason step-by-step about the current situation. This reasoning process MUST be enclosed within <think> </think> tags.
+(TaskRunner pid=974377) Once you've finished your reasoning, you should choose an admissible action for current step and present it within <action> </action> tags.
+(TaskRunner pid=974377) <|im_end|>
+(TaskRunner pid=974377) <|im_start|>assistant
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) [response] <think>
+(TaskRunner pid=974377) The current situation is that the cabinet 1 is open, and there are two soap bottles inside. The user has already taken the first spray bottle from the cabinet. The user needs to put two spray bottles in the cabinet.
+(TaskRunner pid=974377) </think>
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) <action>open cabinet 1</action><|im_end|>
+(TaskRunner pid=974377) [score] 0.0
+(TaskRunner pid=974377) test_gen_batch meta info: {'eos_token_id': 151645, 'pad_token_id': 151643, 'recompute_log_prob': False, 'do_sample': True, 'validate': True}
+(TaskRunner pid=974377) validation generation end
+(TaskRunner pid=974377) [prompt] <|im_start|>system
+(TaskRunner pid=974377) You are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>
+(TaskRunner pid=974377) <|im_start|>user
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) You are an expert agent operating in the ALFRED Embodied Environment. Your task is to: put a cool pot in diningtable.
+(TaskRunner pid=974377) Prior to this step, you have already taken 22 step(s). Below are the most recent 2 observaitons and the corresponding actions you took: [Observation 21: 'Nothing happens.', Action 21: 'go to diningtable 2']
+(TaskRunner pid=974377) [Observation 22: 'Nothing happens.', Action 22: 'go to diningtable 2']
+(TaskRunner pid=974377) You are now at step 23 and your current observation is: Nothing happens.
+(TaskRunner pid=974377) Your admissible actions of the current situation are: ['examine diningtable 2'
+(TaskRunner pid=974377)  'go to cabinet 1'
+(TaskRunner pid=974377)  'go to cabinet 2'
+(TaskRunner pid=974377)  'go to cabinet 3'
+(TaskRunner pid=974377)  'go to cabinet 4'
+(TaskRunner pid=974377)  'go to coffeemachine 1'
+(TaskRunner pid=974377)  'go to countertop 1'
+(TaskRunner pid=974377)  'go to diningtable 1'
+(TaskRunner pid=974377)  'go to diningtable 3'
+(TaskRunner pid=974377)  'go to drawer 1'
+(TaskRunner pid=974377)  'go to fridge 1'
+(TaskRunner pid=974377)  'go to garbagecan 1'
+(TaskRunner pid=974377)  'go to microwave 1'
+(TaskRunner pid=974377)  'go to sidetable 1'
+(TaskRunner pid=974377)  'go to sinkbasin 1'
+(TaskRunner pid=974377)  'go to stoveburner 1'
+(TaskRunner pid=974377)  'go to stoveburner 2'
+(TaskRunner pid=974377)  'go to stoveburner 3'
+(TaskRunner pid=974377)  'go to stoveburner 4'
+(TaskRunner pid=974377)  'go to toaster 1'
+(TaskRunner pid=974377)  'inventory'
+(TaskRunner pid=974377)  'look'
+(TaskRunner pid=974377)  'take plate 1 from diningtable 2'].
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) Now it's your turn to take an action.
+(TaskRunner pid=974377) You should first reason step-by-step about the current situation. This reasoning process MUST be enclosed within <think> </think> tags.
+(TaskRunner pid=974377) Once you've finished your reasoning, you should choose an admissible action for current step and present it within <action> </action> tags.
+(TaskRunner pid=974377) <|im_end|>
+(TaskRunner pid=974377) <|im_start|>assistant
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) [response] <think>
+(TaskRunner pid=974377) The agent has already taken 22 steps and reached step 23. The current observation is "Nothing happens." The agent has already gone to the diningtable 2 and examined it, but nothing has happened. The agent has also tried to go to various locations like cabinets, coffeemachine, countertop, and diningtables, but nothing has happened. The agent has also tried to look around and examine the diningtable. The agent has also tried to take a plate from the diningtable, but nothing has happened. The agent has also tried to go to various other locations like garbagecan, microwave, sinkbasin, stoveburner, and toaster, but nothing has happened. The agent has also tried to inventory and look around. The agent has also tried to go to various other locations like cabinets, coffeemachine, countertop, and diningtables, but nothing has happened. The agent has also tried to look around and examine the diningtable. The agent has also tried to take a plate from the diningtable, but nothing has happened. The agent has also tried to go to various other locations like garbagecan, microwave, sinkbasin, stoveburner, and toaster, but nothing has happened. The agent has also tried to inventory and look around. The agent has also tried to go to various other locations like cabinets, coffeemachine, countertop, and diningtables, but nothing has happened. The agent has also tried to look around and examine the diningtable. The agent has also tried to take a plate from the diningtable, but nothing has happened. The agent has also tried to go to various other locations like garbagecan, microwave, sinkbasin, stoveburner, and toaster, but nothing has happened. The agent has also tried to inventory and look around. The agent has also tried to go to various other locations like cabinets, coffeemachine, countertop, and diningtables, but nothing has happened. The agent has also tried to look around and examine the diningtable. The agent has also tried to take a plate from the diningtable, but nothing has happened. The agent has also tried to go to various other locations like garbagecan, microwave, sinkbasin, stoveburner, and toaster, but nothing has happened. The agent has also tried to inventory and look around. The agent has also tried to go to various other locations like cabinets, coffeemachine, countertop, and diningtables, but nothing has happened. The agent has also tried to look around
+(TaskRunner pid=974377) [score] 0.0
+(TaskRunner pid=974377) test_gen_batch meta info: {'eos_token_id': 151645, 'pad_token_id': 151643, 'recompute_log_prob': False, 'do_sample': True, 'validate': True}
+(TaskRunner pid=974377) validation generation end
+(TaskRunner pid=974377) [prompt] <|im_start|>system
+(TaskRunner pid=974377) You are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>
+(TaskRunner pid=974377) <|im_start|>user
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) You are an expert agent operating in the ALFRED Embodied Environment. Your task is to: put some tissuebox on toilet.
+(TaskRunner pid=974377) Prior to this step, you have already taken 5 step(s). Below are the most recent 2 observaitons and the corresponding actions you took: [Observation 4: 'You open the drawer 1. The drawer 1 is open. In it, you see a candle 1, and a soapbar 1.', Action 4: 'go to toilet 1']
+(TaskRunner pid=974377) [Observation 5: 'You arrive at toilet 1. On the toilet 1, you see a spraybottle 1, and a toiletpaper 1.', Action 5: 'go to drawer 1']
+(TaskRunner pid=974377) You are now at step 6 and your current observation is: You arrive at drawer 1. The drawer 1 is open. In it, you see a candle 1, and a soapbar 1.
+(TaskRunner pid=974377) Your admissible actions of the current situation are: ['close drawer 1'
+(TaskRunner pid=974377)  'examine drawer 1'
+(TaskRunner pid=974377)  'go to bathtubbasin 1'
+(TaskRunner pid=974377)  'go to countertop 1'
+(TaskRunner pid=974377)  'go to drawer 2'
+(TaskRunner pid=974377)  'go to drawer 3'
+(TaskRunner pid=974377)  'go to drawer 4'
+(TaskRunner pid=974377)  'go to drawer 5'
+(TaskRunner pid=974377)  'go to drawer 6'
+(TaskRunner pid=974377)  'go to drawer 7'
+(TaskRunner pid=974377)  'go to drawer 8'
+(TaskRunner pid=974377)  'go to garbagecan 1'
+(TaskRunner pid=974377)  'go to handtowelholder 1'
+(TaskRunner pid=974377)  'go to sinkbasin 1'
+(TaskRunner pid=974377)  'go to toilet 1'
+(TaskRunner pid=974377)  'go to toiletpaperhanger 1'
+(TaskRunner pid=974377)  'go to towelholder 1'
+(TaskRunner pid=974377)  'go to towelholder 2'
+(TaskRunner pid=974377)  'inventory'
+(TaskRunner pid=974377)  'look'
+(TaskRunner pid=974377)  'take candle 1 from drawer 1'
+(TaskRunner pid=974377)  'take soapbar 1 from drawer 1'].
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) Now it's your turn to take an action.
+(TaskRunner pid=974377) You should first reason step-by-step about the current situation. This reasoning process MUST be enclosed within <think> </think> tags.
+(TaskRunner pid=974377) Once you've finished your reasoning, you should choose an admissible action for current step and present it within <action> </action> tags.
+(TaskRunner pid=974377) <|im_end|>
+(TaskRunner pid=974377) <|im_start|>assistant
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) [response] <think>
+(TaskRunner pid=974377) The current situation is that you have arrived at the drawer 1, which is open, and you see a candle 1 and a soapbar 1 inside. You have already visited toilet 1 and have not taken any actions there yet. The goal is to put a tissuebox on toilet 1. Since you have not taken any actions related to toilet 1 yet, the most logical next step would be to go to toilet 1 and then take the necessary actions to put a tissuebox there.
+(TaskRunner pid=974377) </think>
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) <Action>go to toilet 1</Action><|im_end|>
+(TaskRunner pid=974377) [score] 0.0
+(TaskRunner pid=974377) test_gen_batch meta info: {'eos_token_id': 151645, 'pad_token_id': 151643, 'recompute_log_prob': False, 'do_sample': True, 'validate': True}
+(TaskRunner pid=974377) validation generation end
+(TaskRunner pid=974377) [prompt] <|im_start|>system
+(TaskRunner pid=974377) You are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>
+(TaskRunner pid=974377) <|im_start|>user
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) You are an expert agent operating in the ALFRED Embodied Environment. Your task is to: look at cd under the desklamp.
+(TaskRunner pid=974377) Prior to this step, you have already taken 16 step(s). Below are the most recent 2 observaitons and the corresponding actions you took: [Observation 15: 'Nothing happens.', Action 15: 'look at cd under desklamp 1']
+(TaskRunner pid=974377) [Observation 16: 'Nothing happens.', Action 16: 'look at cd under desklamp 1']
+(TaskRunner pid=974377) You are now at step 17 and your current observation is: Nothing happens.
+(TaskRunner pid=974377) Your admissible actions of the current situation are: ['examine bed 1'
+(TaskRunner pid=974377)  'go to desk 1'
+(TaskRunner pid=974377)  'go to desk 2'
+(TaskRunner pid=974377)  'go to garbagecan 1'
+(TaskRunner pid=974377)  'go to shelf 1'
+(TaskRunner pid=974377)  'go to shelf 2'
+(TaskRunner pid=974377)  'go to shelf 3'
+(TaskRunner pid=974377)  'go to shelf 4'
+(TaskRunner pid=974377)  'go to shelf 5'
+(TaskRunner pid=974377)  'inventory'
+(TaskRunner pid=974377)  'look'
+(TaskRunner pid=974377)  'take laptop 1 from bed 1'
+(TaskRunner pid=974377)  'take laptop 2 from bed 1'
+(TaskRunner pid=974377)  'take pillow 1 from bed 1'
+(TaskRunner pid=974377)  'take teddybear 1 from bed 1'].
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) Now it's your turn to take an action.
+(TaskRunner pid=974377) You should first reason step-by-step about the current situation. This reasoning process MUST be enclosed within <think> </think> tags.
+(TaskRunner pid=974377) Once you've finished your reasoning, you should choose an admissible action for current step and present it within <action> </action> tags.
+(TaskRunner pid=974377) <|im_end|>
+(TaskRunner pid=974377) <|im_start|>assistant
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) [response] <think>
+(TaskRunner pid=974377) The previous steps showed that nothing happened when looking at cd under the desklamp. This suggests that the desklamp may not be properly set up or the cd may not be in the correct location. It is possible that the cd is not visible or is not in the correct orientation for the desklamp to see.
+(TaskRunner pid=974377) </think>
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) <action>look at cd under desklamp 1</action><|im_end|>
+(TaskRunner pid=974377) [score] 0.0
+(TaskRunner pid=974377) test_gen_batch meta info: {'eos_token_id': 151645, 'pad_token_id': 151643, 'recompute_log_prob': False, 'do_sample': True, 'validate': True}
+(TaskRunner pid=974377) validation generation end
+(TaskRunner pid=974377) [prompt] <|im_start|>system
+(TaskRunner pid=974377) You are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>
+(TaskRunner pid=974377) <|im_start|>user
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) You are an expert agent operating in the ALFRED Embodied Environment. Your task is to: look at alarmclock under the desklamp.
+(TaskRunner pid=974377) Prior to this step, you have already taken 9 step(s). Below are the most recent 2 observaitons and the corresponding actions you took: [Observation 8: 'On the desk 1, you see a alarmclock 2, a book 1, a bowl 1, a cd 2, a desklamp 1, a mug 2, a mug 1, a pen 2, and a pen 1.', Action 8: 'look at alarmclock 2 under desklamp 1']
+(TaskRunner pid=974377) [Observation 9: 'Nothing happens.', Action 9: 'look at alarmclock 2 under desklamp 1']
+(TaskRunner pid=974377) You are now at step 10 and your current observation is: Nothing happens.
+(TaskRunner pid=974377) Your admissible actions of the current situation are: ['examine desk 1'
+(TaskRunner pid=974377)  'go to bed 1'
+(TaskRunner pid=974377)  'go to bed 2'
+(TaskRunner pid=974377)  'go to drawer 1'
+(TaskRunner pid=974377)  'go to drawer 10'
+(TaskRunner pid=974377)  'go to drawer 11'
+(TaskRunner pid=974377)  'go to drawer 2'
+(TaskRunner pid=974377)  'go to drawer 3'
+(TaskRunner pid=974377)  'go to drawer 4'
+(TaskRunner pid=974377)  'go to drawer 5'
+(TaskRunner pid=974377)  'go to drawer 6'
+(TaskRunner pid=974377)  'go to drawer 7'
+(TaskRunner pid=974377)  'go to drawer 8'
+(TaskRunner pid=974377)  'go to drawer 9'
+(TaskRunner pid=974377)  'go to dresser 1'
+(TaskRunner pid=974377)  'go to garbagecan 1'
+(TaskRunner pid=974377)  'go to safe 1'
+(TaskRunner pid=974377)  'go to sidetable 1'
+(TaskRunner pid=974377)  'go to sidetable 2'
+(TaskRunner pid=974377)  'inventory'
+(TaskRunner pid=974377)  'look'
+(TaskRunner pid=974377)  'take alarmclock 2 from desk 1'
+(TaskRunner pid=974377)  'take book 1 from desk 1'
+(TaskRunner pid=974377)  'take bowl 1 from desk 1'
+(TaskRunner pid=974377)  'take cd 2 from desk 1'
+(TaskRunner pid=974377)  'take mug 1 from desk 1'
+(TaskRunner pid=974377)  'take mug 2 from desk 1'
+(TaskRunner pid=974377)  'take pen 1 from desk 1'
+(TaskRunner pid=974377)  'take pen 2 from desk 1'
+(TaskRunner pid=974377)  'use desklamp 1'].
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) Now it's your turn to take an action.
+(TaskRunner pid=974377) You should first reason step-by-step about the current situation. This reasoning process MUST be enclosed within <think> </think> tags.
+(TaskRunner pid=974377) Once you've finished your reasoning, you should choose an admissible action for current step and present it within <action> </action> tags.
+(TaskRunner pid=974377) <|im_end|>
+(TaskRunner pid=974377) <|im_start|>assistant
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) [response] <think>
+(TaskRunner pid=974377) The current situation is that you are at step 10 and have observed that nothing happens when looking at the alarmclock under the desklamp. This suggests that the alarmclock might not be visible or accessible under the desklamp. Additionally, there is a possibility that the alarmclock is not on the desk at all.
+(TaskRunner pid=974377) </think>
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) <action>look at alarmclock 2 under desklamp 1</action><|im_end|>
+(TaskRunner pid=974377) [score] 0.0
+(TaskRunner pid=974377) test_gen_batch meta info: {'eos_token_id': 151645, 'pad_token_id': 151643, 'recompute_log_prob': False, 'do_sample': True, 'validate': True}
+(TaskRunner pid=974377) validation generation end
+(TaskRunner pid=974377) [prompt] <|im_start|>system
+(TaskRunner pid=974377) You are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>
+(TaskRunner pid=974377) <|im_start|>user
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) You are an expert agent operating in the ALFRED Embodied Environment. Your task is to: put a clean plate in countertop.
+(TaskRunner pid=974377) Prior to this step, you have already taken 6 step(s). Below are the most recent 2 observaitons and the corresponding actions you took: [Observation 5: 'You arrive at countertop 1. On the countertop 1, you see a bread 1, a egg 3, a egg 2, a pan 1, a plate 3, a pot 1, a potato 1, a soapbottle 1, and a tomato 2.', Action 5: 'examine countertop 1']
+(TaskRunner pid=974377) [Observation 6: 'On the countertop 1, you see a bread 1, a egg 3, a egg 2, a pan 1, a plate 3, a pot 1, a potato 1, a soapbottle 1, and a tomato 2.', Action 6: 'take plate 3 from countertop 1']
+(TaskRunner pid=974377) You are now at step 7 and your current observation is: You pick up the plate 3 from the countertop 1.
+(TaskRunner pid=974377) Your admissible actions of the current situation are: ['examine countertop 1'
+(TaskRunner pid=974377)  'examine plate 3'
+(TaskRunner pid=974377)  'go to cabinet 1'
+(TaskRunner pid=974377)  'go to cabinet 10'
+(TaskRunner pid=974377)  'go to cabinet 11'
+(TaskRunner pid=974377)  'go to cabinet 12'
+(TaskRunner pid=974377)  'go to cabinet 13'
+(TaskRunner pid=974377)  'go to cabinet 14'
+(TaskRunner pid=974377)  'go to cabinet 15'
+(TaskRunner pid=974377)  'go to cabinet 16'
+(TaskRunner pid=974377)  'go to cabinet 17'
+(TaskRunner pid=974377)  'go to cabinet 18'
+(TaskRunner pid=974377)  'go to cabinet 19'
+(TaskRunner pid=974377)  'go to cabinet 2'
+(TaskRunner pid=974377)  'go to cabinet 20'
+(TaskRunner pid=974377)  'go to cabinet 21'
+(TaskRunner pid=974377)  'go to cabinet 3'
+(TaskRunner pid=974377)  'go to cabinet 4'
+(TaskRunner pid=974377)  'go to cabinet 5'
+(TaskRunner pid=974377)  'go to cabinet 6'
+(TaskRunner pid=974377)  'go to cabinet 7'
+(TaskRunner pid=974377)  'go to cabinet 8'
+(TaskRunner pid=974377)  'go to cabinet 9'
+(TaskRunner pid=974377)  'go to coffeemachine 1'
+(TaskRunner pid=974377)  'go to countertop 2'
+(TaskRunner pid=974377)  'go to diningtable 1'
+(TaskRunner pid=974377)  'go to drawer 1'
+(TaskRunner pid=974377)  'go to drawer 2'
+(TaskRunner pid=974377)  'go to drawer 3'
+(TaskRunner pid=974377)  'go to drawer 4'
+(TaskRunner pid=974377)  'go to drawer 5'
+(TaskRunner pid=974377)  'go to fridge 1'
+(TaskRunner pid=974377)  'go to garbagecan 1'
+(TaskRunner pid=974377)  'go to microwave 1'
+(TaskRunner pid=974377)  'go to sinkbasin 1'
+(TaskRunner pid=974377)  'go to stoveburner 1'
+(TaskRunner pid=974377)  'go to stoveburner 2'
+(TaskRunner pid=974377)  'go to stoveburner 3'
+(TaskRunner pid=974377)  'go to stoveburner 4'
+(TaskRunner pid=974377)  'go to toaster 1'
+(TaskRunner pid=974377)  'inventory'
+(TaskRunner pid=974377)  'look'
+(TaskRunner pid=974377)  'move plate 3 to countertop 1'].
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) Now it's your turn to take an action.
+(TaskRunner pid=974377) You should first reason step-by-step about the current situation. This reasoning process MUST be enclosed within <think> </think> tags.
+(TaskRunner pid=974377) Once you've finished your reasoning, you should choose an admissible action for current step and present it within <action> </action> tags.
+(TaskRunner pid=974377) <|im_end|>
+(TaskRunner pid=974377) <|im_start|>assistant
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) [response] <think>
+(TaskRunner pid=974377) The current situation is that I am at countertop 1, and I have already picked up the plate 3 from the countertop. There are various items on the countertop, including bread, eggs, a pan, a pot, a potato, a soap bottle, and a tomato. The plate 3 is already in my possession.
+(TaskRunner pid=974377) </think>
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) <action>examine plate 3</action><|im_end|>
+(TaskRunner pid=974377) [score] 0.0
+(TaskRunner pid=974377) test_gen_batch meta info: {'eos_token_id': 151645, 'pad_token_id': 151643, 'recompute_log_prob': False, 'do_sample': True, 'validate': True}
+(TaskRunner pid=974377) validation generation end
+(TaskRunner pid=974377) [prompt] <|im_start|>system
+(TaskRunner pid=974377) You are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>
+(TaskRunner pid=974377) <|im_start|>user
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) You are an expert agent operating in the ALFRED Embodied Environment. Your task is to: put a hot plate in cabinet.
+(TaskRunner pid=974377) Prior to this step, you have already taken 6 step(s). Below are the most recent 2 observaitons and the corresponding actions you took: [Observation 5: 'Nothing happens.', Action 5: 'open cabinet 1']
+(TaskRunner pid=974377) [Observation 6: 'You open the cabinet 1. The cabinet 1 is open. In it, you see nothing.', Action 6: 'go to cabinet 1']
+(TaskRunner pid=974377) You are now at step 7 and your current observation is: Nothing happens.
+(TaskRunner pid=974377) Your admissible actions of the current situation are: ['close cabinet 1'
+(TaskRunner pid=974377)  'examine cabinet 1'
+(TaskRunner pid=974377)  'go to cabinet 2'
+(TaskRunner pid=974377)  'go to cabinet 3'
+(TaskRunner pid=974377)  'go to cabinet 4'
+(TaskRunner pid=974377)  'go to cabinet 5'
+(TaskRunner pid=974377)  'go to cabinet 6'
+(TaskRunner pid=974377)  'go to cabinet 7'
+(TaskRunner pid=974377)  'go to cabinet 8'
+(TaskRunner pid=974377)  'go to cabinet 9'
+(TaskRunner pid=974377)  'go to coffeemachine 1'
+(TaskRunner pid=974377)  'go to countertop 1'
+(TaskRunner pid=974377)  'go to countertop 2'
+(TaskRunner pid=974377)  'go to countertop 3'
+(TaskRunner pid=974377)  'go to drawer 1'
+(TaskRunner pid=974377)  'go to drawer 2'
+(TaskRunner pid=974377)  'go to drawer 3'
+(TaskRunner pid=974377)  'go to drawer 4'
+(TaskRunner pid=974377)  'go to drawer 5'
+(TaskRunner pid=974377)  'go to drawer 6'
+(TaskRunner pid=974377)  'go to drawer 7'
+(TaskRunner pid=974377)  'go to drawer 8'
+(TaskRunner pid=974377)  'go to drawer 9'
+(TaskRunner pid=974377)  'go to fridge 1'
+(TaskRunner pid=974377)  'go to garbagecan 1'
+(TaskRunner pid=974377)  'go to microwave 1'
+(TaskRunner pid=974377)  'go to shelf 1'
+(TaskRunner pid=974377)  'go to shelf 2'
+(TaskRunner pid=974377)  'go to shelf 3'
+(TaskRunner pid=974377)  'go to sinkbasin 1'
+(TaskRunner pid=974377)  'go to stoveburner 1'
+(TaskRunner pid=974377)  'go to stoveburner 2'
+(TaskRunner pid=974377)  'go to stoveburner 3'
+(TaskRunner pid=974377)  'go to stoveburner 4'
+(TaskRunner pid=974377)  'go to toaster 1'
+(TaskRunner pid=974377)  'inventory'
+(TaskRunner pid=974377)  'look'].
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) Now it's your turn to take an action.
+(TaskRunner pid=974377) You should first reason step-by-step about the current situation. This reasoning process MUST be enclosed within <think> </think> tags.
+(TaskRunner pid=974377) Once you've finished your reasoning, you should choose an admissible action for current step and present it within <action> </action> tags.
+(TaskRunner pid=974377) <|im_end|>
+(TaskRunner pid=974377) <|im_start|>assistant
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) [response] <think>
+(TaskRunner pid=974377) The agent has already opened the cabinet 1 and nothing happened. This suggests that the hot plate is not inside the cabinet. The agent should now check other locations where a hot plate might be located, such as the stoveburners, countertops, shelves, sinkbasin, or toaster. The agent should also consider checking the fridge, microwave, and garbagecan, as these are common locations for hot plates.
+(TaskRunner pid=974377) </think>
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) <action>go to stoveburner 1</action><|im_end|>
+(TaskRunner pid=974377) [score] 0.0
+(TaskRunner pid=974377) test_gen_batch meta info: {'eos_token_id': 151645, 'pad_token_id': 151643, 'recompute_log_prob': False, 'do_sample': True, 'validate': True}
+(TaskRunner pid=974377) validation generation end
+(TaskRunner pid=974377) [prompt] <|im_start|>system
+(TaskRunner pid=974377) You are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>
+(TaskRunner pid=974377) <|im_start|>user
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) You are an expert agent operating in the ALFRED Embodied Environment. Your task is to: put two vase in desk.
+(TaskRunner pid=974377) Prior to this step, you have already taken 30 step(s). Below are the most recent 2 observaitons and the corresponding actions you took: [Observation 29: 'You arrive at drawer 1. The drawer 1 is open. In it, you see nothing.', Action 29: 'examine drawer 1']
+(TaskRunner pid=974377) [Observation 30: 'The drawer 1 is open. In it, you see nothing.', Action 30: 'go to drawer 1']
+(TaskRunner pid=974377) You are now at step 31 and your current observation is: Nothing happens.
+(TaskRunner pid=974377) Your admissible actions of the current situation are: ['close drawer 1'
+(TaskRunner pid=974377)  'examine drawer 1'
+(TaskRunner pid=974377)  'go to armchair 1'
+(TaskRunner pid=974377)  'go to coffeetable 1'
+(TaskRunner pid=974377)  'go to desk 1'
+(TaskRunner pid=974377)  'go to diningtable 1'
+(TaskRunner pid=974377)  'go to drawer 2'
+(TaskRunner pid=974377)  'go to drawer 3'
+(TaskRunner pid=974377)  'go to drawer 4'
+(TaskRunner pid=974377)  'go to drawer 5'
+(TaskRunner pid=974377)  'go to drawer 6'
+(TaskRunner pid=974377)  'go to garbagecan 1'
+(TaskRunner pid=974377)  'go to safe 1'
+(TaskRunner pid=974377)  'go to shelf 1'
+(TaskRunner pid=974377)  'go to shelf 2'
+(TaskRunner pid=974377)  'go to shelf 3'
+(TaskRunner pid=974377)  'go to sofa 1'
+(TaskRunner pid=974377)  'go to sofa 2'
+(TaskRunner pid=974377)  'go to tvstand 1'
+(TaskRunner pid=974377)  'inventory'
+(TaskRunner pid=974377)  'look'].
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) Now it's your turn to take an action.
+(TaskRunner pid=974377) You should first reason step-by-step about the current situation. This reasoning process MUST be enclosed within <think> </think> tags.
+(TaskRunner pid=974377) Once you've finished your reasoning, you should choose an admissible action for current step and present it within <action> </action> tags.
+(TaskRunner pid=974377) <|im_end|>
+(TaskRunner pid=974377) <|im_start|>assistant
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) [response] <think>
+(TaskRunner pid=974377) The vase is not in the drawer 1. The vase is not in the armchair, coffeetable, desk, diningtable, drawer, safe, shelf, sofa, sofa 2, tvstand, or any of the other possible locations. The vase is not in the garbagecan either. The vase is not in the shelves.
+(TaskRunner pid=974377) </think>
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) <action>go to desk 1</action><|im_end|>
+(TaskRunner pid=974377) [score] 0.0
+(TaskRunner pid=974377) test_gen_batch meta info: {'eos_token_id': 151645, 'pad_token_id': 151643, 'recompute_log_prob': False, 'do_sample': True, 'validate': True}
+(TaskRunner pid=974377) validation generation end
+(TaskRunner pid=974377) [prompt] <|im_start|>system
+(TaskRunner pid=974377) You are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>
+(TaskRunner pid=974377) <|im_start|>user
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) You are an expert agent operating in the ALFRED Embodied Environment. Your task is to: put a vase in coffeetable.
+(TaskRunner pid=974377) Prior to this step, you have already taken 2 step(s). Below are the most recent 2 observaitons and the corresponding actions you took: [Observation 1: '-= Welcome to TextWorld, ALFRED! =-
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) You are in the middle of a room. Looking quickly around you, you see a armchair 2, a armchair 1, a coffeetable 2, a coffeetable 1, a garbagecan 1, a shelf 8, a shelf 7, a shelf 6, a shelf 5, a shelf 4, a shelf 3, a shelf 2, a shelf 1, a sofa 1, and a tvstand 1.
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) Your task is to: put a vase in coffeetable.', Action 1: 'inventory']
+(TaskRunner pid=974377) [Observation 2: 'You are not carrying anything.', Action 2: 'go to coffeetable 1']
+(TaskRunner pid=974377) You are now at step 3 and your current observation is: You arrive at coffeetable 1. On the coffeetable 1, you see a creditcard 1, a houseplant 1, and a keychain 2.
+(TaskRunner pid=974377) Your admissible actions of the current situation are: ['examine coffeetable 1'
+(TaskRunner pid=974377)  'go to armchair 1'
+(TaskRunner pid=974377)  'go to armchair 2'
+(TaskRunner pid=974377)  'go to coffeetable 2'
+(TaskRunner pid=974377)  'go to garbagecan 1'
+(TaskRunner pid=974377)  'go to shelf 1'
+(TaskRunner pid=974377)  'go to shelf 2'
+(TaskRunner pid=974377)  'go to shelf 3'
+(TaskRunner pid=974377)  'go to shelf 4'
+(TaskRunner pid=974377)  'go to shelf 5'
+(TaskRunner pid=974377)  'go to shelf 6'
+(TaskRunner pid=974377)  'go to shelf 7'
+(TaskRunner pid=974377)  'go to shelf 8'
+(TaskRunner pid=974377)  'go to sofa 1'
+(TaskRunner pid=974377)  'go to tvstand 1'
+(TaskRunner pid=974377)  'inventory'
+(TaskRunner pid=974377)  'look'
+(TaskRunner pid=974377)  'take creditcard 1 from coffeetable 1'
+(TaskRunner pid=974377)  'take keychain 2 from coffeetable 1'].
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) Now it's your turn to take an action.
+(TaskRunner pid=974377) You should first reason step-by-step about the current situation. This reasoning process MUST be enclosed within <think> </think> tags.
+(TaskRunner pid=974377) Once you've finished your reasoning, you should choose an admissible action for current step and present it within <action> </action> tags.
+(TaskRunner pid=974377) <|im_end|>
+(TaskRunner pid=974377) <|im_start|>assistant
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) [response] <think>
+(TaskRunner pid=974377) The task is to put a vase on the coffeetable. Before this step, we have already taken 2 steps. The most recent steps were:
+(TaskRunner pid=974377) 1. Inventory
+(TaskRunner pid=974377) 2. Go to coffeetable 1
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) Now, we are at step 3 and at the coffeetable 1. On the coffeetable 1, we see a creditcard 1, a houseplant 1, and a keychain 2. We have already examined the coffeetable and are not carrying anything.
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) To put a vase on the coffeetable, we need to:
+(TaskRunner pid=974377) 1. Find a vase in the inventory or environment.
+(TaskRunner pid=974377) 2. Go to the coffeetable 1.
+(TaskRunner pid=974377) 3. Put the vase on the coffeetable 1.
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) Since we are at the coffeetable 1, we need to examine it to see if it has a vase or if we can find one in the inventory.
+(TaskRunner pid=974377) </think>
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) <action>examine coffeetable 1</action><|im_end|>
+(TaskRunner pid=974377) [score] 0.0
+(TaskRunner pid=974377) test_gen_batch meta info: {'eos_token_id': 151645, 'pad_token_id': 151643, 'recompute_log_prob': False, 'do_sample': True, 'validate': True}
+(TaskRunner pid=974377) validation generation end
+(TaskRunner pid=974377) [prompt] <|im_start|>system
+(TaskRunner pid=974377) You are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>
+(TaskRunner pid=974377) <|im_start|>user
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) You are an expert agent operating in the ALFRED Embodied Environment. Your task is to: cool some plate and put it in countertop.
+(TaskRunner pid=974377) Prior to this step, you have already taken 15 step(s). Below are the most recent 2 observaitons and the corresponding actions you took: [Observation 14: 'You arrive at cabinet 2. The cabinet 2 is closed.', Action 14: 'go to cabinet 2']
+(TaskRunner pid=974377) [Observation 15: 'Nothing happens.', Action 15: '6、橱柜107、橱柜108、橱柜109、橱柜110、橱柜11']
+(TaskRunner pid=974377) You are now at step 16 and your current observation is: Nothing happens.
+(TaskRunner pid=974377) Your admissible actions of the current situation are: ['examine cabinet 2'
+(TaskRunner pid=974377)  'go to cabinet 1'
+(TaskRunner pid=974377)  'go to cabinet 3'
+(TaskRunner pid=974377)  'go to cabinet 4'
+(TaskRunner pid=974377)  'go to cabinet 5'
+(TaskRunner pid=974377)  'go to cabinet 6'
+(TaskRunner pid=974377)  'go to cabinet 7'
+(TaskRunner pid=974377)  'go to cabinet 8'
+(TaskRunner pid=974377)  'go to cabinet 9'
+(TaskRunner pid=974377)  'go to coffeemachine 1'
+(TaskRunner pid=974377)  'go to countertop 1'
+(TaskRunner pid=974377)  'go to countertop 2'
+(TaskRunner pid=974377)  'go to countertop 3'
+(TaskRunner pid=974377)  'go to drawer 1'
+(TaskRunner pid=974377)  'go to drawer 2'
+(TaskRunner pid=974377)  'go to drawer 3'
+(TaskRunner pid=974377)  'go to drawer 4'
+(TaskRunner pid=974377)  'go to drawer 5'
+(TaskRunner pid=974377)  'go to drawer 6'
+(TaskRunner pid=974377)  'go to drawer 7'
+(TaskRunner pid=974377)  'go to drawer 8'
+(TaskRunner pid=974377)  'go to drawer 9'
+(TaskRunner pid=974377)  'go to fridge 1'
+(TaskRunner pid=974377)  'go to garbagecan 1'
+(TaskRunner pid=974377)  'go to microwave 1'
+(TaskRunner pid=974377)  'go to shelf 1'
+(TaskRunner pid=974377)  'go to shelf 2'
+(TaskRunner pid=974377)  'go to shelf 3'
+(TaskRunner pid=974377)  'go to sinkbasin 1'
+(TaskRunner pid=974377)  'go to stoveburner 1'
+(TaskRunner pid=974377)  'go to stoveburner 2'
+(TaskRunner pid=974377)  'go to stoveburner 3'
+(TaskRunner pid=974377)  'go to stoveburner 4'
+(TaskRunner pid=974377)  'go to toaster 1'
+(TaskRunner pid=974377)  'inventory'
+(TaskRunner pid=974377)  'look'
+(TaskRunner pid=974377)  'open cabinet 2'].
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) Now it's your turn to take an action.
+(TaskRunner pid=974377) You should first reason step-by-step about the current situation. This reasoning process MUST be enclosed within <think> </think> tags.
+(TaskRunner pid=974377) Once you've finished your reasoning, you should choose an admissible action for current step and present it within <action> </action> tags.
+(TaskRunner pid=974377) <|im_end|>
+(TaskRunner pid=974377) <|im_start|>assistant
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) [response] <think>
+(TaskRunner pid=974377) 在当前情况下，我需要先打开橱柜2，然后才能找到和处理需要的物品。橱柜2是关闭的，所以我需要先执行打开橱柜2的动作。
+(TaskRunner pid=974377) </think>
+(TaskRunner pid=974377) <Action>go to cabinet 2</Action><|im_end|>
+(TaskRunner pid=974377) [score] 0.0
+(TaskRunner pid=974377) test_gen_batch meta info: {'eos_token_id': 151645, 'pad_token_id': 151643, 'recompute_log_prob': False, 'do_sample': True, 'validate': True}
+(TaskRunner pid=974377) validation generation end
+(TaskRunner pid=974377) [prompt] <|im_start|>system
+(TaskRunner pid=974377) You are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>
+(TaskRunner pid=974377) <|im_start|>user
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) You are an expert agent operating in the ALFRED Embodied Environment. Your task is to: put two spatula in drawer.
+(TaskRunner pid=974377) Prior to this step, you have already taken 4 step(s). Below are the most recent 2 observaitons and the corresponding actions you took: [Observation 3: 'You arrive at drawer 1. The drawer 1 is closed.', Action 3: 'open drawer 1']
+(TaskRunner pid=974377) [Observation 4: 'You open the drawer 1. The drawer 1 is open. In it, you see nothing.', Action 4: 'go to cabinet 1']
+(TaskRunner pid=974377) You are now at step 5 and your current observation is: You arrive at cabinet 1. On the cabinet 1, you see nothing.
+(TaskRunner pid=974377) Your admissible actions of the current situation are: ['examine cabinet 1'
+(TaskRunner pid=974377)  'go to cabinet 10'
+(TaskRunner pid=974377)  'go to cabinet 11'
+(TaskRunner pid=974377)  'go to cabinet 12'
+(TaskRunner pid=974377)  'go to cabinet 13'
+(TaskRunner pid=974377)  'go to cabinet 14'
+(TaskRunner pid=974377)  'go to cabinet 15'
+(TaskRunner pid=974377)  'go to cabinet 16'
+(TaskRunner pid=974377)  'go to cabinet 17'
+(TaskRunner pid=974377)  'go to cabinet 18'
+(TaskRunner pid=974377)  'go to cabinet 19'
+(TaskRunner pid=974377)  'go to cabinet 2'
+(TaskRunner pid=974377)  'go to cabinet 20'
+(TaskRunner pid=974377)  'go to cabinet 21'
+(TaskRunner pid=974377)  'go to cabinet 22'
+(TaskRunner pid=974377)  'go to cabinet 23'
+(TaskRunner pid=974377)  'go to cabinet 24'
+(TaskRunner pid=974377)  'go to cabinet 25'
+(TaskRunner pid=974377)  'go to cabinet 26'
+(TaskRunner pid=974377)  'go to cabinet 3'
+(TaskRunner pid=974377)  'go to cabinet 4'
+(TaskRunner pid=974377)  'go to cabinet 5'
+(TaskRunner pid=974377)  'go to cabinet 6'
+(TaskRunner pid=974377)  'go to cabinet 7'
+(TaskRunner pid=974377)  'go to cabinet 8'
+(TaskRunner pid=974377)  'go to cabinet 9'
+(TaskRunner pid=974377)  'go to coffeemachine 1'
+(TaskRunner pid=974377)  'go to countertop 1'
+(TaskRunner pid=974377)  'go to countertop 2'
+(TaskRunner pid=974377)  'go to countertop 3'
+(TaskRunner pid=974377)  'go to drawer 1'
+(TaskRunner pid=974377)  'go to drawer 10'
+(TaskRunner pid=974377)  'go to drawer 11'
+(TaskRunner pid=974377)  'go to drawer 12'
+(TaskRunner pid=974377)  'go to drawer 2'
+(TaskRunner pid=974377)  'go to drawer 3'
+(TaskRunner pid=974377)  'go to drawer 4'
+(TaskRunner pid=974377)  'go to drawer 5'
+(TaskRunner pid=974377)  'go to drawer 6'
+(TaskRunner pid=974377)  'go to drawer 7'
+(TaskRunner pid=974377)  'go to drawer 8'
+(TaskRunner pid=974377)  'go to drawer 9'
+(TaskRunner pid=974377)  'go to fridge 1'
+(TaskRunner pid=974377)  'go to garbagecan 1'
+(TaskRunner pid=974377)  'go to microwave 1'
+(TaskRunner pid=974377)  'go to sinkbasin 1'
+(TaskRunner pid=974377)  'go to stoveburner 1'
+(TaskRunner pid=974377)  'go to stoveburner 2'
+(TaskRunner pid=974377)  'go to stoveburner 3'
+(TaskRunner pid=974377)  'go to stoveburner 4'
+(TaskRunner pid=974377)  'go to toaster 1'
+(TaskRunner pid=974377)  'inventory'
+(TaskRunner pid=974377)  'look'].
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) Now it's your turn to take an action.
+(TaskRunner pid=974377) You should first reason step-by-step about the current situation. This reasoning process MUST be enclosed within <think> </think> tags.
+(TaskRunner pid=974377) Once you've finished your reasoning, you should choose an admissible action for current step and present it within <action> </action> tags.
+(TaskRunner pid=974377) <|im_end|>
+(TaskRunner pid=974377) <|im_start|>assistant
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) [response] <think>
+(TaskRunner pid=974377) The agent has already opened drawer 1 and went to cabinet 1, but there is nothing in either. The agent needs to find the spatulas and put them in the drawer. The spatulas are likely to be in the kitchen, but not in the cabinets or drawers. The agent needs to check the stoveburners, sinkbasin, and countertops.
+(TaskRunner pid=974377) </think>
+(TaskRunner pid=974377)
+(TaskRunner pid=974377) <action>go to stoveburner 1</action><|im_end|>
+(TaskRunner pid=974377) [score] 0.0
+(TaskRunner pid=974377)
+Training Progress:   0%|          | 0/1 [30:33<?, ?it/s]
+(TaskRunner pid=974377) step:1 - global_seqlen/min:912383.000 - global_seqlen/max:912383.000 - global_seqlen/minmax_diff:0.000 - global_seqlen/balanced_min:912383.000 - global_seqlen/balanced_max:912383.000 - global_seqlen/mean:912383.000 - batch_size:1536.000 - valid_action_ratio:0.811 - actor/kl_loss:0.001 - actor/kl_coef:0.010 - actor/pg_loss:-0.000 - actor/pg_clipfrac:0.000 - actor/ppo_kl:0.000 - actor/grad_norm:4.306 - perf/mfu/actor:0.245 - perf/max_memory_allocated_gb:61.787 - perf/max_memory_reserved_gb:70.924 - perf/cpu_memory_used_gb:68.068 - actor/lr:0.000 - val/test_score/text:0.252 - val/success_rate:0.062 - val/pick_and_place_success_rate:0.216 - val/pick_clean_then_place_in_recep_success_rate:0.000 - val/pick_heat_then_place_in_recep_success_rate:0.000 - val/pick_cool_then_place_in_recep_success_rate:0.000 - val/look_at_obj_in_light_success_rate:0.000 - val/pick_two_obj_and_place_success_rate:0.041 - critic/score/mean:0.235 - critic/score/max:10.000 - critic/score/min:-0.100 - critic/rewards/mean:0.235 - critic/rewards/max:10.000 - critic/rewards/min:-0.100 - critic/advantages/mean:0.027 - critic/advantages/max:7.435 - critic/advantages/min:-6.783 - critic/returns/mean:0.027 - critic/returns/max:7.435 - critic/returns/min:-6.783 - response_length/mean:91.764 - response_length/max:512.000 - response_length/min:11.000 - response_length/clip_ratio:0.001 - prompt_length/mean:502.235 - prompt_length/max:1090.000 - prompt_length/min:325.000 - prompt_length/clip_ratio:0.000 - episode/reward/mean:0.625 - episode/reward/max:10.000 - episode/reward/min:0.000 - episode/length/mean:48.094 - episode/length/max:50.000 - episode/length/min:15.000 - episode/success_rate:0.062 - episode/pick_and_place_success_rate:0.125 - episode/pick_cool_then_place_in_recep_success_rate:0.000 - episode/pick_two_obj_and_place_success_rate:0.000 - timing_s/gen:144.245 - timing_s/old_log_prob:63.166 - timing_s/ref:156.182 - timing_s/adv:0.380 - timing_s/update_actor:276.456 - timing_s/testing:1193.200 - timing_s/step:1833.779 - timing_per_token_ms/adv:0.000 - timing_per_token_ms/update_actor:0.303 - timing_per_token_ms/gen:1.023 - timing_per_token_ms/ref:0.171 - perf/total_num_tokens:912383.000 - perf/time_per_step:1833.779 - perf/throughput:497.543
+(TaskRunner pid=974377) ("Final validation metrics: {'val/test_score/text': 0.2518277822908205, "
+(TaskRunner pid=974377)  "'val/success_rate': 0.0625, 'val/pick_and_place_success_rate': "
+(TaskRunner pid=974377)  "0.2161172161172161, 'val/pick_clean_then_place_in_recep_success_rate': 0.0, "
+(TaskRunner pid=974377)  "'val/pick_heat_then_place_in_recep_success_rate': 0.0, "
+(TaskRunner pid=974377)  "'val/pick_cool_then_place_in_recep_success_rate': 0.0, "
+(TaskRunner pid=974377)  "'val/look_at_obj_in_light_success_rate': 0.0, "
+(TaskRunner pid=974377)  "'val/pick_two_obj_and_place_success_rate': 0.04090909090909091}")

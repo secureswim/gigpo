@@ -2,6 +2,18 @@
 
 Last local audit: 12 November 2026.
 
+## Cluster update: 12 November 2026
+
+The single-MIG GiGPO smoke test passed in Omni job 10333: one training iteration
+with a nonzero gradient norm, 128-example validation, and exit zero. Validation
+success was 6.25%; successful attempt wall time was 33 minutes. Dependencies,
+model and ALFWorld data are staged in an isolated environment on WEKA. See
+[`results/omni-short-10333/README.md`](../results/omni-short-10333/README.md) for exact configuration,
+logs, compatibility changes, earlier failures, and timing breakdowns. The smoke
+profile reduces training concurrency to fit short's 64 GiB host RAM; full matched
+GiGPO/GRPO runs remain pending. No trained checkpoint was saved. Historical
+pending items below describe the original handoff, not the current smoke status.
+
 ## Completed and verified locally
 
 - Read the six-slide project proposal and identified the core deliverables: GiGPO versus GRPO reproduction on ALFWorld, diagnostic-first anchor-group extension, and optional TurtleBot3 demonstration.
@@ -12,7 +24,8 @@ Last local audit: 12 November 2026.
 - Separated unrelated quiz application files from this repository. No quiz files are part of the handoff.
 - Read the IIIT Delhi server's policy and manual. The smoke script now requests
   two GPUs through the mandatory `gpurun` scheduler. The cluster itself has not
-  yet been accessed from this workspace.
+  yet been accessed from this workspace through that separate workflow; the
+  verified Omni Slurm run is recorded above.
 
 ## Pending on the Linux GPU machine
 
