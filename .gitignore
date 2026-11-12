@@ -1,5 +1,7 @@
 # Training outputs and downloaded assets
 runs/
+work/
+reference_runs/
 wandb/
 checkpoints/
 data/

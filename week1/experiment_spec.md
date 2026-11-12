@@ -28,7 +28,7 @@ Can the official GiGPO result on ALFWorld be reproduced, and do step-level ancho
 | Validation sampling | temperature 0.4, `do_sample=True` |
 | Validation frequency | every 5 training steps, plus the final step |
 | Total epochs | 150 |
-| Checkpoint frequency | `-1` (no periodic checkpoints in the supplied scripts) |
+| Checkpoint frequency | `-1` in the supplied scripts; our launcher sets `SAVE_FREQ=10`, keep 2, auto-resume, for every condition |
 
 GiGPO additionally sets `algorithm.gamma=0.95`, `algorithm.gigpo.step_advantage_w=1.0`, and `algorithm.gigpo.mode=mean_std_norm`. These define the method rather than a mismatch to remove from GRPO. Both scripts request two GPUs and tensor model parallel size two; adaptation to available hardware must be made identically for both methods and recorded.
 
@@ -40,13 +40,13 @@ The validation script samples actions (`temperature=0.4`), so a single reported 
 
 ## Week 3 diagnostic, prepared now
 
-Measure anchor-group size, return variance, computed step-advantage magnitude, and action diversity. A group with identical actions need not have identical returns; define a degenerate group from its actual computed signal. Determine whether the proposed filtering is distinct from the repository's existing episode-level dynamic sampling before training variants.
+Implemented. Every GiGPO-family run logs `gigpo_diag/*` and writes `gigpo_diag/step_groups.jsonl`. `analysis/choose_thresholds.py` applies the predeclared threshold rule and the null-result gate to the seed-0 control run. Degenerate groups are defined by computed return signal, not by action identity. Exactly degenerate groups already get zero micro advantage upstream, so the extension targets small or near-zero-spread groups. Episode-level dynamic sampling exists in the pinned snapshot (`examples/gigpo_dynamic_trainer`) and is a different axis. See `knowledge_base/extension_design.md`.
 
 ## Completion gate for Week 1
 
 - The pinned commit is present and unchanged.
 - The baseline comparison check passes.
 - ALFWorld can reset and accept actions on the Linux machine.
-- A GiGPO smoke run completes at least one training update and validation, with its command, versions, and log captured.
+- `bash week1/smoke_gigpo.sh` prints SMOKE PASSED: updates, validation, diagnostics, checkpoint and resume all verified, with command, versions and log captured.
 
 The last two items require the separate Linux training machine and remain pending until run there.

@@ -1,60 +1,49 @@
-# Linux training-machine handoff
+# Linux GPU-machine handoff
 
-After the owner grants access to this private repository, clone it on the Linux machine:
+Everything below runs from the project root on the Linux machine. Steps 1–2 need internet but not a GPU.
+
+## 1. Clone and verify
 
 ```bash
 git clone https://github.com/secureswim/gigpo.git
 cd gigpo
+python3 week1/check_baseline_scripts.py     # must report the pinned commit and 20 matching settings
 ```
 
-Run the remaining commands from this project root. The vendored upstream source is already included at the paper-era commit; do not update it before the baseline experiments.
+Do not edit `upstream-verl-agent/`. All changes live in `extension/` and are applied to a copy.
 
-## 1. Verify the source
+## 2. Install everything
 
 ```bash
-cat upstream-verl-agent/UPSTREAM_COMMIT
-python3 week1/check_baseline_scripts.py
+bash setup/install.sh
 ```
 
-The hash must be `f974dc5977908d6007ad178c9f3c48f0c7b39331`. The checker should report matching shared settings and only method-specific differences.
+This creates the conda env `verl-agent-gigpo` (Python 3.12, torch 2.6.0/cu124, flash-attn, vllm 0.8.2, ALFWorld packages), builds `work/verl-agent-ext`, installs it editable, downloads ALFWorld data and Qwen2.5-1.5B-Instruct, and writes `setup/env_lock.txt`. Commit that lock file. If a package needs a different version on this machine, note it in `knowledge_base/status.md` and keep it the same for every run.
 
-## 2. Install the pinned version's dependencies
-
-Use a Linux machine with an NVIDIA CUDA setup compatible with the packages below. The historical README specifies:
+At the end it prints the exports to add to your shell profile:
 
 ```bash
-cd upstream-verl-agent
-conda create -n verl-agent-gigpo python=3.12 -y
 conda activate verl-agent-gigpo
-python -m pip install torch==2.6.0 --index-url https://download.pytorch.org/whl/cu124
-python -m pip install flash-attn --no-build-isolation
-python -m pip install -e .
-python -m pip install vllm==0.8.2
-python -m pip install gymnasium==0.29.1 stable-baselines3==2.6.0 alfworld thinc==8.3.4
-cd ..
+export ALFWORLD_DATA=$HOME/.cache/alfworld
+export MODEL_PATH=$HOME/models/Qwen2.5-1.5B-Instruct
 ```
 
-Follow the repository's pinned README if a dependency needs adjustment for that machine. Record any deviation with its reason. Do not mix the current README's newer vLLM version with this historical code without testing it.
-
-## 3. Download and test ALFWorld
+## 3. Preflight
 
 ```bash
-alfworld-download -f
-python3 week1/check_alfworld.py
+bash setup/preflight.sh
 ```
 
-The automated check resets the text environment, takes one admissible action, and prints the observations. Run it from the project root. `alfworld-play-tw` is available if you also want to inspect a game manually. The smoke script uses the text environment; no robot is needed for this check.
+This checks the snapshot, the CPU tests, CUDA, vLLM, flash-attn, that `verl` resolves to the patched tree, ALFWorld reset/step, the model and disk space. Every line must say PASS.
 
-## 4. Run one GiGPO epoch
+## 4. Smoke run (2 steps plus resume)
 
 ```bash
-bash week1/smoke_gigpo.sh
+N_GPUS=2 bash week1/smoke_gigpo.sh
 ```
 
-The script keeps the repository's model and ALFWorld settings, overrides the run to one epoch, enables validation at that step, and uses console logging so a W&B login is unnecessary. It writes `runs/week1_smoke/metadata.txt` and `runs/week1_smoke/train.log`.
-
-Success means the log contains an optimizer update and a validation result. An ALFWorld launch alone is insufficient. The run may download the model and a small placeholder dataset on first use. If it fails, preserve the complete log and record the fix before rerunning.
+It must end with `SMOKE PASSED`. Use `N_GPUS=1` on a single GPU, and add `MICRO_BS=16` (or 8) if you run out of memory. Keep whichever settings work for every later run.
 
 ## 5. Hand back the evidence
 
-Share the two files in `runs/week1_smoke/`, the output of `check_alfworld.py`, and any installation deviations. That lets us diagnose failures and prepare the matched full runs without guessing what happened.
+Share `runs/preflight.txt`, `runs/gigpo_seed0_smoke/{launches.txt,train.log}`, the `check_smoke.py` output and any install deviations. Then start the run list in `knowledge_base/compute_and_team.md`.
