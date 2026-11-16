@@ -1,3 +1,5 @@
+> **Historical record.** This smoke run used the pre-merge code (pristine snapshot, no extension), reduced batch settings (4 tasks per step, PPO minibatch 32, validation batches of 8) and scripts that have since been replaced by `cluster/omni/` (`prepare-omni.sh` → `prepare.sh`, `smoke-omni.sh` → `job.sbatch smoke`). It proves that the software stack runs on Omni. It does not give the per-step time or memory use of the paper settings; `RUNBOOK_OMNI.md` step 5 measures those.
+
 # GiGPO single-MIG smoke: PASS
 
 12 November 2026. Slurm job **10333**, successful training step **10333.13**,
@@ -11,7 +13,7 @@
 - `train.txt` removes terminal color codes and trailing whitespace only. Original
   raw-log SHA-256: `309e0f5e575ad4660aa868c8e9adef4d95a201fff853b141bc6019e3f78f7102`.
 - Exact executed baseline copy: [baseline-offline.sh](baseline-offline.sh);
-  overrides: [smoke-omni.sh](../../cluster/smoke-omni.sh); packages: [packages.txt](packages.txt).
+  overrides: `cluster/smoke-omni.sh` (removed after the merge; see commit `2e38145`); packages: [packages.txt](packages.txt).
 - Remote master log: `/home/vansh23580/rl-project/logs/gigpo-10333.log`.
 - Remote exit marker: `/home/vansh23580/rl-project/logs/gigpo-10333.status`.
 - CUDA matmul and compute-node ALFWorld reset/step both passed.
@@ -68,7 +70,7 @@
 Original xgrammar 0.1.16 was built from its official source because its wheel
 was missing from the index. FlashAttention uses its official matching wheel.
 NumPy 1.26.4 required compatible Thinc/spaCy, PyArrow, pandas, SciPy and plotting
-versions; see [constraints.txt](../../cluster/constraints.txt). The baseline checker accepts Git's
+versions; see [constraints.txt](../../cluster/omni/constraints.txt). The baseline checker accepts Git's
 LF checkout of its original CRLF-hashed files. TextWorld's locally built wheel
 metadata triggers a pip platform warning, while its runtime check passes.
 

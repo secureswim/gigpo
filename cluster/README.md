@@ -1,30 +1,22 @@
-# Omni single-MIG smoke run
+# Cluster scripts
 
-Preparation runs on the internet-connected master in a new environment at
-`/home/vansh23580/rl-project/envs/gigpo`. Existing Conda environments are preserved.
-Logs: `/home/vansh23580/rl-project/logs/gigpo-prepare.log`.
+All experiments run on IIIT Delhi's **Omni** Slurm cluster. Follow [`RUNBOOK_OMNI.md`](../RUNBOOK_OMNI.md); this folder only holds the scripts it calls.
 
-The historical vLLM 0.8.2 dependency xgrammar 0.1.16 is unavailable from the
-package index. Build the official tag, resolved to
-`989222175c2a30fb7987d8bcce35bec1bf6817f2`, instead of substituting a newer version.
+| File | Where it runs | Purpose |
+| --- | --- | --- |
+| `omni/env.sh` | everywhere (sourced) | paths, conda environment, model revision, offline settings inside jobs |
+| `omni/prepare.sh` | login node | one-time install, downloads and checks; ends with `PREPARE OK` |
+| `omni/constraints.txt` | login node | package pins that make vLLM 0.8.2 work (NumPy 1.26.4, thinc 8.2.5, …) |
+| `omni/resources.env` | submit shell (sourced) | Slurm resource flags and hardware knobs shared by every job |
+| `omni/job.sbatch` | compute node | one batch job: `preflight`, `smoke` or a training condition |
+| `omni/submit_chain.sh` | login node | submits a run as a chain of resuming jobs |
+| `omni/env_lock.txt` | — | exact package versions, written by `prepare.sh` |
 
-`smoke-omni.sh` retains the upstream GiGPO algorithm and task settings, with
-one GPU/tensor-parallel rank, microbatches of one, four prompt groups of eight
-trajectories (32 total), PPO minibatches of 32 transitions, validation batches of
-eight, and a vLLM memory fraction of 0.45. Actor/reference parameters and optimizer
-remain on GPU. One training update is followed by validation; initial validation
-is skipped. This is a pipeline check, not a paper-result reproduction. The initial
-128-trajectory profile with CPU offload exceeded the job's 64 GiB host-RAM limit
-while computing reference log probabilities; its logs are preserved separately.
+## History
 
-The runtime copy of the upstream shell script skips data preprocessing (already
-completed on master), and consumes the engine positional argument before passing
-Hydra overrides. The upstream script itself is unchanged.
+The first Omni smoke run (job 10333, 12 November 2026) passed using earlier scripts, `prepare-omni.sh`, `smoke-omni.sh` and `run-in-job.sh`, with reduced batch settings on a MIG slice. Its record is in [`results/omni-short-10333/`](../results/omni-short-10333/README.md). Those scripts were replaced by `omni/`:
 
-`check_baseline_scripts.py` accepts the original CRLF manifest or its Git LF
-checkout, while continuing to validate file contents and shared settings.
-
-Compatibility deviation: Thinc 8.3.4 pulls NumPy 2, conflicting with vLLM 0.8.2.
-Use Thinc 8.2.5, spaCy 3.7.5, NumPy 1.26.4, and contourpy 1.3.2 instead.
-TextWorld 1.7.0's locally built wheel has malformed platform-tag metadata that
-`pip check` flags; the actual ALFWorld reset/step runtime test passed.
+- **Installation:** the package fixes they found are kept unchanged in `prepare.sh` and `constraints.txt`. These are xgrammar 0.1.16 built from source, NumPy 1.26.4 with thinc 8.2.5 and spaCy 3.7.5, and the prebuilt FlashAttention wheel.
+- **Paths:** the old scripts hard-coded one account's home directory. The new ones work for any account.
+- **Patched tree:** they installed the pristine snapshot. The new ones install the patched tree, so the extension and diagnostics are active.
+- **Missing helpers:** they called helper scripts (`job-step.sh`, `inspect-gpu.sh`) that were never committed.

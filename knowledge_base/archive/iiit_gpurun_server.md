@@ -1,3 +1,5 @@
+> **ARCHIVED, DO NOT FOLLOW.** These notes describe the separate IIIT Delhi `gpurun` server (192.168.3.214). The project runs on **Omni**; follow [`RUNBOOK_OMNI.md`](../../RUNBOOK_OMNI.md). The smoke command quoted below (`bash week1/smoke_gigpo.sh` through `gpurun -g 2`) belongs to an older script that crashed with `Error parsing override 'vllm'`. Kept only as a record of that server's usage policy.
+
 # IIIT Delhi GPU server guide
 
 Source: the server's [usage policy](http://192.168.3.214/usage_policy.html)

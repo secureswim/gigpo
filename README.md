@@ -1,57 +1,50 @@
 # GiGPO: ALFWorld reproduction and anchor-group study
 
-This repository is the handoff for a reinforcement-learning course project. The core experiment reproduces **GiGPO versus GRPO** on text ALFWorld using `Qwen/Qwen2.5-1.5B-Instruct`. The proposed extension asks whether selecting informative step-level anchor groups improves GiGPO. The proposal is included as [`GIGPO - RL.pptx`](GIGPO%20-%20RL.pptx). A single-iteration GiGPO smoke test has passed on Omni; full matched baseline results remain pending.
+RL course project *Efficient Step-Level Credit Assignment in GiGPO* (Siddharth Kumar, Aditi Kumar, Vansh Narula). The proposal is in [`GIGPO - RL.pptx`](GIGPO%20-%20RL.pptx).
 
-## Current status
+The project has two parts:
+1. **Reproduction:** reproduce **GiGPO versus GRPO** on text ALFWorld with `Qwen/Qwen2.5-1.5B-Instruct`.
+2. **Extension:** test whether filtering or down-weighting weak step-level anchor groups improves GiGPO.
 
-**12 November 2026: the GiGPO smoke test passed on Omni job 10333.** It completed one training iteration and validation on 128 examples with exit code 0. The successful attempt took 33 minutes 10 seconds and reported 6.25% validation success. This verifies the pipeline; it is not a full-training result.
+## How to run
 
-See the **[smoke-test README](results/omni-short-10333/README.md)** for batch sizes, GPU/RAM allocation, exact configuration, package versions, timing breakdown, fixes, and committed logs. Full matched GiGPO/GRPO training remains pending. See the [status ledger](knowledge_base/status.md) for the remaining work.
+**Everything runs on IIIT Delhi's Omni cluster by following [`RUNBOOK_OMNI.md`](RUNBOOK_OMNI.md), step by step.** Agents should also read [`AGENTS.md`](AGENTS.md). No other procedure in this repository is current.
 
-The separate IIIT Delhi `gpurun` workflow is documented in the [cluster guide](knowledge_base/cluster_guide.md). The verified Omni Slurm workflow and its single-MIG profile are in [cluster/README.md](cluster/README.md).
+## Status (16 November 2026)
 
-## Quick start on the Linux machine
+**Done:**
+- The software stack ran on Omni (smoke job 10333, reduced settings, pre-merge code).
+- The extension, diagnostics, checkpoint/resume, launcher, analysis tools and Omni scripts are built.
+- 37 CPU tests pass.
 
-The repository is private. Ask the owner for collaborator access, then clone it and work from its root. Do not update `upstream-verl-agent/` before the baseline runs.
-
-```bash
-git clone https://github.com/secureswim/gigpo.git
-cd gigpo
-```
-
-```bash
-python3 week1/check_baseline_scripts.py
-```
-
-Read the [cluster guide](knowledge_base/cluster_guide.md) and follow [the GPU-machine handoff](week1/gpu_machine_handoff.md) to install the pinned dependencies and download ALFWorld. Then run:
-
-```bash
-python3 week1/check_alfworld.py
-bash week1/smoke_gigpo.sh
-```
-
-The smoke script runs the GPU command through the cluster's mandatory `gpurun -g 2` wrapper and captures package versions and console output under `runs/week1_smoke/`. Check that the log shows a completed training update and validation result. The one-epoch run only verifies the pipeline. It cannot establish the paper's success rate.
+**Next:** runbook step 1 on Omni. No training result exists yet. The full ledger is in [`knowledge_base/status.md`](knowledge_base/status.md).
 
 ## Repository map
 
 | Path | Purpose |
 | --- | --- |
-| `upstream-verl-agent/` | Unmodified source snapshot from the official repository at commit `f974dc5977908d6007ad178c9f3c48f0c7b39331` |
-| `week1/` | Baseline settings, Linux handoff, static checker, ALFWorld check, and GiGPO smoke run |
-| `knowledge_base/` | Method explanation, code map, cluster guide, experiment protocol, extension design, decisions, and status |
-| `results/TEMPLATE.md` | Record for each GPU run; copy and fill it after execution |
-| `UPSTREAM_SHA256SUMS.txt` | Checksums for key files in the upstream snapshot |
+| `RUNBOOK_OMNI.md` | the procedure: setup, resource choice, smoke, budget, runs, diagnostic, analysis, approval gates |
+| `AGENTS.md` | rules for an AI agent operating the runbook |
+| `cluster/omni/` | Omni scripts: `env.sh`, `prepare.sh`, `constraints.txt`, `resources.env`, `job.sbatch`, `submit_chain.sh` |
+| `scripts/run_condition.sh` | launches one condition with matched settings; refuses changes to protected experiment settings |
+| `extension/` | `gigpo_ext.py` (diagnostics, threshold filter, divergence weight) and `verl-agent-ext.patch` (trainer hooks and fixes) |
+| `setup/` | `build_ext_tree.sh` (builds the patched copy in `work/`) and `preflight.sh` (login and GPU checks) |
+| `upstream-verl-agent/` | official code at commit `f974dc5` (paper era), verified byte-identical; never edited |
+| `week1/` | baseline-settings checker, ALFWorld check, smoke test and its checker |
+| `analysis/` | progress table, outcome table, learning curves, threshold rule, W&B download |
+| `tests/` | CPU tests (`python3 -m pytest -q tests`) |
+| `knowledge_base/` | method and code map, protocol, extension design, compute plan, status; `archive/` holds superseded notes |
+| `results/` | run records, decisions log, diagnostic, summary and figures; `omni-short-10333/` is the first smoke run |
+| `UPSTREAM_SHA256SUMS.txt` | checksums of key upstream files, including every file the patch touches |
 
-## Why this upstream revision
+## Reference results
 
-The [official repository](https://github.com/langfengQ/verl-agent) says results changed after its 3 June 2025 major update and recommends a version before it to reproduce the original paper. This snapshot is the first parent of that update. The paper reports **86.7% ALFWorld success** for GiGPO with Qwen2.5-1.5B-Instruct. This number is a reference result, not a guaranteed outcome. The exact training environment and every deviation must be logged. The source code remains under its original Apache-2.0 license and notices in `upstream-verl-agent/`.
+The paper (Table 1, Qwen2.5-1.5B, mean over 3 seeds, 2×H100) reports:
+- **GiGPO (w/ std, our setting): 86.7 ± 1.7%** ALFWorld success.
+- **GRPO: 72.8 ± 3.6%.**
 
-## Handoff order
+These are targets to compare against, not guaranteed outcomes.
 
-1. Read [status](knowledge_base/status.md), [method and code map](knowledge_base/method_and_code.md), and the [experiment protocol](knowledge_base/experiment_protocol.md).
-2. Complete the [GPU-machine handoff](week1/gpu_machine_handoff.md).
-3. Preserve the smoke-run log and fill a [run record](results/TEMPLATE.md).
-4. Launch matched GiGPO and GRPO baselines only after the smoke check passes.
-5. Inspect anchor groups before implementing or training the extension. Use [extension design](knowledge_base/extension_design.md).
+The snapshot is the parent of upstream's 3 June 2025 update, which the authors say changed results. Upstream code keeps its Apache-2.0 license and notices.
 
-The TurtleBot3 demonstration in the proposal is a stretch goal. It is outside the baseline and extension experiment path.
+The TurtleBot3 demonstration is an optional stretch goal and is not part of the runbook.

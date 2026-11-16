@@ -1,32 +1,34 @@
 #!/usr/bin/env bash
+# Pipeline smoke test with the PAPER settings and the patched tree: one GiGPO
+# training step with validation and a checkpoint, then a relaunch with a 2-step
+# budget that must resume from the step-1 checkpoint.
+#
+# On Omni it runs inside a GPU job (never on the login node):
+#   sbatch <RESOURCE FLAGS> cluster/omni/job.sbatch smoke
+#
+# week1/check_smoke.py then verifies updates, validation, diagnostics, the
+# environment-step counter, the checkpoint and the resume, and prints the
+# seconds per training step used for the budget (RUNBOOK_OMNI.md, step 5).
+# The success rate of this run means nothing.
 set -euo pipefail
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-REPO="$PROJECT_ROOT/upstream-verl-agent"
-RUN_DIR="$PROJECT_ROOT/runs/week1_smoke"
-EXPECTED_SHA=f974dc5977908d6007ad178c9f3c48f0c7b39331
+export RUN_ROOT="${RUN_ROOT:-$PROJECT_ROOT/runs}"
+export RUN_TAG=smoke WANDB=0 TEST_FREQ=1 SAVE_FREQ=1 CKPT_KEEP=1 SEED="${SEED:-0}"
+RUN_DIR="$RUN_ROOT/gigpo_seed${SEED}_smoke"
 
-python3 "$PROJECT_ROOT/week1/check_baseline_scripts.py"
-if ! command -v gpurun >/dev/null 2>&1; then
-  printf 'ERROR: gpurun is required by this cluster. Run this script on the GPU server.\n' >&2
+if [[ -d "$RUN_DIR" ]]; then
+  echo "$RUN_DIR exists from an earlier smoke run; move or delete it first." >&2
   exit 1
 fi
-mkdir -p "$RUN_DIR"
 
-{
-  printf 'date_utc=%s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-  printf 'upstream_commit=%s\n' "$(cat "$REPO/UPSTREAM_COMMIT")"
-  printf 'expected_commit=%s\n' "$EXPECTED_SHA"
-  printf 'python=%s\n' "$(python3 --version 2>&1)"
-  printf 'git=%s\n' "$(git --version)"
-  printf 'command=%s\n' "gpurun -g 2 bash examples/gigpo_trainer/run_alfworld.sh vllm trainer.total_epochs=1 trainer.test_freq=1 trainer.logger=['console'] trainer.experiment_name=week1_smoke"
-  python3 -m pip freeze
-} > "$RUN_DIR/metadata.txt"
+python3 "$PROJECT_ROOT/week1/check_baseline_scripts.py"
 
-cd "$REPO"
-set -o pipefail
-gpurun -g 2 bash examples/gigpo_trainer/run_alfworld.sh vllm \
-  trainer.total_epochs=1 \
-  trainer.test_freq=1 \
-  "trainer.logger=['console']" \
-  trainer.experiment_name=week1_smoke 2>&1 | tee "$RUN_DIR/train.log"
+start=$(date +%s)
+TOTAL_EPOCHS=1 bash "$PROJECT_ROOT/scripts/run_condition.sh" gigpo
+mid=$(date +%s)
+TOTAL_EPOCHS=2 bash "$PROJECT_ROOT/scripts/run_condition.sh" gigpo
+end=$(date +%s)
+printf 'step1_seconds=%s\nresume_step2_seconds=%s\n' $((mid - start)) $((end - mid)) >> "$RUN_DIR/launches.txt"
+
+python3 "$PROJECT_ROOT/week1/check_smoke.py" "$RUN_DIR"

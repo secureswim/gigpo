@@ -1,52 +1,61 @@
 # Status and decision ledger
 
-Last local audit: 12 November 2026.
+Last update: 16 November 2026 (merge of the Omni smoke work and the extension work into `main`).
 
-## Cluster update: 12 November 2026
+## Where things stand
 
-The single-MIG GiGPO smoke test passed in Omni job 10333: one training iteration
-with a nonzero gradient norm, 128-example validation, and exit zero. Validation
-success was 6.25%; successful attempt wall time was 33 minutes. Dependencies,
-model and ALFWorld data are staged in an isolated environment on WEKA. See
-[`results/omni-short-10333/README.md`](../results/omni-short-10333/README.md) for exact configuration,
-logs, compatibility changes, earlier failures, and timing breakdowns. The smoke
-profile reduces training concurrency to fit short's 64 GiB host RAM; full matched
-GiGPO/GRPO runs remain pending. No trained checkpoint was saved. Historical
-pending items below describe the original handoff, not the current smoke status.
+- **Next action:** `RUNBOOK_OMNI.md` step 1 on Omni.
+- **Results:** no training result exists yet. The only GPU evidence is the reduced-settings smoke run below.
 
-## Completed and verified locally
+## Done
 
-- Read the six-slide project proposal and identified the core deliverables: GiGPO versus GRPO reproduction on ALFWorld, diagnostic-first anchor-group extension, and optional TurtleBot3 demonstration.
-- Retrieved the official `langfengQ/verl-agent` repository and selected commit `f974dc5977908d6007ad178c9f3c48f0c7b39331`, the parent of the 3 June 2025 major update.
-- Imported that revision as a source snapshot without its Git history. Original `LICENSE` and `Notice.txt` are retained. Key-file checksums are in `UPSTREAM_SHA256SUMS.txt`.
-- Confirmed the pinned GiGPO and GRPO ALFWorld scripts agree on 20 shared settings using `python3 week1/check_baseline_scripts.py`.
-- Prepared the Linux installation instructions, an ALFWorld reset/step check, and a one-epoch GiGPO smoke script. Python syntax and the shell script syntax were checked locally.
-- Separated unrelated quiz application files from this repository. No quiz files are part of the handoff.
-- Read the IIIT Delhi server's policy and manual. The smoke script now requests
-  two GPUs through the mandatory `gpurun` scheduler. The cluster itself has not
-  yet been accessed from this workspace through that separate workflow; the
-  verified Omni Slurm run is recorded above.
+### On Omni (Siddharth Kumar, Vansh Narula; 12 November 2026)
 
-## Pending on the Linux GPU machine
+- **Smoke test passed** (job 10333; see `results/omni-short-10333/README.md`):
+  - Hardware: one H200 MIG slice (`3g.71gb`) on partition `short`, 64 GiB host RAM.
+  - Ran one GiGPO training step: gradient norm 4.306, exit 0, 6.25% validation success, 30.6 min.
+  - Settings were reduced: 4 tasks per step instead of 16, PPO minibatch 32 instead of 256, validation batches of 8. It used the pristine snapshot, without the extension.
+  - A full 128-trajectory attempt ran out of the 64 GiB host RAM.
+- **Package fixes that make vLLM 0.8.2 install** (now in `cluster/omni/prepare.sh` and `constraints.txt`):
+  - xgrammar 0.1.16 built from its official source tag.
+  - NumPy 1.26.4 with thinc 8.2.5, spaCy 3.7.5 and matching pyarrow, pandas, SciPy and plotting versions.
+  - The prebuilt FlashAttention 2.7.4.post1 wheel.
+- **The IIIT `gpurun` server** (2×H100) policy was documented. That server is not used; the notes are archived in `knowledge_base/archive/iiit_gpurun_server.md`.
 
-- Install the pinned Python/CUDA packages and download ALFWorld data.
-- Verify the account's connection method and actual quota with `gpurun --status`.
-- Execute `python3 week1/check_alfworld.py` and capture its output.
-- Execute `bash week1/smoke_gigpo.sh`; verify an optimizer update and validation result, then retain `runs/week1_smoke/metadata.txt` and `train.log`.
-- Record actual runtime, package deviations, hardware, and any errors.
-- Run full matched GiGPO and GRPO baselines; no result exists yet.
+### Code and tests (Aditi Kumar; 11–16 November 2026)
 
-## Decisions already made
+- **Snapshot verified:** all 1,331 files of `upstream-verl-agent/` match official commit `f974dc5` byte for byte.
+- **Fixed: checksum mismatch.** `UPSTREAM_SHA256SUMS.txt` had been generated from CRLF copies, so `check_baseline_scripts.py` failed on Linux. The manifest now holds the LF hashes and covers every file the extension patches. The checker also accepts the old CRLF form (fix from the Omni side).
+- **Fixed: launch crash.** The upstream ALFWorld scripts forward the engine name `vllm` to Hydra, causing `Error parsing override 'vllm'`. The patched copies forward `"${@:2}"`.
+- **Extension built** (`extension/gigpo_ext.py` and `extension/verl-agent-ext.patch`):
+  - Anchor-group diagnostics.
+  - The threshold filter and the divergence weight. With `group_filter=none` the advantages are bit-identical to upstream.
+  - Logging of `actor/entropy` and `env/steps_collected`.
+  - The data-preparation step is skipped on compute nodes, which are offline, when its files already exist.
+- **Omni workflow:** `cluster/omni/` (environment, one install script, Slurm job, job chains), `RUNBOOK_OMNI.md` with approval gates, `AGENTS.md`, and the progress, analysis and threshold tools.
+- **Launcher safeguards:** `scripts/run_condition.sh` refuses overrides of protected experiment settings. Only hardware knobs can change.
+- **Tests:** 37 CPU tests (`python3 -m pytest -q tests`). They cover:
+  - Upstream equivalence, filters and diagnostics.
+  - Full Hydra composition of every condition through the real launch scripts.
+  - The protected-settings guard and the data-preparation skip.
+  - The analysis tools, and the patched trainer's advantage path with a real `DataProto`.
 
-- **Primary task:** text ALFWorld with Qwen2.5-1.5B-Instruct. WebShop, 7B models, and hardware deployment are outside the minimum viable result.
-- **Code baseline:** pre-update paper-era snapshot. Do not mix newer repository files or newer vLLM instructions into it without documenting an explicit compatibility change.
-- **Fair comparison:** same model, environment, rollout count, update budget, and evaluation procedure for GiGPO and GRPO. Keep GiGPO's algorithm-specific gamma and step-advantage settings.
-- **Extension gate:** measure anchor-group signal before filtering. A zero or tiny fraction of degenerate groups is a valid null diagnostic.
-- **Source history:** the upstream code is a vendored snapshot so the handoff repository can have its own Git history. Provenance and upstream authorship are retained here, in the upstream license, and in the source comments.
+## Decisions
+
+- **Platform:** Omni (Slurm). One full GPU (≥ 80 GB, not MIG) per job. Resources are fixed in `cluster/omni/resources.env` (runbook step 3, approval H1).
+- **Experiment settings:** exactly the pinned upstream ALFWorld scripts: 16 tasks × 8 rollouts, minibatch 256, lr 1e-6, γ = 0.95 and ω = 1 with `mean_std_norm` for GiGPO, 150 steps, validation every 5 steps at temperature 0.4. Only hardware knobs (GPU count, micro-batch, vLLM memory share, validation batch, reference offload) may differ from the paper, identically for all runs.
+- **One code base:** all conditions, including the GiGPO control and GRPO, run from the patched copy `work/verl-agent-ext`. The pristine snapshot is the reference.
+- **Checkpoints:** every 5 steps, keep 2, automatic resume, and runs longer than the time limit are chained.
+- **Efficiency threshold:** 0.70 validation success, fixed before any run.
+- **Extension thresholds:** a fixed rule applied to the control run's training batches, steps 1–20, with a null-result gate at 5% (`knowledge_base/extension_design.md`).
+- **Budget:** decided at approval H2 from the measured smoke step time (`results/decisions.md`).
 
 ## Known uncertainties
 
-- The authors recommend pre-update code but do not identify this exact commit as their paper training commit. It is the last mainline revision before the update.
-- The original run uses stochastic validation (`temperature=0.4`, sampling enabled); one evaluation can vary. Repeated evaluations or multiple seeds strengthen comparisons.
-- The supplied scripts disable periodic checkpoint saving (`trainer.save_freq=-1`). Decide on a checkpoint policy before long runs and apply it consistently.
-- The proposal's TurtleBot3 Waffle Pi pipeline needs a separate manipulation mechanism for a literal fetch-and-place demo. A navigation-only high-level policy demo is the narrower option.
+- **Omni details:** the full-GPU partitions, their limits, the credit price per GPU-hour and the balance command are discovered in runbook step 3.
+- **Memory:** host-RAM needs of the paper settings are unmeasured. Each run keeps 256 ALFWorld processes alive. The runbook's "Fitting a run" ladder handles shortfalls.
+- **Validation noise:** sampling at temperature 0.4 draws new tasks each round, so single points are noisy. Use the mean of the last 3 points and paired seeds.
+- **Resume:** resuming restarts the environment random state, so note resumes in run records.
+- **Upstream behaviour:** `adjust_batch` randomly drops a few samples for batch divisibility. This affects all conditions equally.
+- **Exact training commit:** the authors do not name the exact commit used for the paper. This snapshot is the last one before their update.
+- **TurtleBot3:** the Waffle Pi has no arm, so a demo would be navigation-only unless the OpenMANIPULATOR is added. It is outside the runbook.

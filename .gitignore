@@ -1,5 +1,10 @@
 # Training outputs and downloaded assets
 runs/
+work/
+cache/
+slurm-logs/
+_transfer/
+reference_runs/
 wandb/
 checkpoints/
 data/

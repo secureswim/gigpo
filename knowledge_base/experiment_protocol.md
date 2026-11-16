@@ -1,28 +1,51 @@
 # Baseline and evaluation protocol
 
-## Gate 1: environment
+The operational steps (install, resources, smoke, budget, launches, monitoring) are in [`RUNBOOK_OMNI.md`](../RUNBOOK_OMNI.md). This file defines **what** is compared and measured.
 
-Complete `week1/gpu_machine_handoff.md`. Confirm the expected source hash and checksum check. Record package versions and any changes needed to install the pinned code. Run the ALFWorld reset/step check before downloading the model for training.
+## Conditions and matching
 
-## Gate 2: one-epoch smoke run
+All conditions are launched by `cluster/omni/job.sbatch <condition>`, which calls `scripts/run_condition.sh`. That script runs the pinned upstream example script from the patched tree and appends identical shared overrides for every condition. `tests/test_launch_compose.py` composes the full configuration of each condition and checks this.
 
-Run `bash week1/smoke_gigpo.sh`. Inspect the log for a complete rollout, a parameter update, and validation. Record wall time and failure details. Do not compare the smoke-run score to the paper result.
+| Condition | What differs |
+| --- | --- |
+| `gigpo` | control: `group_filter=none` (bit-identical advantages to upstream) |
+| `grpo` | upstream GRPO script |
+| `gigpo_threshold` | `group_filter=threshold` with `MIN_GROUP_SIZE` and `MIN_RETURN_STD` from the diagnostic |
+| `gigpo_weighted` | `group_filter=weighted` with `WEIGHT_TAU` from the diagnostic |
+| `gigpo_dynamic` (optional) | upstream dynamic-sampling script (also clip-higher 0.28); a reference, not a matched condition |
 
-## Gate 3: matched baselines
+GiGPO keeps its method-specific settings: γ = 0.95, ω = 1, `mean_std_norm`.
 
-Run the pinned GiGPO and GRPO scripts using the same model, ALFWorld mode and split, environment seed, group size, data sizes, maximum episode length, optimizer budget, validation settings, and hardware. Algorithm-specific advantage parameters are expected to differ. Record any resource-motivated modification identically for both methods. Preserve exact commands and logs for every run.
+**Protected settings** must never be overridden; `run_condition.sh` refuses them:
+- tasks per step (16) and rollouts per task (8)
+- PPO minibatch (256) and learning rate
+- KL settings and the invalid-action penalty
+- prompt and response lengths, and the episode limit (50)
+- validation sampling
+- γ, ω, normalisation mode, estimator, filter type
+- the number of training steps
 
-The supplied scripts request 150 epochs, validate every five training steps, and set `trainer.save_freq=-1`. Choose whether to add periodic checkpoints before starting the long runs. If you add them, apply the same policy to both methods. Never treat a truncated run as a direct reproduction of the published final score.
+**Hardware knobs** (GPU count, micro-batch, vLLM memory share, validation batch, reference-model offload) change memory and speed only. They are fixed once in `cluster/omni/resources.env` and are identical for all runs.
 
-## Outcome measures
+Paper reference (Table 1, Qwen2.5-1.5B, mean ± std over 3 seeds): GiGPO w/ std (our `mean_std_norm` setting) **86.7 ± 1.7**, GRPO **72.8 ± 3.6**. The paper trains 150 iterations on 2×H100.
 
-- **Primary:** ALFWorld validation success rate, using the metric actually emitted by the pinned trainer.
-- **Learning curve:** success rate versus environment interactions or training steps, with a consistent x-axis across methods.
-- **Efficiency:** environment steps to a fixed success threshold selected before viewing extension results. If a method never reaches it, report that rather than inventing a value.
-- **Diagnostics:** episode length, entropy, reward variance, and gradient norms where the trainer logs them. Add instrumentation only if needed; document any new metric definition.
+## Fixed choices (decided before any result)
 
-The supplied validation samples actions at temperature `0.4`. Record seeds and repeat evaluations when feasible. A single stochastic validation point is weak evidence of a small gain. Use the same evaluation protocol for all conditions, and report run-to-run variation if multiple training seeds fit the budget.
+- **Checkpoints:** `SAVE_FREQ=5`, keep 2, `resume_mode=auto`, identical for every condition. Runs longer than the Slurm time limit are submitted as job chains (`cluster/omni/submit_chain.sh`). Each job resumes from the latest checkpoint. After a resume the environment RNG restarts, so the task sequence differs from an uninterrupted run. Note any resume in the run record.
+- **Success threshold for "steps to target": 0.70 validation success.** It is reachable by both baselines in the paper (GRPO final 72.8%), so it measures speed rather than only GiGPO's ceiling. Change it only before the first full run, and record the change here.
+- **Seeds:** `env.seed` controls both training tasks and validation tasks (validation uses seed + 1000). Compare conditions **paired by seed**. The number of seeds and runs is fixed at approval H2 (runbook step 6) and recorded in `results/decisions.md`. vLLM sampling is not seeded, so a rerun is not bit-identical.
+- **Budget:** 150 steps per run, as in the paper. A shorter budget (`TOTAL_EPOCHS`) is allowed only by H2 approval, and must then be the same for every compared condition.
+- **Validation:** the pinned scripts sample at temperature 0.4 on 128 tasks drawn from `valid_seen` (`eval_in_distribution`) every 5 steps. `VAL_BATCH` only sets how many run at once. Each validation round resets the environments, so successive points appear to use different task draws. Points are noisy. Report the mean of the last 3 validation points next to the final one.
+- **Extension thresholds:** set by the rule in `extension_design.md` from the seed-0 GiGPO run's training batches.
+
+## Outcome measures (all produced by `analysis/summarize.py` and `analysis/plot_curves.py`)
+
+- **Primary:** `val/success_rate`, final and mean of the last 3 points.
+- **Learning curve:** success vs. training step and vs. cumulative `env/steps_collected`.
+- **Efficiency:** training steps and environment steps to 0.70. Never reached → NaN, reported as such.
+- **Stability:** `actor/grad_norm` (std, max), `actor/entropy` (first vs. last third), training reward std, episode length.
+- **Mechanism:** `gigpo_diag/*`, i.e. what each filter removed.
 
 ## Result record
 
-Copy `results/TEMPLATE.md` for each run and fill it as the run finishes. Keep large checkpoints, downloaded models, and logs outside Git; the template should contain paths or links to them. Include failed runs in the record so the experimental history is understandable.
+Copy `results/TEMPLATE.md` to `results/<run>.md` for each run. Keep checkpoints and logs outside Git (`runs/`, `slurm-logs/`), and put their paths in the record. Record failed runs and resumes too. Approvals go in `results/decisions.md`.

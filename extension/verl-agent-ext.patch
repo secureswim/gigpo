@@ -1,0 +1,210 @@
+diff --git a/agent_system/multi_turn_rollout/rollout_loop.py b/agent_system/multi_turn_rollout/rollout_loop.py
+index 5eb2c75..a19fbb0 100644
+--- a/agent_system/multi_turn_rollout/rollout_loop.py
++++ b/agent_system/multi_turn_rollout/rollout_loop.py
+@@ -370,6 +370,8 @@ class TrajectoryCollector:
+                     episode_rewards=episode_rewards, 
+                     episode_lengths=episode_lengths,
+                     )
++        # extension: count environment steps actually taken (summed over envs)
++        self._env_steps_counter = getattr(self, '_env_steps_counter', 0) + int(np.sum(episode_lengths))
+         
+         return total_batch_list, episode_rewards, episode_lengths, success, traj_uid
+     
+@@ -456,6 +458,7 @@ class TrajectoryCollector:
+         Returns:
+             DataProto: Final collected trajectory data with metadata.
+         """
++        self._env_steps_counter = 0  # extension: reset per call
+         # Initial observations from the environment
+         if self.config.algorithm.filter_groups.enable and is_train:
+             # Dynamic Sampling (for DAPO and Dynamic GiGPO)
+@@ -477,6 +480,8 @@ class TrajectoryCollector:
+         assert len(total_batch_list) == len(total_episode_lengths)
+         assert len(total_batch_list) == len(total_traj_uid)
+         
++        if is_train:
++            self.last_train_env_steps = self._env_steps_counter  # extension
+ 
+         # Create trajectory data
+         gen_batch_output: DataProto = self.gather_rollout_data(
+diff --git a/examples/gigpo_dynamic_trainer/run_alfworld.sh b/examples/gigpo_dynamic_trainer/run_alfworld.sh
+index caed6de..67abb18 100644
+--- a/examples/gigpo_dynamic_trainer/run_alfworld.sh
++++ b/examples/gigpo_dynamic_trainer/run_alfworld.sh
+@@ -12,10 +12,14 @@ clip_ratio_high=0.28
+ enable_filter_groups=True
+ max_num_gen_batches=10
+ 
++# extension: data preparation downloads from the internet, which compute nodes
++# lack. cluster/omni/prepare.sh runs it on the login node; skip it here if done.
++if [[ ! -f $HOME/data/verl-agent/text/train.parquet || ! -f $HOME/data/verl-agent/text/test.parquet ]]; then
+ python3 -m examples.data_preprocess.prepare \
+     --mode 'text' \
+     --train_data_size $train_data_size \
+     --val_data_size $val_data_size
++fi
+ 
+ python3 -m verl.trainer.main_ppo \
+     algorithm.adv_estimator=gigpo \
+@@ -73,4 +77,4 @@ python3 -m verl.trainer.main_ppo \
+     trainer.save_freq=-1 \
+     trainer.test_freq=5 \
+     trainer.total_epochs=150 \
+-    trainer.val_before_train=True $@
++    trainer.val_before_train=True "${@:2}"  # extension fix: $1 is the engine name, not a Hydra override
+diff --git a/examples/gigpo_trainer/run_alfworld.sh b/examples/gigpo_trainer/run_alfworld.sh
+index 9b1d6aa..451c0a8 100644
+--- a/examples/gigpo_trainer/run_alfworld.sh
++++ b/examples/gigpo_trainer/run_alfworld.sh
+@@ -7,10 +7,14 @@ val_data_size=128
+ group_size=8
+ mode="mean_std_norm" # "mean_norm" or "mean_std_norm"
+ 
++# extension: data preparation downloads from the internet, which compute nodes
++# lack. cluster/omni/prepare.sh runs it on the login node; skip it here if done.
++if [[ ! -f $HOME/data/verl-agent/text/train.parquet || ! -f $HOME/data/verl-agent/text/test.parquet ]]; then
+ python3 -m examples.data_preprocess.prepare \
+     --mode 'text' \
+     --train_data_size $train_data_size \
+     --val_data_size $val_data_size
++fi
+ 
+ python3 -m verl.trainer.main_ppo \
+     algorithm.adv_estimator=gigpo \
+@@ -64,4 +68,4 @@ python3 -m verl.trainer.main_ppo \
+     trainer.save_freq=-1 \
+     trainer.test_freq=5 \
+     trainer.total_epochs=150 \
+-    trainer.val_before_train=True $@
++    trainer.val_before_train=True "${@:2}"  # extension fix: $1 is the engine name, not a Hydra override
+diff --git a/examples/grpo_trainer/run_alfworld.sh b/examples/grpo_trainer/run_alfworld.sh
+index bbb5b1d..f6a88ff 100644
+--- a/examples/grpo_trainer/run_alfworld.sh
++++ b/examples/grpo_trainer/run_alfworld.sh
+@@ -6,10 +6,14 @@ train_data_size=16
+ val_data_size=128
+ group_size=8
+ 
++# extension: data preparation downloads from the internet, which compute nodes
++# lack. cluster/omni/prepare.sh runs it on the login node; skip it here if done.
++if [[ ! -f $HOME/data/verl-agent/text/train.parquet || ! -f $HOME/data/verl-agent/text/test.parquet ]]; then
+ python3 -m examples.data_preprocess.prepare \
+     --mode 'text' \
+     --train_data_size $train_data_size \
+     --val_data_size $val_data_size
++fi
+ 
+ python3 -m verl.trainer.main_ppo \
+     algorithm.adv_estimator=grpo \
+@@ -60,4 +64,4 @@ python3 -m verl.trainer.main_ppo \
+     trainer.save_freq=-1 \
+     trainer.test_freq=5 \
+     trainer.total_epochs=150 \
+-    trainer.val_before_train=True $@
++    trainer.val_before_train=True "${@:2}"  # extension fix: $1 is the engine name, not a Hydra override
+diff --git a/verl/trainer/config/ppo_trainer.yaml b/verl/trainer/config/ppo_trainer.yaml
+index 79584dd..0d982b6 100644
+--- a/verl/trainer/config/ppo_trainer.yaml
++++ b/verl/trainer/config/ppo_trainer.yaml
+@@ -185,6 +185,14 @@ algorithm:
+   gigpo:
+     step_advantage_w: 1.0
+     mode: "mean_norm" # "mean_norm" or "mean_std_norm"
++    # ---- course-project extension (gigpo/gigpo_ext.py) ----
++    group_filter: none      # none | threshold | weighted
++    min_group_size: 2       # threshold: groups smaller than this get no micro advantage
++    min_return_std: 0.0     # threshold: groups with return std below this get no micro advantage
++    weight_tau: null        # weighted: w = s/(s+tau) * (n-1)/n, then mass-renormalised
++    diagnostics: True       # log gigpo_diag/* metrics every training step
++    diag_dump: True         # append per-group arrays to <diag_dir>/step_groups.jsonl
++    diag_dir: null          # default: ${trainer.default_local_dir}/gigpo_diag
+   filter_groups: # DAPO from https://arxiv.org/abs/2503.14476
+     enable: False
+     max_num_gen_batches: 10
+diff --git a/verl/trainer/ppo/ray_trainer.py b/verl/trainer/ppo/ray_trainer.py
+index 8a2c79f..5f30225 100644
+--- a/verl/trainer/ppo/ray_trainer.py
++++ b/verl/trainer/ppo/ray_trainer.py
+@@ -44,6 +44,7 @@ from verl.utils.tracking import ValidationGenerationsLogger
+ from torch.utils.data import RandomSampler, SequentialSampler
+ from torchdata.stateful_dataloader import StatefulDataLoader
+ from gigpo import core_gigpo
++from gigpo import gigpo_ext  # course-project extension: anchor-group diagnostics/selection
+ 
+ from agent_system.multi_turn_rollout import TrajectoryCollector, adjust_batch
+ 
+@@ -200,7 +201,7 @@ def compute_response_mask(data: DataProto):
+     return attention_mask[:, -response_length:]
+ 
+ 
+-def compute_advantage(data: DataProto, adv_estimator, gamma=1.0, lam=1.0, step_advantage_w=1.0, gigpo_mode="mean_std_norm", num_repeat=1):
++def compute_advantage(data: DataProto, adv_estimator, gamma=1.0, lam=1.0, step_advantage_w=1.0, gigpo_mode="mean_std_norm", num_repeat=1, gigpo_ext_cfg=None):
+     # Back-compatible with trainers that do not compute response mask in fit
+     if "response_mask" not in data.batch.keys():
+         data.batch['response_mask'] = compute_response_mask(data)
+@@ -243,6 +244,26 @@ def compute_advantage(data: DataProto, adv_estimator, gamma=1.0, lam=1.0, step_a
+             index=data.non_tensor_batch['uid'])
+         data.batch['advantages'] = advantages
+         data.batch['returns'] = returns
++    elif adv_estimator == AdvantageEstimator.GiGPO and gigpo_ext_cfg is not None:
++        # Extension path. With group_filter=none the advantages equal the upstream ones.
++        advantages, returns, diag_metrics, diag_record = gigpo_ext.compute_gigpo_outcome_advantage_ext(
++            token_level_rewards=data.batch['token_level_rewards'],
++            step_rewards=data.batch['step_rewards'],
++            eos_mask=data.batch['response_mask'],
++            anchor_obs=data.non_tensor_batch['anchor_obs'],
++            index=data.non_tensor_batch['uid'],
++            step_advantage_w=step_advantage_w,
++            mode=gigpo_mode,
++            group_filter=gigpo_ext_cfg.get('group_filter', 'none'),
++            min_group_size=gigpo_ext_cfg.get('min_group_size', 2),
++            min_return_std=gigpo_ext_cfg.get('min_return_std', 0.0),
++            weight_tau=gigpo_ext_cfg.get('weight_tau', None),
++            diagnostics=gigpo_ext_cfg.get('diagnostics', True),
++            )
++        data.batch['advantages'] = advantages
++        data.batch['returns'] = returns
++        data.meta_info['gigpo_diag_metrics'] = diag_metrics
++        data.meta_info['gigpo_diag_record'] = diag_record
+     elif adv_estimator == AdvantageEstimator.GiGPO:
+         advantages, returns = core_gigpo.compute_gigpo_outcome_advantage(
+             token_level_rewards=data.batch['token_level_rewards'], # for episode group reward computing
+@@ -924,6 +945,9 @@ class RayPPOTrainer(object):
+                     # batch = batch.union(gen_batch_output)
+                     del batch
+                     batch = gen_batch_output
++                    # extension: environment steps consumed by this iteration (incl. rollouts
++                    # discarded by dynamic sampling), for sample-efficiency curves
++                    metrics['env/steps_collected'] = float(getattr(self.traj_collector, 'last_train_env_steps', len(batch)))
+ 
+                     if self.config.algorithm.adv_estimator == AdvantageEstimator.GiGPO:
+                         step_rewards_tensor = core_gigpo.compute_step_discounted_returns(
+@@ -998,7 +1022,15 @@ class RayPPOTrainer(object):
+                                                   num_repeat=self.config.actor_rollout_ref.rollout.n,
+                                                   step_advantage_w=self.config.algorithm.gigpo.step_advantage_w,
+                                                   gigpo_mode=self.config.algorithm.gigpo.mode,
++                                                  gigpo_ext_cfg=self.config.algorithm.gigpo,
+                                                   )
++                        # extension: collect anchor-group diagnostics (driver-side only)
++                        metrics.update(batch.meta_info.pop('gigpo_diag_metrics', {}) or {})
++                        _diag_record = batch.meta_info.pop('gigpo_diag_record', None)
++                        if _diag_record and self.config.algorithm.gigpo.get('diag_dump', True):
++                            _diag_dir = self.config.algorithm.gigpo.get('diag_dir', None) or \
++                                os.path.join(self.config.trainer.default_local_dir, 'gigpo_diag')
++                            gigpo_ext.dump_record(_diag_record, _diag_dir, self.global_steps)
+ 
+                     # update critic
+                     if self.use_critic:
+diff --git a/verl/workers/actor/dp_actor.py b/verl/workers/actor/dp_actor.py
+index 34333ac..cac5bdf 100644
+--- a/verl/workers/actor/dp_actor.py
++++ b/verl/workers/actor/dp_actor.py
+@@ -335,6 +335,7 @@ class DataParallelPPOActor(BasePPOActor):
+                         'actor/pg_loss': pg_loss.detach().item(),
+                         'actor/pg_clipfrac': pg_clipfrac.detach().item(),
+                         'actor/ppo_kl': ppo_kl.detach().item(),
++                        'actor/entropy': entropy_loss.detach().item(),  # extension: logging only
+                     }
+                     append_to_dict(metrics, data)
+ 
