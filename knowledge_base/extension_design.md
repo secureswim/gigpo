@@ -47,7 +47,7 @@ Thresholds are set from **training batches of the original-GiGPO control run**, 
 - `MIN_RETURN_STD` = 25th percentile of spread-group std.
 - `WEIGHT_TAU` = median of spread-group std.
 
-**Null-result gate:** if the threshold filter would touch fewer than 5% of the step samples that currently receive a non-zero micro advantage, report the diagnostic as a null result and do not train (b) and (c).
+**Low-impact forecast:** if the threshold filter would touch fewer than 5% of step samples that currently receive a non-zero micro advantage, report that a threshold effect is unlikely to be large. Still train (b) and (c) when thresholds exist: the weighted condition can reweight groups that the threshold condition keeps. If the first 20 steps contain no group with return spread, retry using the full control run. If the full run also has none, no thresholds can be derived; report the mechanism result and request a new scope decision.
 
 ## Relationship to existing methods
 
@@ -56,4 +56,4 @@ Thresholds are set from **training batches of the original-GiGPO control run**, 
 
 ## Decision rule
 
-If the gate fails, or filtering gives no gain beyond seed-to-seed variation, report the null result. If it helps, check that the gain survives a second seed and repeated evaluation, and report environment steps to threshold, not only final success.
+If the threshold-impact forecast is low or filtering gives no gain, report that outcome. If a variant helps, report environment steps to target and validation success; a second seed would be needed to establish that the gain survives run-to-run variation, but it is outside this handoff.
