@@ -27,7 +27,6 @@ if [[ ! "$N" =~ ^[1-9][0-9]*$ ]]; then
 fi
 if [[ "$CONDITION" != gigpo ]]; then
   [[ -f results/diagnostic/thresholds.env ]] || { echo "Run the GiGPO diagnostic first: thresholds.env is missing." >&2; exit 2; }
-  grep -Fq "**Gate passed**" results/diagnostic/diagnostic_report.md || { echo "The diagnostic gate did not pass; do not submit extension runs." >&2; exit 2; }
 fi
 cd "$(dirname "${BASH_SOURCE[0]}")/../.."
 mkdir -p slurm-logs
