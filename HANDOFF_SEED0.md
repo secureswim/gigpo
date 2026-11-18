@@ -10,7 +10,7 @@ Run exactly these three full training conditions with `SEED=0` and one shared tr
 2. `gigpo_threshold`: remove step advantage from small or low-spread anchor groups.
 3. `gigpo_weighted`: reweight step advantage by group size and return spread.
 
-The third and fourth names in older notes (`grpo` and `gigpo_dynamic`) and seed 1 are outside this handoff. Do not submit them. `preflight` and `smoke` are mandatory setup checks, not experimental conditions. The launchers reject unsupported conditions and nonzero seeds.
+Older notes mention `grpo`, `gigpo_dynamic` and seed 1; all are outside this handoff. Do not submit them. `preflight` and `smoke` are mandatory setup checks, not experimental conditions. The launchers reject unsupported conditions and nonzero seeds.
 
 ## Before any full run
 
