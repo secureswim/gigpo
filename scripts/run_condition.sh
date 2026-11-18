@@ -8,20 +8,17 @@
 #
 # Conditions
 #   gigpo            original GiGPO (control; also produces the anchor-group diagnostic)
-#   grpo             GRPO baseline
-#   gigpo_threshold  condition (b): micro advantage removed for low-signal groups
+##   gigpo_threshold  condition (b): micro advantage removed for low-signal groups
 #   gigpo_weighted   condition (c): micro advantage scaled by group divergence
-#   gigpo_dynamic    optional reference: upstream episode-level dynamic sampling
-#                    (its upstream script also turns on clip-higher 0.28)
 #
-# Every condition runs the upstream example script of the pinned commit from the
+# The three seed-0 conditions run the upstream GiGPO example script of the pinned commit from the
 # patched tree, so all paper settings come from upstream. Only the overrides
 # below are appended (Hydra: the last value of a key wins). They are identical
 # for every condition except the method-specific ones.
 #
 # Environment variables (defaults in brackets). Only the HARDWARE knobs may be
 # changed to make a run fit; see RUNBOOK_OMNI.md, "Fitting a run".
-#   SEED [0]              env.seed; validation tasks use SEED+1000. Pair conditions by seed.
+#   SEED [0]              fixed to 0 for this handoff; validation tasks use 1000.
 #   TOTAL_EPOCHS [150]    training steps (16-row placeholder dataset -> 1 step per epoch).
 #                         150 = paper budget. Change only with written human approval.
 #   TEST_FREQ [5]         validate every N training steps (paper: 5).
@@ -44,13 +41,17 @@
 #   RUN_TAG                          optional suffix for the run name (e.g. smoke)
 set -euo pipefail
 
-CONDITION="${1:?usage: run_condition.sh <gigpo|grpo|gigpo_threshold|gigpo_weighted|gigpo_dynamic> [overrides]}"
+CONDITION="${1:?usage: run_condition.sh <gigpo|gigpo_threshold|gigpo_weighted> [overrides]}"
 shift
 
 PROJECT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 EXT_TREE="${EXT_TREE:-$PROJECT_ROOT/work/verl-agent-ext}"
 RUN_ROOT="${RUN_ROOT:-$PROJECT_ROOT/runs}"
 SEED="${SEED:-0}"
+if [[ "$SEED" != "0" ]]; then
+  echo "Only SEED=0 is allowed by the three-experiment handoff (got SEED=$SEED)." >&2
+  exit 2
+fi
 TOTAL_EPOCHS="${TOTAL_EPOCHS:-150}"
 TEST_FREQ="${TEST_FREQ:-5}"
 SAVE_FREQ="${SAVE_FREQ:-5}"
@@ -74,7 +75,7 @@ fi
 # must not be overridden on the command line; a mismatch would make the
 # conditions incomparable with each other and with the paper.
 PROTECTED=(
-  data.train_batch_size env.rollout.n env.max_steps env.env_name
+  data.train_batch_size env.seed env.rollout.n env.max_steps env.env_name
   actor_rollout_ref.actor.ppo_mini_batch_size actor_rollout_ref.actor.optim.lr
   actor_rollout_ref.actor.kl_loss_coef actor_rollout_ref.actor.use_kl_loss
   actor_rollout_ref.actor.invalid_action_penalty_coef
@@ -99,8 +100,6 @@ case "$CONDITION" in
   gigpo)
     script=examples/gigpo_trainer/run_alfworld.sh
     method_args+=(algorithm.gigpo.group_filter=none) ;;
-  grpo)
-    script=examples/grpo_trainer/run_alfworld.sh ;;
   gigpo_threshold)
     script=examples/gigpo_trainer/run_alfworld.sh
     : "${MIN_GROUP_SIZE:?set MIN_GROUP_SIZE (source results/diagnostic/thresholds.env)}"
@@ -113,9 +112,6 @@ case "$CONDITION" in
     : "${WEIGHT_TAU:?set WEIGHT_TAU (source results/diagnostic/thresholds.env)}"
     method_args+=(algorithm.gigpo.group_filter=weighted
                   algorithm.gigpo.weight_tau="$WEIGHT_TAU") ;;
-  gigpo_dynamic)
-    script=examples/gigpo_dynamic_trainer/run_alfworld.sh
-    method_args+=(algorithm.gigpo.group_filter=none) ;;
   *)
     echo "Unknown condition: $CONDITION" >&2; exit 1 ;;
 esac
@@ -146,9 +142,7 @@ common_args=(
   trainer.experiment_name="$RUN_NAME"
   "trainer.logger=$LOGGER"
 )
-if [[ "$CONDITION" != grpo ]]; then
-  common_args+=(algorithm.gigpo.diag_dir="$RUN_DIR/gigpo_diag")
-fi
+common_args+=(algorithm.gigpo.diag_dir="$RUN_DIR/gigpo_diag")
 
 # DRY_RUN=1 prints the resolved command (one argument per line) and exits.
 if [[ "${DRY_RUN:-0}" == "1" ]]; then
