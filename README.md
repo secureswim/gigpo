@@ -2,7 +2,7 @@
 
 RL course project *Efficient Step-Level Credit Assignment in GiGPO* (Siddharth Kumar, Aditi Kumar, Vansh Narula). The proposal is in [`GIGPO - RL.pptx`](GIGPO%20-%20RL.pptx).
 
-The current GPU handoff runs exactly three seed-0 conditions on text ALFWorld with `Qwen/Qwen2.5-1.5B-Instruct`: original GiGPO, threshold-filtered GiGPO, and divergence-weighted GiGPO. The extension runs happen only if the first 20 control steps show that the filters would affect enough anchor-group samples. GRPO and additional seeds are outside this handoff.
+The current GPU handoff runs exactly three seed-0 conditions on text ALFWorld with `Qwen/Qwen2.5-1.5B-Instruct`: original GiGPO, threshold-filtered GiGPO, and divergence-weighted GiGPO. The first 20 control steps set the extension thresholds. A small predicted threshold effect is reported, but both variants still run. If no anchor groups with return spread exist even after the full control, the variants cannot be configured meaningfully and the runbook asks for a revised plan. GRPO and additional seeds are outside this handoff.
 
 ## How to run
 
