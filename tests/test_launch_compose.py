@@ -131,3 +131,11 @@ def test_nonzero_seed_is_refused(env):
     r = subprocess.run(["bash", "scripts/run_condition.sh", "gigpo"], cwd=ROOT,
                        capture_output=True, text=True, env={**os.environ, **env, "SEED": "1"})
     assert r.returncode == 2 and "Only SEED=0" in r.stderr
+
+
+def test_submit_chain_rejects_out_of_scope_before_sbatch(tmp_path):
+    for condition, seed in [("grpo", "0"), ("gigpo_dynamic", "0"), ("gigpo", "1")]:
+        r = subprocess.run(["bash", "cluster/omni/submit_chain.sh", condition, "1"], cwd=ROOT,
+                           capture_output=True, text=True, env={**os.environ, "SEED": seed})
+        assert r.returncode == 2, (condition, seed, r.stdout, r.stderr)
+        assert "Only" in r.stderr
