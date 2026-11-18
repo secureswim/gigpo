@@ -14,7 +14,7 @@ Some step-level anchor groups give a noisy micro advantage. Removing or down-wei
 
 ## Diagnostic (runs automatically in every GiGPO-family run)
 
-The patched trainer logs `gigpo_diag/*` metrics every training step and appends the per-group arrays (size, return std, range, mean, applied weight) to `<run>/gigpo_diag/step_groups.jsonl`. The key metrics are:
+The patched trainer logs `gigpo_diag/*` metrics every training step and appends the per-group arrays (size, return std, range, mean, min, max, applied weight) to `<run>/gigpo_diag/step_groups.jsonl`. The key metrics are:
 
 | Metric | Meaning |
 | --- | --- |
@@ -38,18 +38,24 @@ All are implemented in `extension/gigpo_ext.py` and selected with `algorithm.gig
 
    where s_g is the group's return std, n_g its size, and τ = `WEIGHT_TAU`. All weights are then multiplied by one batch-wide constant so that Σ|micro advantage| is unchanged. Only the distribution of micro advantage across groups changes, not the overall update size. The (n − 1)/n factor discounts the std estimate of tiny groups.
 
-## Predeclared threshold rule
+## Predeclared threshold rule (v2, 18 November 2026)
 
-Thresholds are set from **training batches of the original-GiGPO control run**, steps 1–20, by `analysis/choose_thresholds.py`. Validation results are never used.
+Full rationale: [`threshold_rule.md`](threshold_rule.md). The reward math behind it: [`reward_and_return_structure.md`](reward_and_return_structure.md). Thresholds are set by `analysis/choose_thresholds.py`. Validation results are never used.
 
 - "Spread groups" are groups with n ≥ 2 and std > 1e-6.
-- `MIN_GROUP_SIZE = 3`.
-- `MIN_RETURN_STD` = 25th percentile of spread-group std.
-- `WEIGHT_TAU` = median of spread-group std.
+- `MIN_GROUP_SIZE = 2`: no size filter beyond size-1 groups, which already get 0.
+- `MIN_RETURN_STD = 0.075`, **fixed**: just above 0.1/√2 = 0.0707, the largest std of a group whose returns differ by at most one invalid-action penalty.
+- `WEIGHT_TAU` = median of spread-group std in **training batches of the original-GiGPO control run**, steps 1–20.
+
+Rule v1 (`MIN_GROUP_SIZE = 3`, `MIN_RETURN_STD` = 25th percentile) was retired before any run. Its percentile had no fixed meaning in a multimodal spread distribution, and its size rule removed size-2 success-vs-failure pairs.
+
+The diagnostic also splits spread groups into return bands (mixed outcome, timing, penalty-scale) using per-group `mins`/`maxs`, which the extension records for diagnostics only.
 
 **Low-impact forecast:** if the threshold filter would touch fewer than 5% of step samples that currently receive a non-zero micro advantage, report that a threshold effect is unlikely to be large. Still train (b) and (c) when thresholds exist: the weighted condition can reweight groups that the threshold condition keeps. If the first 20 steps contain no group with return spread, retry using the full control run. If the full run also has none, no thresholds can be derived; report the mechanism result and request a new scope decision.
 
 ## Relationship to existing methods
+
+A fuller discussion of DAPO and Dr. GRPO is in [`dapo_and_related_work.md`](dapo_and_related_work.md).
 
 - **Dynamic sampling (DAPO) is already in the pinned snapshot**, not only in newer upstream code. `examples/gigpo_dynamic_trainer/run_alfworld.sh` sets `algorithm.filter_groups.enable=True`, and `agent_system/multi_turn_rollout/rollout_loop.py` resamples **episode-level** groups whose episodes all got the same reward. Its script also turns on clip-higher (`clip_ratio_high=0.28`), so it is not a pure filter comparison. It remains in the pinned code as related work but is outside this seed-0 three-run handoff. It spends extra environment steps on resampling, which `env/steps_collected` counts. Our conditions act on **step-level groups after anchor matching** and spend no extra rollouts.
 - **Similarity-based GiGPO is not in the pinned snapshot.** In current upstream `main` (checked at commit `20bd331`, 9 June 2026), `algorithm.gigpo.enable_similarity` and `similarity_thresh` (default 0.95) merge anchor observations whose `difflib.SequenceMatcher` ratio is ≥ the threshold, using a greedy first-match clustering. That changes **which samples form a group**. We change **how a formed group is used**. The two axes are independent. Cite it as related work and do not mix it into the pinned baseline.

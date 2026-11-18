@@ -124,6 +124,26 @@ def test_threshold_removes_only_low_signal_groups_and_keeps_episode_advantage():
     assert m["gigpo_diag/frac_samples_micro_kept"] == pytest.approx(6 / 11)
 
 
+def test_rule_v2_threshold_keeps_size_two_outcome_pairs_and_drops_penalty_only_groups():
+    # Real return values (float32, as in the trainer): win 3 steps later vs never win;
+    # never win, one invalid action; two wins one step apart, 10 steps from the goal.
+    b = make_batch([("e1", "pair", [10 * 0.95 ** 3, 0.0]),
+                    ("e1", "pen", [0.0, -0.1]),
+                    ("e1", "pen3", [0.0, 0.0, -0.1]),
+                    ("e2", "timing", [10 * 0.95 ** 10, 10 * 0.95 ** 11])])
+    mode = "mean_std_norm"
+    ref, *_ = gigpo_ext.compute_gigpo_outcome_advantage_ext(mode=mode, group_filter="none", **b)
+    out, _, _, rec = gigpo_ext.compute_gigpo_outcome_advantage_ext(
+        mode=mode, group_filter="threshold", min_group_size=2, min_return_std=0.075, **b)
+    mr = per_sample(micro_part(ref, b, mode), b["eos_mask"])
+    mo = per_sample(micro_part(out, b, mode), b["eos_mask"])
+    assert np.allclose(mo[:2], mr[:2], atol=1e-6) and np.abs(mo[:2]).min() > 0.5   # outcome pair kept
+    assert np.allclose(mo[2:7], 0.0)                                                # penalty-only removed
+    assert np.allclose(mo[7:], mr[7:], atol=1e-6)                                   # timing pair kept
+    by_size = sorted(zip(rec["sizes"], rec["mins"], rec["maxs"]))
+    assert (3, -0.1, 0.0) in by_size and (2, -0.1, 0.0) in by_size
+
+
 def test_threshold_never_keeps_size_one_groups():
     stats = gigpo_ext.group_statistics(np.array([1.0, 2.0, 3.0]), np.array(["a", "b", "b"], dtype=object))
     w = gigpo_ext.group_weights(stats, "threshold", min_group_size=1, min_return_std=0.0)
@@ -222,8 +242,8 @@ def _dry(condition, env, ext_tree):
 
 
 def test_conditions_differ_only_in_method_settings(ext_tree):
-    env = {"MIN_GROUP_SIZE": "3", "MIN_RETURN_STD": "0.3", "WEIGHT_TAU": "0.5", "SEED": "1"}
-    runs = {c: _dry(c, env, ext_tree) for c in ["gigpo", "grpo", "gigpo_threshold", "gigpo_weighted", "gigpo_dynamic"]}
+    env = {"MIN_GROUP_SIZE": "2", "MIN_RETURN_STD": "0.075", "WEIGHT_TAU": "0.5", "SEED": "0"}
+    runs = {c: _dry(c, env, ext_tree) for c in ["gigpo", "gigpo_threshold", "gigpo_weighted"]}
 
     def shared(lines):
         return {x for x in lines[1:] if not x.startswith(("algorithm.", "trainer.experiment_name",
@@ -231,11 +251,18 @@ def test_conditions_differ_only_in_method_settings(ext_tree):
     base = shared(runs["gigpo"])
     for c, lines in runs.items():
         assert shared(lines) == base, c
-    assert "env.seed=1" in base
+    assert "env.seed=0" in base
     assert "trainer.save_freq=5" in base
     assert "algorithm.gigpo.group_filter=threshold" in runs["gigpo_threshold"]
+    assert "algorithm.gigpo.min_return_std=0.075" in runs["gigpo_threshold"]
     assert "algorithm.gigpo.weight_tau=0.5" in runs["gigpo_weighted"]
-    assert runs["grpo"][0] == "examples/grpo_trainer/run_alfworld.sh"
+    assert {lines[0] for lines in runs.values()} == {"examples/gigpo_trainer/run_alfworld.sh"}
+
+
+def test_out_of_scope_launches_are_rejected(ext_tree):
+    for cond, seed in [("grpo", "0"), ("gigpo_dynamic", "0"), ("gigpo", "1")]:
+        r = _bash(f"bash scripts/run_condition.sh {cond}", {"DRY_RUN": "1", "EXT_TREE": str(ext_tree), "SEED": seed})
+        assert r.returncode != 0, (cond, seed)
 
 
 def test_threshold_condition_requires_thresholds(ext_tree):

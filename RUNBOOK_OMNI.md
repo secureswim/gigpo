@@ -159,7 +159,13 @@ source cluster/omni/env.sh
 python3 analysis/choose_thresholds.py --diag runs/gigpo_seed0/gigpo_diag/step_groups.jsonl
 ```
 
-This writes `results/diagnostic/{thresholds.env,diagnostic_report.md,anchor_groups.png}`. The fixed rule uses training batches only. Do not edit its output.
+This writes `results/diagnostic/{thresholds.env,diagnostic_report.md,anchor_groups.png}`. The fixed rule (v2, [`knowledge_base/threshold_rule.md`](knowledge_base/threshold_rule.md)) uses training batches only. Do not edit its output.
+
+**Check before step 9:**
+- The first line of `thresholds.env` names `rule v2`, and the file sets `MIN_GROUP_SIZE=2`, `MIN_RETURN_STD=0.075` and a positive `WEIGHT_TAU`. Anything else means the wrong code ran: stop and report.
+- The report's band table has no **Other** row. Such a row means the reward or penalty differs from what rule v2 assumes. Stop and report at H3 before submitting the extensions.
+- If the report says "only the std split is shown", the control ran with an extension older than rule v2. The thresholds are still valid; note it in `results/gigpo_seed0.md` and continue.
+- Copy the band table, the forecast line and the block-drift table into your step report.
 
 - **Thresholds written:** finish the control and go to step 9. Run both variants even if the report says **Low threshold impact expected**. That warning predicts a small effect for `gigpo_threshold`; it does not measure whether `gigpo_weighted` is inert.
 - **No groups with return spread in steps 1–20:** the command exits without thresholds. Let `gigpo_seed0` reach its approved final step, then run `python3 analysis/choose_thresholds.py --diag runs/gigpo_seed0/gigpo_diag/step_groups.jsonl --steps <approved-final-step>`. This fallback is fixed in advance and still uses no validation data.

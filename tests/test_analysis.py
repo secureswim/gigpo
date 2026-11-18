@@ -105,9 +105,76 @@ def test_choose_thresholds(tmp_path):
                         "--out", str(out)], capture_output=True, text=True)
     assert r.returncode == 0, r.stderr
     env = (out / "thresholds.env").read_text()
-    assert "MIN_GROUP_SIZE=3" in env and "MIN_RETURN_STD=" in env and "WEIGHT_TAU=" in env
-    assert "training steps 1..20 (20 steps)" in env
+    assert "MIN_GROUP_SIZE=2" in env and "MIN_RETURN_STD=0.075" in env and "WEIGHT_TAU=" in env
+    assert "rule v2" in env and "training steps 1..20 (20 steps)" in env
     assert (out / "anchor_groups.png").exists()
+    assert "only the std split is shown" in (out / "diagnostic_report.md").read_text()  # no min/max in record
+
+
+def _alfworld_like_groups(rng, n_groups=300):
+    """Synthetic groups built from the real return structure: 10*0.95^k on a later
+    win, 0 otherwise, minus 0.1 when the step's own action was invalid."""
+    rows = []
+    for _ in range(n_groups):
+        n = int(rng.integers(2, 6))
+        kind = str(rng.choice(["mixed", "timing", "penalty_fail", "equal"]))
+        k = int(rng.integers(0, 45))
+        if kind == "mixed":
+            r = [10 * 0.95 ** k] + [0.0] * (n - 1)
+        elif kind == "timing":
+            r = [10 * 0.95 ** (k + int(j)) for j in rng.integers(0, 3, size=n)]
+            r[0], r[1] = 10 * 0.95 ** k, 10 * 0.95 ** (k + 1)
+        elif kind == "penalty_fail":
+            r = [0.0] * (n - 1) + [-0.1]
+        else:
+            r = [0.0] * n
+        rows.append((kind, np.asarray(r, dtype=np.float32).astype(np.float64)))
+    return rows
+
+
+def test_bands_and_forecast_on_alfworld_like_returns(tmp_path):
+    rng = np.random.default_rng(3)
+    groups = _alfworld_like_groups(rng)
+    rec = {"step": 1, "filter": "none", "sizes": [], "stds": [], "ranges": [], "means": [], "mins": [],
+           "maxs": [], "weights": []}
+    for _, r in groups:
+        rec["sizes"].append(len(r))
+        rec["stds"].append(float(r.std(ddof=1)))
+        rec["ranges"].append(float(np.ptp(r)))
+        rec["means"].append(float(r.mean()))
+        rec["mins"].append(float(r.min()))
+        rec["maxs"].append(float(r.max()))
+        rec["weights"].append(1.0)
+    path = tmp_path / "step_groups.jsonl"
+    path.write_text(json.dumps(rec) + "\n")
+    out = tmp_path / "diag"
+    r = subprocess.run([sys.executable, str(ROOT / "analysis/choose_thresholds.py"), "--diag", str(path),
+                        "--out", str(out)], capture_output=True, text=True)
+    assert r.returncode == 0, r.stderr
+    report = (out / "diagnostic_report.md").read_text()
+    assert "Mixed outcome" in report and "Penalty-scale spread" in report
+    assert "Other (std" not in report          # no unexpected band on clean data
+    spread = [(k, x) for k, x in groups if x.std(ddof=1) > 1e-6]
+    removed = sum(len(x) for k, x in spread if x.std(ddof=1) < 0.075)
+    assert all(k in ("penalty_fail", "timing") for k, x in spread if x.std(ddof=1) < 0.075)
+    share = removed / sum(len(x) for _, x in spread)
+    assert f"would remove the micro advantage of {share:.1%}" in report
+    assert "retired rule v1" in report
+
+
+def test_rule_constants_match_upstream():
+    """Rule v2 hard-codes the reward structure; fail loudly if the pinned settings say otherwise."""
+    import choose_thresholds as ct
+    script = (ROOT / "upstream-verl-agent/examples/gigpo_trainer/run_alfworld.sh").read_text()
+    assert f"invalid_action_penalty_coef={ct.INVALID_ACTION_PENALTY}" in script
+    assert f"algorithm.gamma={ct.GAMMA}" in script
+    assert f"env.max_steps={ct.MAX_STEPS}" in script
+    envs = (ROOT / "upstream-verl-agent/agent_system/environments/env_package/alfworld/envs.py").read_text()
+    assert "reward = 10.0 * float(info['won'])" in envs and ct.WIN_REWARD == 10.0
+    # penalty-only groups always fall below the threshold; real wins always above the split
+    assert ct.PENALTY_ONLY_STD < ct.MIN_RETURN_STD < 2 * ct.PENALTY_ONLY_STD
+    min_win_return = ct.WIN_REWARD * ct.GAMMA ** (ct.MAX_STEPS - 1) - ct.INVALID_ACTION_PENALTY
+    assert 0.0 < ct.SUCCESS_SPLIT < min_win_return
 
 
 def test_progress_done_and_table(tmp_path):

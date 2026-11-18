@@ -9,7 +9,7 @@ All conditions are launched by `cluster/omni/job.sbatch <condition>`, which call
 | Condition | What differs |
 | --- | --- |
 | `gigpo` | seed-0 control: `group_filter=none` (bit-identical advantages to upstream) |
-| `gigpo_threshold` | seed-0 extension: `group_filter=threshold` with `MIN_GROUP_SIZE` and `MIN_RETURN_STD` from the diagnostic |
+| `gigpo_threshold` | seed-0 extension: `group_filter=threshold` with `MIN_GROUP_SIZE=2` and the fixed `MIN_RETURN_STD=0.075` (rule v2), written to `thresholds.env` by the diagnostic |
 | `gigpo_weighted` | seed-0 extension: `group_filter=weighted` with `WEIGHT_TAU` from the diagnostic |
 
 Only these three seed-0 conditions may be launched under this handoff. Both extensions run when thresholds can be derived, even if the threshold diagnostic predicts a small effect. If no groups have return spread by the control's final step, no thresholds are derived and the runbook requests a new plan. GRPO and dynamic GiGPO remain in the pinned upstream snapshot for reference but are not run.
@@ -36,7 +36,7 @@ Paper reference (Table 1, Qwen2.5-1.5B, mean ± std over 3 seeds): GiGPO w/ std 
 - **Seed:** only `env.seed=0` is authorized in this handoff; validation uses seed 1000. All three conditions are paired on this seed. vLLM sampling is not seeded, so a rerun is not bit-identical. One-seed findings are preliminary.
 - **Budget:** 150 steps per run, as in the paper. A shorter budget (`TOTAL_EPOCHS`) is allowed only by H2 approval, and must then be the same for every compared condition.
 - **Validation:** the pinned scripts sample at temperature 0.4 on 128 tasks drawn from `valid_seen` (`eval_in_distribution`) every 5 steps. `VAL_BATCH` only sets how many run at once. Each validation round resets the environments, so successive points appear to use different task draws. Points are noisy. Report the mean of the last 3 validation points next to the final one.
-- **Extension thresholds:** set by the rule in `extension_design.md` from the seed-0 GiGPO run's training batches.
+- **Extension thresholds:** rule v2 in `threshold_rule.md`. `MIN_RETURN_STD` is fixed from the reward structure; `WEIGHT_TAU` comes from the seed-0 GiGPO run's training batches, steps 1–20.
 
 ## Outcome measures (all produced by `analysis/summarize.py` and `analysis/plot_curves.py`)
 
@@ -44,7 +44,7 @@ Paper reference (Table 1, Qwen2.5-1.5B, mean ± std over 3 seeds): GiGPO w/ std 
 - **Learning curve:** success vs. training step and vs. cumulative `env/steps_collected`.
 - **Efficiency:** training steps and environment steps to 0.70. Never reached → NaN, reported as such.
 - **Stability:** `actor/grad_norm` (std, max), `actor/entropy` (first vs. last third), training reward std, episode length.
-- **Mechanism:** `gigpo_diag/*`, i.e. what each filter removed.
+- **Mechanism:** `gigpo_diag/*`, i.e. what each filter removed, and the return-band table of `results/diagnostic/diagnostic_report.md` (which kinds of anchor groups each extension suppresses).
 
 ## Result record
 

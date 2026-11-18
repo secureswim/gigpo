@@ -3,7 +3,7 @@
 ## Identity
 
 - Date and operator:
-- Condition: GiGPO / GRPO / filtered / weighted
+- Condition: gigpo / gigpo_threshold / gigpo_weighted
 - Source commit and any local changes:
 - EXT_BUILD_INFO (patch and gigpo_ext hashes, from launches.txt):
 - Slurm job IDs (all jobs of the chain) and node(s):
@@ -29,7 +29,7 @@
 - Training steps or epochs completed:
 - Validation frequency and sampling settings:
 - Checkpoint policy:
-- For extension runs: group_filter, MIN_GROUP_SIZE / MIN_RETURN_STD / WEIGHT_TAU and the diagnostic report they came from:
+- For extension runs: group_filter, MIN_GROUP_SIZE / MIN_RETURN_STD / WEIGHT_TAU, the rule version (first line of thresholds.env, must be v2) and the diagnostic report they came from:
 - Resumed from a checkpoint? At which steps:
 
 ## Outcome
@@ -40,7 +40,7 @@
 - Steps and environment steps to 0.70 success:
 - Wall time:
 - Episode length, actor/entropy, training reward std, actor/grad_norm:
-- Anchor-group diagnostics (gigpo_diag/frac_samples_zero_signal, frac_groups_size2, micro_mass_ratio):
+- Anchor-group diagnostics (gigpo_diag/frac_samples_zero_signal, frac_groups_size2, frac_samples_micro_kept, micro_mass_ratio, weight_scale):
 - Repeated evaluation results or other seeds:
 - Errors, interruptions, and fixes:
 

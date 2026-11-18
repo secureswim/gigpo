@@ -59,7 +59,7 @@ STD_REFERENCE_LEVELS = (0.1, 0.5, 1.0)  # fixed levels reported for every run
 # Group statistics
 # ---------------------------------------------------------------- #
 def group_statistics(values: np.ndarray, group_ids: np.ndarray) -> Dict[str, np.ndarray]:
-    """Per-group size, std (unbiased, as torch.std in core_gigpo), range, mean.
+    """Per-group size, std (unbiased, as torch.std in core_gigpo), range, mean, min, max.
 
     Returns arrays aligned to ``unique_ids`` and, for each sample, the position
     of its group in those arrays (``sample_group``).
@@ -73,16 +73,20 @@ def group_statistics(values: np.ndarray, group_ids: np.ndarray) -> Dict[str, np.
     stds = np.zeros(len(unique_ids))
     ranges = np.zeros(len(unique_ids))
     means = np.zeros(len(unique_ids))
+    mins = np.zeros(len(unique_ids))
+    maxs = np.zeros(len(unique_ids))
     sample_group = np.empty(len(values), dtype=np.int64)
     for k, gid in enumerate(unique_ids):
         idx = members[gid]
         v = values[idx]
         means[k] = v.mean()
-        ranges[k] = v.max() - v.min()
+        mins[k] = v.min()
+        maxs[k] = v.max()
+        ranges[k] = maxs[k] - mins[k]
         stds[k] = v.std(ddof=1) if len(v) > 1 else 0.0
         sample_group[idx] = k
     return {"unique_ids": np.array(unique_ids, dtype=object), "sizes": sizes, "stds": stds,
-            "ranges": ranges, "means": means, "sample_group": sample_group}
+            "ranges": ranges, "means": means, "mins": mins, "maxs": maxs, "sample_group": sample_group}
 
 
 def group_weights(stats: Dict[str, np.ndarray], group_filter: str, min_group_size: int = 2,
@@ -237,6 +241,10 @@ def _diagnostics(stats, raw_w, sample_w, step_scalar, episode_scalar, episode_sc
         "stds": np.round(stds, 6).tolist(),
         "ranges": np.round(ranges, 6).tolist(),
         "means": np.round(stats["means"], 6).tolist(),
+        # min/max let the offline diagnostic tell success-vs-failure groups apart
+        # from groups whose returns differ only slightly (diagnostic only).
+        "mins": np.round(stats["mins"], 6).tolist(),
+        "maxs": np.round(stats["maxs"], 6).tolist(),
         "weights": np.round(raw_w * (scale if group_filter == "weighted" else 1.0), 6).tolist(),
     }
     return m, record
