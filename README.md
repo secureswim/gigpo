@@ -2,13 +2,11 @@
 
 RL course project *Efficient Step-Level Credit Assignment in GiGPO* (Siddharth Kumar, Aditi Kumar, Vansh Narula). The proposal is in [`GIGPO - RL.pptx`](GIGPO%20-%20RL.pptx).
 
-The project has two parts:
-1. **Reproduction:** reproduce **GiGPO versus GRPO** on text ALFWorld with `Qwen/Qwen2.5-1.5B-Instruct`.
-2. **Extension:** test whether filtering or down-weighting weak step-level anchor groups improves GiGPO.
+The current GPU handoff runs exactly three seed-0 conditions on text ALFWorld with `Qwen/Qwen2.5-1.5B-Instruct`: original GiGPO, threshold-filtered GiGPO, and divergence-weighted GiGPO. The extension runs happen only if the first 20 control steps show that the filters would affect enough anchor-group samples. GRPO and additional seeds are outside this handoff.
 
 ## How to run
 
-**Everything runs on IIIT Delhi's Omni cluster by following [`RUNBOOK_OMNI.md`](RUNBOOK_OMNI.md), step by step.** Agents should also read [`AGENTS.md`](AGENTS.md). No other procedure in this repository is current.
+**Start with [`HANDOFF_SEED0.md`](HANDOFF_SEED0.md), then follow [`RUNBOOK_OMNI.md`](RUNBOOK_OMNI.md) step by step on IIIT Delhi's Omni cluster.** Agents should also read [`AGENTS.md`](AGENTS.md). No other procedure in this repository is current.
 
 ## Status (16 November 2026)
 
@@ -23,6 +21,7 @@ The project has two parts:
 
 | Path | Purpose |
 | --- | --- |
+| `HANDOFF_SEED0.md` | scope, exact command sequence and pass conditions for the next agent |
 | `RUNBOOK_OMNI.md` | the procedure: setup, resource choice, smoke, budget, runs, diagnostic, analysis, approval gates |
 | `AGENTS.md` | rules for an AI agent operating the runbook |
 | `cluster/omni/` | Omni scripts: `env.sh`, `prepare.sh`, `constraints.txt`, `resources.env`, `job.sbatch`, `submit_chain.sh` |
