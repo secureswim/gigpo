@@ -217,7 +217,7 @@ These knobs change memory use and speed only, never the algorithm. Change one at
 | ALFWorld `FileNotFoundError` for `json_2.1.1` | ALFWorld data missing | rerun step 2 |
 | `Upstream snapshot differs` | repository files were modified | discard local changes (`git status`), or clone again |
 | `results/diagnostic/thresholds.env missing` | step 8 not done | do step 8 first |
-| `already reached step 150; nothing to do` | run finished | nothing; cancel the rest of its chain (`scancel`) |
+| `already reached step <approved final step>; nothing to do` | run finished | nothing; cancel the rest of its chain (`scancel`) |
 | `DUE TO TIME LIMIT` | partition time limit reached | normal; the chain resumes it |
 | Ray fails to start, or socket path too long | stale Ray temporary files | resubmit; `RAY_TMPDIR` is per job and is removed at exit |
 | Anything else | | stop and report |
