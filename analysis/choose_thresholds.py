@@ -15,7 +15,7 @@ Predeclared rule (also in knowledge_base/extension_design.md):
   * A <5% touched share predicts a small threshold effect; it does not stop
     either extension run, since weighted GiGPO can still reweight other groups.
   * If steps 1..20 contain no spread groups, retry after the control finishes
-    with --steps 150. If none exist then, report the mechanism result and do
+    with --steps <approved-final-step>. If none exist then, report the mechanism result and do
     not fabricate threshold values.
 
 Writes <out>/thresholds.env (cluster/omni/job.sbatch sources it for the
@@ -64,11 +64,13 @@ def main():
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     if not spread.any():
+        (out / "thresholds.env").unlink(missing_ok=True)
         msg = (f"No anchor group with nonzero return spread in training steps 1..{args.steps}. "
                "No extension thresholds can be derived. If this was the 20-step check, "
-               "finish the control and retry with --steps 150. If this was the 150-step "
-               "check, report the mechanism result and request a new experiment plan.")
-        (out / "diagnostic_report.md").write_text("# Anchor-group diagnostic\\n\\n" + msg + "\\n")
+               "finish the control and retry with --steps <approved-final-step>. "
+               "If this was the full-run check, report the mechanism result and "
+               "request a new experiment plan.")
+        (out / "diagnostic_report.md").write_text("# Anchor-group diagnostic\n\n" + msg + "\n")
         raise SystemExit(msg)
 
     min_std = float(np.percentile(stds[spread], 25))
