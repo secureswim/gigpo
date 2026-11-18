@@ -12,7 +12,7 @@ All conditions are launched by `cluster/omni/job.sbatch <condition>`, which call
 | `gigpo_threshold` | seed-0 extension: `group_filter=threshold` with `MIN_GROUP_SIZE` and `MIN_RETURN_STD` from the diagnostic |
 | `gigpo_weighted` | seed-0 extension: `group_filter=weighted` with `WEIGHT_TAU` from the diagnostic |
 
-Only these three seed-0 conditions may be launched under this handoff. The extension runs are skipped if the diagnostic gate fails. GRPO and dynamic GiGPO remain in the pinned upstream snapshot for reference but are not run.
+Only these three seed-0 conditions may be launched under this handoff. Both extensions run when thresholds can be derived, even if the threshold diagnostic predicts a small effect. If no groups have return spread by the control's final step, no thresholds are derived and the runbook requests a new plan. GRPO and dynamic GiGPO remain in the pinned upstream snapshot for reference but are not run.
 
 GiGPO keeps its method-specific settings: γ = 0.95, ω = 1, `mean_std_norm`.
 
