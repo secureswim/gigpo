@@ -8,7 +8,6 @@
 #   sbatch <RESOURCE FLAGS> cluster/omni/job.sbatch preflight
 #   sbatch <RESOURCE FLAGS> cluster/omni/job.sbatch smoke
 #   SEED=0 sbatch <RESOURCE FLAGS> cluster/omni/job.sbatch gigpo
-#   SEED=0 sbatch <RESOURCE FLAGS> cluster/omni/job.sbatch grpo
 #   SEED=0 sbatch <RESOURCE FLAGS> cluster/omni/job.sbatch gigpo_threshold   # needs results/diagnostic/thresholds.env
 #   SEED=0 sbatch <RESOURCE FLAGS> cluster/omni/job.sbatch gigpo_weighted    # needs results/diagnostic/thresholds.env
 #
@@ -18,7 +17,7 @@
 # is resumed by submitting the same command again (or use submit_chain.sh).
 set -euo pipefail
 
-MODE="${1:?usage: job.sbatch <preflight|smoke|gigpo|grpo|gigpo_threshold|gigpo_weighted|gigpo_dynamic>}"
+MODE="${1:?usage: job.sbatch <preflight|smoke|gigpo|gigpo_threshold|gigpo_weighted>}"
 cd "${SLURM_SUBMIT_DIR:?submit from the repository root with sbatch}"
 [[ -f cluster/omni/env.sh ]] || { echo "Submit from the repository root" >&2; exit 1; }
 # shellcheck disable=SC1091
@@ -36,9 +35,9 @@ case "$MODE" in
     bash setup/preflight.sh --gpu ;;
   smoke)
     bash week1/smoke_gigpo.sh ;;
-  gigpo|grpo|gigpo_threshold|gigpo_weighted|gigpo_dynamic)
+  gigpo|gigpo_threshold|gigpo_weighted)
     if [[ "$MODE" == gigpo_threshold || "$MODE" == gigpo_weighted ]]; then
-      [[ -f results/diagnostic/thresholds.env ]] || { echo "results/diagnostic/thresholds.env missing (RUNBOOK step 7)" >&2; exit 1; }
+      [[ -f results/diagnostic/thresholds.env ]] || { echo "results/diagnostic/thresholds.env missing (RUNBOOK step 8)" >&2; exit 1; }
       # shellcheck disable=SC1091
       source results/diagnostic/thresholds.env
     fi

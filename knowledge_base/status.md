@@ -1,6 +1,8 @@
 # Status and decision ledger
 
-Last update: 16 November 2026 (merge of the Omni smoke work and the extension work into `main`).
+Last update: 18 November 2026 (three seed-0 experiment handoff on `seed0-three-experiments`).
+
+**Current plan:** run only seed-0 `gigpo`, `gigpo_threshold` and `gigpo_weighted` as described in `HANDOFF_SEED0.md` and `RUNBOOK_OMNI.md`. The 16 November setup history below remains useful background; its older plans for GRPO and extra seeds are superseded. No full training run has started.
 
 ## Where things stand
 
@@ -44,17 +46,17 @@ Last update: 16 November 2026 (merge of the Omni smoke work and the extension wo
 
 - **Platform:** Omni (Slurm). One full GPU (≥ 80 GB, not MIG) per job. Resources are fixed in `cluster/omni/resources.env` (runbook step 3, approval H1).
 - **Experiment settings:** exactly the pinned upstream ALFWorld scripts: 16 tasks × 8 rollouts, minibatch 256, lr 1e-6, γ = 0.95 and ω = 1 with `mean_std_norm` for GiGPO, 150 steps, validation every 5 steps at temperature 0.4. Only hardware knobs (GPU count, micro-batch, vLLM memory share, validation batch, reference offload) may differ from the paper, identically for all runs.
-- **One code base:** all conditions, including the GiGPO control and GRPO, run from the patched copy `work/verl-agent-ext`. The pristine snapshot is the reference.
+- **One code base:** all three active GiGPO-family conditions run from the patched copy `work/verl-agent-ext`. The pristine snapshot is the reference.
 - **Checkpoints:** every 5 steps, keep 2, automatic resume, and runs longer than the time limit are chained.
 - **Efficiency threshold:** 0.70 validation success, fixed before any run.
-- **Extension thresholds:** a fixed rule applied to the control run's training batches, steps 1–20, with a null-result gate at 5% (`knowledge_base/extension_design.md`).
+- **Extension thresholds:** a fixed rule applied to the control run's training batches, steps 1–20. A <5% threshold-impact forecast is reported but does not stop either extension. If no return spread appears, retry with the full approved control budget (`knowledge_base/extension_design.md`).
 - **Budget:** decided at approval H2 from the measured smoke step time (`results/decisions.md`).
 
 ## Known uncertainties
 
 - **Omni details:** the full-GPU partitions, their limits, the credit price per GPU-hour and the balance command are discovered in runbook step 3.
 - **Memory:** host-RAM needs of the paper settings are unmeasured. Each run keeps 256 ALFWorld processes alive. The runbook's "Fitting a run" ladder handles shortfalls.
-- **Validation noise:** sampling at temperature 0.4 draws new tasks each round, so single points are noisy. Use the mean of the last 3 points and paired seeds.
+- **Validation noise:** sampling at temperature 0.4 draws new tasks each round, so single points are noisy. Use the mean of the last 3 points; all active conditions share seed 0, and any gain is preliminary.
 - **Resume:** resuming restarts the environment random state, so note resumes in run records.
 - **Upstream behaviour:** `adjust_batch` randomly drops a few samples for batch divisibility. This affects all conditions equally.
 - **Exact training commit:** the authors do not name the exact commit used for the paper. This snapshot is the last one before their update.

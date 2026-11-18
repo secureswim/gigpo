@@ -8,11 +8,11 @@ All conditions are launched by `cluster/omni/job.sbatch <condition>`, which call
 
 | Condition | What differs |
 | --- | --- |
-| `gigpo` | control: `group_filter=none` (bit-identical advantages to upstream) |
-| `grpo` | upstream GRPO script |
-| `gigpo_threshold` | `group_filter=threshold` with `MIN_GROUP_SIZE` and `MIN_RETURN_STD` from the diagnostic |
-| `gigpo_weighted` | `group_filter=weighted` with `WEIGHT_TAU` from the diagnostic |
-| `gigpo_dynamic` (optional) | upstream dynamic-sampling script (also clip-higher 0.28); a reference, not a matched condition |
+| `gigpo` | seed-0 control: `group_filter=none` (bit-identical advantages to upstream) |
+| `gigpo_threshold` | seed-0 extension: `group_filter=threshold` with `MIN_GROUP_SIZE` and `MIN_RETURN_STD` from the diagnostic |
+| `gigpo_weighted` | seed-0 extension: `group_filter=weighted` with `WEIGHT_TAU` from the diagnostic |
+
+Only these three seed-0 conditions may be launched under this handoff. Both extensions run when thresholds can be derived, even if the threshold diagnostic predicts a small effect. If no groups have return spread by the control's final step, no thresholds are derived and the runbook requests a new plan. GRPO and dynamic GiGPO remain in the pinned upstream snapshot for reference but are not run.
 
 GiGPO keeps its method-specific settings: γ = 0.95, ω = 1, `mean_std_norm`.
 
@@ -32,8 +32,8 @@ Paper reference (Table 1, Qwen2.5-1.5B, mean ± std over 3 seeds): GiGPO w/ std 
 ## Fixed choices (decided before any result)
 
 - **Checkpoints:** `SAVE_FREQ=5`, keep 2, `resume_mode=auto`, identical for every condition. Runs longer than the Slurm time limit are submitted as job chains (`cluster/omni/submit_chain.sh`). Each job resumes from the latest checkpoint. After a resume the environment RNG restarts, so the task sequence differs from an uninterrupted run. Note any resume in the run record.
-- **Success threshold for "steps to target": 0.70 validation success.** It is reachable by both baselines in the paper (GRPO final 72.8%), so it measures speed rather than only GiGPO's ceiling. Change it only before the first full run, and record the change here.
-- **Seeds:** `env.seed` controls both training tasks and validation tasks (validation uses seed + 1000). Compare conditions **paired by seed**. The number of seeds and runs is fixed at approval H2 (runbook step 6) and recorded in `results/decisions.md`. vLLM sampling is not seeded, so a rerun is not bit-identical.
+- **Success threshold for "steps to target": 0.70 validation success.** It is a fixed reference threshold for comparing the three GiGPO-family conditions. Change it only before the first full run, and record the change here.
+- **Seed:** only `env.seed=0` is authorized in this handoff; validation uses seed 1000. All three conditions are paired on this seed. vLLM sampling is not seeded, so a rerun is not bit-identical. One-seed findings are preliminary.
 - **Budget:** 150 steps per run, as in the paper. A shorter budget (`TOTAL_EPOCHS`) is allowed only by H2 approval, and must then be the same for every compared condition.
 - **Validation:** the pinned scripts sample at temperature 0.4 on 128 tasks drawn from `valid_seen` (`eval_in_distribution`) every 5 steps. `VAL_BATCH` only sets how many run at once. Each validation round resets the environments, so successive points appear to use different task draws. Points are noisy. Report the mean of the last 3 validation points next to the final one.
 - **Extension thresholds:** set by the rule in `extension_design.md` from the seed-0 GiGPO run's training batches.

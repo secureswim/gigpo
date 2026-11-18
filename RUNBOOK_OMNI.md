@@ -1,4 +1,6 @@
-# Omni runbook
+# Omni runbook: three seed-0 GiGPO experiments
+
+**Scope:** Run only `gigpo`, `gigpo_threshold` and `gigpo_weighted`, all with `SEED=0`. Do not submit GRPO, dynamic GiGPO or another seed. Run both extensions after deriving thresholds from the control's training diagnostics, even when the estimated threshold impact is small. The `preflight` and `smoke` jobs are setup checks, not experimental conditions.
 
 This is the only procedure for running the experiments. It is written for a person or an AI agent working on IIIT Delhi's **Omni** Slurm cluster. Follow the steps in order. Do not use any other cluster, script or instruction, including the archived IIIT `gpurun` server notes.
 
@@ -116,60 +118,56 @@ This runs one GiGPO training step, then resumes for a second step. Validation an
 
 Commit `cluster/omni/resources.env` once the smoke test passes.
 
-## Step 6. Budget, then gate H2
+## Step 6. Budget for at most three runs, then gate H2
 
 From the smoke log, take `ESTIMATED_HOURS_PER_RUN` (H) and work out:
 
 - **credits per run** = H × price per GPU-hour
 - **jobs per run** = ceil(H / TIME_LIMIT_HOURS) + 1. The extra job covers resume overhead.
-- **Plan A:** seed 0 of `gigpo`, `grpo`, `gigpo_threshold` and `gigpo_weighted`, then seed 1 of `gigpo` and of the better extension condition. That is 6 runs × 150 steps.
+- **Plan:** one seed-0 GiGPO control plus one seed-0 threshold and one seed-0 weighted run, each at 150 steps. A low-impact diagnostic does not cancel either extension. If no anchor groups with return spread exist after the full control, thresholds cannot be derived; report that result and request a revised plan.
 
-**H2 (approval needed):** report H, credits per run, the cost of Plan A and the current balance. The team approves one of:
-- Plan A.
-- A smaller plan, for example 4 runs.
-- A shorter shared budget for the extension runs (`TOTAL_EPOCHS`). This must be the same for every condition that is compared.
+**H2 (approval needed):** report H, credits per run, the maximum cost of three runs, and the current balance. Obtain approval for this three-run maximum before submitting the first full run. A shorter shared training budget may be approved, but it must be identical for all three compared conditions. Record the approval in `results/decisions.md`. The scope of this handoff does not include GRPO, dynamic GiGPO or seed 1.
 
-Record the approved plan in `results/decisions.md`. Do not change it without a new approval.
-
-## Step 7. Baselines
+## Step 7. GiGPO seed-0 control
 
 ```bash
 source cluster/omni/resources.env
 SEED=0 bash cluster/omni/submit_chain.sh gigpo <jobs per run> $RESOURCE_FLAGS
-SEED=0 bash cluster/omni/submit_chain.sh grpo  <jobs per run> $RESOURCE_FLAGS
 ```
 
-Each chain is a series of jobs that resume each other. Never submit a second chain for the same condition and seed while one is queued or running.
+Do not submit another chain for this same condition while one is queued or running. The control writes `runs/gigpo_seed0/gigpo_diag/step_groups.jsonl`, which step 8 needs.
 
 **Monitor** at least daily:
 
 ```bash
-python3 analysis/progress.py      # last step, last validation, checkpoint, error
+python3 analysis/progress.py
 squeue -u $USER
 sacct -u $USER --starttime today -o JobID,JobName,State,Elapsed,ExitCode
 ```
 
-**Pass:** `progress.py` shows `last_step` 150 for both runs (or the approved `TOTAL_EPOCHS`).
+**Pass:** `progress.py` shows `gigpo_seed0` at step 150 (or the approved shared `TOTAL_EPOCHS`). Step 8 may be performed once the control has passed step 20; the control can continue training.
 
 **If a job fails:**
 - *State TIMEOUT:* normal. The next job in the chain resumes from the last checkpoint (saved every 5 steps).
-- *Chain used up before the last step:* submit one more job with the same command and a job count of 1.
+- *Chain used up before the last step:* submit one more job with the same condition, seed, resources and budget.
 - *Error signature in `progress.py`:* look it up in the failure table. If the same error appears twice in a row, stop and report.
 
-## Step 8. Anchor-group diagnostic (when `gigpo_seed0` has passed step 20)
+## Step 8. Derive extension thresholds (after `gigpo_seed0` passes step 20)
 
 ```bash
+source cluster/omni/env.sh
 python3 analysis/choose_thresholds.py --diag runs/gigpo_seed0/gigpo_diag/step_groups.jsonl
 ```
 
-This writes `results/diagnostic/{thresholds.env,diagnostic_report.md,anchor_groups.png}`. The rule it applies was fixed in advance. Do not edit its output.
+This writes `results/diagnostic/{thresholds.env,diagnostic_report.md,anchor_groups.png}`. The fixed rule uses training batches only. Do not edit its output.
 
-- **Report says "Gate passed":** go to step 9.
-- **Report says "Gate not passed":** do not run the threshold or weighted conditions. The diagnostic is the result. Tell the team, then skip to step 10 (seeds as approved) and step 11.
+- **Thresholds written:** finish the control and go to step 9. Run both variants even if the report says **Low threshold impact expected**. That warning predicts a small effect for `gigpo_threshold`; it does not measure whether `gigpo_weighted` is inert.
+- **No groups with return spread in steps 1–20:** the command exits without thresholds. Let `gigpo_seed0` reach its approved final step, then run `python3 analysis/choose_thresholds.py --diag runs/gigpo_seed0/gigpo_diag/step_groups.jsonl --steps <approved-final-step>`. This fallback is fixed in advance and still uses no validation data.
+- **Still no spread after the final step:** do not invent threshold values or submit extensions that would be equivalent to the control. Record the mechanism result. Ask the team at H3 whether to replace the two runs with a seed-0 GRPO baseline, a GiGPO second seed, or end the study. These alternatives require a new scope decision and code change; they are not authorized by this handoff.
 
-Commit `results/diagnostic/`.
+Commit `results/diagnostic/` to the `omni-runs` branch.
 
-## Step 9. Extension runs (only if the gate passed)
+## Step 9. Two extension runs (after thresholds are written)
 
 ```bash
 source cluster/omni/resources.env
@@ -177,21 +175,13 @@ SEED=0 bash cluster/omni/submit_chain.sh gigpo_threshold <jobs per run> $RESOURC
 SEED=0 bash cluster/omni/submit_chain.sh gigpo_weighted  <jobs per run> $RESOURCE_FLAGS
 ```
 
-`job.sbatch` loads `results/diagnostic/thresholds.env` automatically. Monitor and handle failures as in step 7.
+`job.sbatch` loads `results/diagnostic/thresholds.env` automatically. Both runs use exactly the same model, resource knobs, training budget and validation settings as the control. They may be queued at the same time if the approved credit budget and cluster policy allow it. Monitor and handle failures as in step 7.
 
-## Step 10. Extra seeds, as approved in H2
+**Pass:** `progress.py` shows `gigpo_threshold_seed0` and `gigpo_weighted_seed0` at the approved final step.
 
-For example:
+## Step 10. Analyze and hand off results
 
-```bash
-SEED=1 bash cluster/omni/submit_chain.sh gigpo <jobs per run> $RESOURCE_FLAGS
-```
-
-Use `TOTAL_EPOCHS` only if H2 approved it, and then the same value for every compared run.
-
-## Step 11. Analysis
-
-On the login node, after the runs are finished:
+On the login node, after all authorized runs have finished:
 
 ```bash
 source cluster/omni/env.sh
@@ -199,7 +189,7 @@ python3 analysis/summarize.py --runs runs --threshold 0.70 --out results/summary
 python3 analysis/plot_curves.py --runs runs --out results/figures --threshold 0.70
 ```
 
-Fill one run record per run. Commit `results/`. Never commit `runs/`, `cache/`, `work/` or `slurm-logs/`.
+Fill one run record for each run that actually ran; include failures and resumes. Commit `results/`. Never commit `runs/`, `cache/`, `work/` or `slurm-logs/`. Report the final validation success and mean of the last three validation points, plus environment steps. With one seed, treat performance differences as preliminary.
 
 **H3** applies any time a decision is needed that this runbook does not make.
 
@@ -227,7 +217,7 @@ These knobs change memory use and speed only, never the algorithm. Change one at
 | ALFWorld `FileNotFoundError` for `json_2.1.1` | ALFWorld data missing | rerun step 2 |
 | `Upstream snapshot differs` | repository files were modified | discard local changes (`git status`), or clone again |
 | `results/diagnostic/thresholds.env missing` | step 8 not done | do step 8 first |
-| `already reached step 150; nothing to do` | run finished | nothing; cancel the rest of its chain (`scancel`) |
+| `already reached step <approved final step>; nothing to do` | run finished | nothing; cancel the rest of its chain (`scancel`) |
 | `DUE TO TIME LIMIT` | partition time limit reached | normal; the chain resumes it |
 | Ray fails to start, or socket path too long | stale Ray temporary files | resubmit; `RAY_TMPDIR` is per job and is removed at exit |
 | Anything else | | stop and report |

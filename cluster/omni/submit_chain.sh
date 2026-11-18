@@ -14,6 +14,20 @@ set -euo pipefail
 CONDITION="${1:?condition}"
 N="${2:?number of jobs}"
 shift 2
+
+case "$CONDITION" in
+  gigpo|gigpo_threshold|gigpo_weighted) ;;
+  *) echo "Only gigpo, gigpo_threshold and gigpo_weighted are allowed." >&2; exit 2 ;;
+esac
+if [[ "${SEED:-0}" != "0" ]]; then
+  echo "Only SEED=0 is allowed by the three-experiment handoff." >&2; exit 2
+fi
+if [[ ! "$N" =~ ^[1-9][0-9]*$ ]]; then
+  echo "number_of_jobs must be a positive integer." >&2; exit 2
+fi
+if [[ "$CONDITION" != gigpo ]]; then
+  [[ -f results/diagnostic/thresholds.env ]] || { echo "Run the GiGPO diagnostic first: thresholds.env is missing." >&2; exit 2; }
+fi
 cd "$(dirname "${BASH_SOURCE[0]}")/../.."
 mkdir -p slurm-logs
 

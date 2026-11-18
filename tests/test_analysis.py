@@ -72,13 +72,19 @@ def test_wandb_csv_input(tmp_path):
 
 
 def test_cli_summarize_and_plot(tmp_path):
-    for cond, seed, curve in [("gigpo", 0, {5: 0.5, 10: 0.8}), ("gigpo", 1, {5: 0.45, 10: 0.75}),
-                              ("grpo", 0, {5: 0.3, 10: 0.6})]:
-        write_log(tmp_path / "runs" / f"{cond}_seed{seed}" / "train.log", curve)
+    for cond, curve in [("gigpo", {5: 0.5, 10: 0.8}),
+                        ("gigpo_threshold", {5: 0.45, 10: 0.75}),
+                        ("gigpo_weighted", {5: 0.55, 10: 0.82})]:
+        write_log(tmp_path / "runs" / f"{cond}_seed0" / "train.log", curve)
+    write_log(tmp_path / "runs" / "gigpo_seed0_smoke" / "train.log", {1: 0.99, 2: 0.99})
+    write_log(tmp_path / "runs" / "grpo_seed0" / "train.log", {5: 0.3, 10: 0.6})
     r = subprocess.run([sys.executable, str(ROOT / "analysis/summarize.py"), "--runs", str(tmp_path / "runs"),
                         "--threshold", "0.7", "--out", str(tmp_path / "s.csv")], capture_output=True, text=True)
     assert r.returncode == 0, r.stderr
     assert "gigpo" in r.stdout and (tmp_path / "s.csv").exists()
+    summary = (tmp_path / "s.csv").read_text()
+    assert "gigpo_seed0_smoke" not in summary and "grpo_seed0" not in summary
+    assert "gigpo_threshold_seed0" in summary and "gigpo_weighted_seed0" in summary
     r = subprocess.run([sys.executable, str(ROOT / "analysis/plot_curves.py"), "--runs", str(tmp_path / "runs"),
                         "--out", str(tmp_path / "fig"), "--threshold", "0.7"], capture_output=True, text=True)
     assert r.returncode == 0, r.stderr
@@ -125,3 +131,18 @@ def test_smoke_budget_estimate():
     df = pd.DataFrame({"timing_s/step": [700.0, 720.0], "timing_s/testing": [300.0, 300.0]}, index=[1, 2])
     # train 410 s + 300/5 s = 470 s per step -> 150 steps = 19.58 h
     assert check_smoke.estimate_hours(df) == pytest.approx(150 * 470 / 3600)
+
+
+def test_no_spread_removes_stale_thresholds(tmp_path):
+    path = tmp_path / "step_groups.jsonl"
+    path.write_text(json.dumps({"step": 1, "sizes": [1, 2], "stds": [0.0, 0.0]}) + "\n")
+    out = tmp_path / "diag"
+    out.mkdir()
+    (out / "thresholds.env").write_text("export WEIGHT_TAU=1\n")
+    r = subprocess.run([sys.executable, str(ROOT / "analysis/choose_thresholds.py"),
+                        "--diag", str(path), "--out", str(out)], capture_output=True, text=True)
+    assert r.returncode != 0
+    assert not (out / "thresholds.env").exists()
+    report = (out / "diagnostic_report.md").read_text()
+    assert report.startswith("# Anchor-group diagnostic\n\n")
+    assert "No anchor group with nonzero return spread" in report

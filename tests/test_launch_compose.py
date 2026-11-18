@@ -58,7 +58,7 @@ def env(tmp_path_factory):
     (shim / "python3").write_text(SHIM.format(py=sys.executable, compose=base / "compose.py"))
     (shim / "python3").chmod(0o755)
     return {"EXT_TREE": str(ext), "RUN_ROOT": str(base / "runs"), "PATH": f"{shim}:{os.environ['PATH']}",
-            "WANDB": "0", "MIN_GROUP_SIZE": "3", "MIN_RETURN_STD": "0.25", "WEIGHT_TAU": "0.5", "SEED": "3"}
+            "WANDB": "0", "MIN_GROUP_SIZE": "3", "MIN_RETURN_STD": "0.25", "WEIGHT_TAU": "0.5", "SEED": "0"}
 
 
 def launch(condition, env):
@@ -71,21 +71,19 @@ def launch(condition, env):
 
 
 def test_every_condition_composes_with_intended_settings(env):
-    c = {k: launch(k, env) for k in ["gigpo", "grpo", "gigpo_threshold", "gigpo_weighted", "gigpo_dynamic"]}
+    c = {k: launch(k, env) for k in ["gigpo", "gigpo_threshold", "gigpo_weighted"]}
     for k, v in c.items():  # shared settings: paper values + our launcher policy
-        assert (v["seed"], v["n"], v["max_steps"], v["epochs"], v["bs"]) == (3, 8, 50, 150, 16), k
+        assert (v["seed"], v["n"], v["max_steps"], v["epochs"], v["bs"]) == (0, 8, 50, 150, 16), k
         assert (v["save"], v["test"], v["keep"], v["resume"]) == (5, 5, 2, "auto"), k
         assert (v["engine"], v["lr"], v["val_temp"], v["gpus"], v["tp"]) == ("vllm", 1e-6, 0.4, 1, 1), k
         assert (v["val_bs"], v["mini"], v["micro"], v["ref_offload"], v["mem"]) == (128, 256, 16, True, 0.5), k
         assert v["logger"] == ["console"], k
-    for k in ["gigpo", "gigpo_threshold", "gigpo_weighted", "gigpo_dynamic"]:
+    for k in ["gigpo", "gigpo_threshold", "gigpo_weighted"]:
         assert (c[k]["adv"], c[k]["gamma"], c[k]["mode"], c[k]["w"]) == ("gigpo", 0.95, "mean_std_norm", 1.0)
-        assert c[k]["diag_dir"].endswith(f"{k}_seed3/gigpo_diag")
-    assert c["grpo"]["adv"] == "grpo"
+        assert c[k]["diag_dir"].endswith(f"{k}_seed0/gigpo_diag")
     assert c["gigpo"]["filt"] == "none" and not c["gigpo"]["dyn"]
     assert (c["gigpo_threshold"]["filt"], c["gigpo_threshold"]["mg"], c["gigpo_threshold"]["ms"]) == ("threshold", 3, 0.25)
     assert (c["gigpo_weighted"]["filt"], c["gigpo_weighted"]["tau"]) == ("weighted", 0.5)
-    assert c["gigpo_dynamic"]["dyn"] and c["gigpo_dynamic"]["clip_high"] == 0.28
     assert c["gigpo"]["clip_high"] == 0.2
 
 
@@ -97,7 +95,7 @@ def test_hardware_knobs(env):
 
 
 @pytest.mark.parametrize("bad", ["data.train_batch_size=4", "actor_rollout_ref.actor.ppo_mini_batch_size=32",
-                                 "algorithm.gamma=0.9", "+env.rollout.n=4", "trainer.total_epochs=1"])
+                                 "algorithm.gamma=0.9", "+env.rollout.n=4", "env.seed=1", "trainer.total_epochs=1"])
 def test_protected_settings_are_refused(env, bad):
     r = subprocess.run(["bash", "scripts/run_condition.sh", "gigpo", bad], cwd=ROOT, capture_output=True,
                        text=True, env={**os.environ, **env})
@@ -120,3 +118,24 @@ def test_data_preparation_skipped_when_parquet_exists(env, tmp_path):
     r = subprocess.run(["bash", "-c", guard.replace("python3 -m", "echo PREPARE_RAN")],
                        capture_output=True, text=True, env={**os.environ, "HOME": str(tmp_path / "empty")})
     assert "PREPARE_RAN" in r.stdout
+
+
+@pytest.mark.parametrize("condition", ["grpo", "gigpo_dynamic", "unknown"])
+def test_out_of_scope_conditions_are_refused(env, condition):
+    r = subprocess.run(["bash", "scripts/run_condition.sh", condition], cwd=ROOT,
+                       capture_output=True, text=True, env={**os.environ, **env})
+    assert r.returncode != 0 and "Unknown condition" in r.stderr
+
+
+def test_nonzero_seed_is_refused(env):
+    r = subprocess.run(["bash", "scripts/run_condition.sh", "gigpo"], cwd=ROOT,
+                       capture_output=True, text=True, env={**os.environ, **env, "SEED": "1"})
+    assert r.returncode == 2 and "Only SEED=0" in r.stderr
+
+
+def test_submit_chain_rejects_out_of_scope_before_sbatch(tmp_path):
+    for condition, seed in [("grpo", "0"), ("gigpo_dynamic", "0"), ("gigpo", "1")]:
+        r = subprocess.run(["bash", "cluster/omni/submit_chain.sh", condition, "1"], cwd=ROOT,
+                           capture_output=True, text=True, env={**os.environ, "SEED": seed})
+        assert r.returncode == 2, (condition, seed, r.stdout, r.stderr)
+        assert "Only" in r.stderr
