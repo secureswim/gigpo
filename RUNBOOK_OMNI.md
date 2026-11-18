@@ -162,8 +162,8 @@ python3 analysis/choose_thresholds.py --diag runs/gigpo_seed0/gigpo_diag/step_gr
 This writes `results/diagnostic/{thresholds.env,diagnostic_report.md,anchor_groups.png}`. The fixed rule uses training batches only. Do not edit its output.
 
 - **Thresholds written:** finish the control and go to step 9. Run both variants even if the report says **Low threshold impact expected**. That warning predicts a small effect for `gigpo_threshold`; it does not measure whether `gigpo_weighted` is inert.
-- **No groups with return spread in steps 1–20:** the command exits without thresholds. Let `gigpo_seed0` reach step 150, then run `python3 analysis/choose_thresholds.py --diag runs/gigpo_seed0/gigpo_diag/step_groups.jsonl --steps 150`. This fallback is fixed in advance and still uses no validation data.
-- **Still no spread after step 150:** do not invent threshold values or submit extensions that would be equivalent to the control. Record the mechanism result. Ask the team at H3 whether to replace the two runs with a seed-0 GRPO baseline, a GiGPO second seed, or end the study. These alternatives require a new scope decision and code change; they are not authorized by this handoff.
+- **No groups with return spread in steps 1–20:** the command exits without thresholds. Let `gigpo_seed0` reach its approved final step, then run `python3 analysis/choose_thresholds.py --diag runs/gigpo_seed0/gigpo_diag/step_groups.jsonl --steps <approved-final-step>`. This fallback is fixed in advance and still uses no validation data.
+- **Still no spread after the final step:** do not invent threshold values or submit extensions that would be equivalent to the control. Record the mechanism result. Ask the team at H3 whether to replace the two runs with a seed-0 GRPO baseline, a GiGPO second seed, or end the study. These alternatives require a new scope decision and code change; they are not authorized by this handoff.
 
 Commit `results/diagnostic/` to the `omni-runs` branch.
 
