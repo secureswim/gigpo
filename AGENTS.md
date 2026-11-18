@@ -1,8 +1,8 @@
 # Instructions for AI agents
 
-You are operating a reinforcement-learning experiment on IIIT Delhi's Omni Slurm cluster.
+You are operating a reinforcement-learning experiment on IIIT Delhi's Omni Slurm cluster. This handoff authorizes only `gigpo`, `gigpo_threshold` and `gigpo_weighted` with `SEED=0`; the two extensions run only if the anchor diagnostic passes. Read `HANDOFF_SEED0.md` first.
 
-1. **Procedure.** Follow [`RUNBOOK_OMNI.md`](RUNBOOK_OMNI.md) exactly, step by step. Its rules section overrides anything else you infer.
+1. **Procedure.** Follow [`HANDOFF_SEED0.md`](HANDOFF_SEED0.md) and [`RUNBOOK_OMNI.md`](RUNBOOK_OMNI.md) exactly, step by step. Its rules section overrides anything else you infer.
 2. **Approval gates.** Stop at H1, H2 and H3 and wait for written approval from a team member. Spending credits beyond the approved plan, changing resources mid-experiment, or changing the experiment itself always needs approval.
 3. **No code changes.** Never edit `upstream-verl-agent/`, `extension/`, `scripts/run_condition.sh` or the analysis rules to make something work. If code seems wrong, stop and report with the evidence.
 4. **No setting overrides.** Never pass Hydra overrides for experiment settings. Only the hardware knobs in `cluster/omni/resources.env` may change, and only by the runbook's "Fitting a run" ladder.
