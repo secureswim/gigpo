@@ -58,7 +58,7 @@ def env(tmp_path_factory):
     (shim / "python3").write_text(SHIM.format(py=sys.executable, compose=base / "compose.py"))
     (shim / "python3").chmod(0o755)
     return {"EXT_TREE": str(ext), "RUN_ROOT": str(base / "runs"), "PATH": f"{shim}:{os.environ['PATH']}",
-            "WANDB": "0", "MIN_GROUP_SIZE": "3", "MIN_RETURN_STD": "0.25", "WEIGHT_TAU": "0.5", "SEED": "0"}
+            "WANDB": "0", "MIN_GROUP_SIZE": "2", "MIN_RETURN_STD": "0.075", "WEIGHT_TAU": "0.5", "SEED": "0"}
 
 
 def launch(condition, env):
@@ -82,7 +82,7 @@ def test_every_condition_composes_with_intended_settings(env):
         assert (c[k]["adv"], c[k]["gamma"], c[k]["mode"], c[k]["w"]) == ("gigpo", 0.95, "mean_std_norm", 1.0)
         assert c[k]["diag_dir"].endswith(f"{k}_seed0/gigpo_diag")
     assert c["gigpo"]["filt"] == "none" and not c["gigpo"]["dyn"]
-    assert (c["gigpo_threshold"]["filt"], c["gigpo_threshold"]["mg"], c["gigpo_threshold"]["ms"]) == ("threshold", 3, 0.25)
+    assert (c["gigpo_threshold"]["filt"], c["gigpo_threshold"]["mg"], c["gigpo_threshold"]["ms"]) == ("threshold", 2, 0.075)
     assert (c["gigpo_weighted"]["filt"], c["gigpo_weighted"]["tau"]) == ("weighted", 0.5)
     assert c["gigpo"]["clip_high"] == 0.2
 

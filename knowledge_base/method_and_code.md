@@ -8,7 +8,7 @@ An ALFWorld agent gets task feedback only at the end of a multi-step episode, so
 
 `gigpo/core_gigpo.py::compute_gigpo_outcome_advantage` computes the episode advantage, builds anchor-state groups (exact match of `anchor_obs` within the same episode group `uid`), computes a normalised step advantage within each group, and returns `episode + step_advantage_w * step`. The ALFWorld script sets ω = 1.0 and `mean_std_norm`, which is the paper's "w/ std" variant (86.7%). The trainer computes discounted step returns with γ = 0.95 before the advantage call (`ray_trainer.py`, `fit`). Invalid actions subtract 0.1 from that step's return.
 
-A group of size 1, or one with equal returns, has zero micro advantage. With std normalisation the micro advantage is scale-free. See `extension_design.md`.
+A group of size 1, or one with equal returns, has zero micro advantage. With std normalisation the micro advantage is scale-free. See `extension_design.md`. The exact values a return can take, and what a group's spread therefore means, are derived in `reward_and_return_structure.md`.
 
 ## Upstream files
 
@@ -28,7 +28,7 @@ A group of size 1, or one with equal returns, has zero micro advantage. With std
 
 | File | Change |
 | --- | --- |
-| `extension/gigpo_ext.py` → `gigpo/gigpo_ext.py` | diagnostics, `threshold` and `weighted` group selection |
+| `extension/gigpo_ext.py` → `gigpo/gigpo_ext.py` | diagnostics, `threshold` and `weighted` group selection; per-step dump of group sizes, stds, ranges, means, mins, maxs and weights to `<run>/gigpo_diag/step_groups.jsonl` |
 | `extension/verl-agent-ext.patch` | `ray_trainer.py`: call the extension for GiGPO, log `gigpo_diag/*`, dump per-group arrays, log `env/steps_collected`. `rollout_loop.py`: count environment steps, including rollouts discarded by dynamic sampling. `dp_actor.py`: log `actor/entropy` (logging only). `ppo_trainer.yaml`: new `algorithm.gigpo.*` keys with defaults that reproduce upstream. The three `examples/*/run_alfworld.sh` scripts forward `"${@:2}"` instead of `$@`, so the engine name is not passed to Hydra as an override, and they skip the data-preparation step (which downloads from the internet) when `~/data/verl-agent/text/{train,test}.parquet` already exist. |
 
 `setup/build_ext_tree.sh` builds the copy; on Omni, `cluster/omni/prepare.sh` builds it and installs it editable, so `import verl` resolves to the patched code (preflight checks this). Rebuild only by rerunning `prepare.sh`. `UPSTREAM_SHA256SUMS.txt` also covers every file the patch touches, so a patched file cannot drift silently.
@@ -43,4 +43,5 @@ A group of size 1, or one with equal returns, has zero micro advantage. With std
 ## References
 
 - Feng et al., [Group-in-Group Policy Optimization for LLM Agent Training](https://arxiv.org/abs/2505.10978), NeurIPS 2025.
+- Yu et al., [DAPO](https://arxiv.org/abs/2503.14476), 2025, and Liu et al., [Dr. GRPO](https://arxiv.org/abs/2503.20783), 2025: see `dapo_and_related_work.md`.
 - [Official implementation](https://github.com/langfengQ/verl-agent), pinned commit in `upstream-verl-agent/UPSTREAM_COMMIT`.

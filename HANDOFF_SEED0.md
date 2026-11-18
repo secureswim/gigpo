@@ -14,7 +14,7 @@ Older notes mention `grpo`, `gigpo_dynamic` and seed 1; all are outside this han
 
 ## Before any full run
 
-1. Clone this branch: `git clone -b seed0-three-experiments https://github.com/secureswim/gigpo.git` and `cd gigpo`.
+1. Clone `main`: `git clone https://github.com/secureswim/gigpo.git` and `cd gigpo`. Check that `analysis/choose_thresholds.py` contains `RULE_VERSION = "v2"`. If it does not, the threshold-rule update has not been merged yet; stop and ask.
 2. On the login node, run the preparation and checks in runbook steps 1–2. Do not run training on the login node.
 3. Inspect Omni resources and fill `cluster/omni/resources.env` in step 3. **Its allocation flags are blank in the repository.** Obtain H1 approval before any GPU job.
 4. Run the GPU preflight and two-step smoke test (steps 4–5). Use its measured `ESTIMATED_HOURS_PER_RUN` to calculate `<jobs-per-run>` and maximum credits for three runs. Obtain H2 approval for the budget before full training. If H2 sets a shorter `TOTAL_EPOCHS`, export that same value for all three runs and record it.
@@ -35,7 +35,7 @@ source cluster/omni/env.sh
 python3 analysis/choose_thresholds.py --diag runs/gigpo_seed0/gigpo_diag/step_groups.jsonl
 ```
 
-The command should create `results/diagnostic/thresholds.env` and `diagnostic_report.md`. **Run both variants even if the report says "Low threshold impact expected."** That is a forecast for thresholding, not a stop rule for weighting. Let the GiGPO control finish before comparing outcomes.
+The command should create `results/diagnostic/thresholds.env` and `diagnostic_report.md`. Under threshold rule v2 ([`knowledge_base/threshold_rule.md`](knowledge_base/threshold_rule.md)), `thresholds.env` always holds `MIN_GROUP_SIZE=2` and `MIN_RETURN_STD=0.075`, plus `WEIGHT_TAU` = the median return spread of the control's spread groups in steps 1–20. Do the checks listed in runbook step 8 before continuing. **Run both variants even if the report says "Low threshold impact expected."** That is a forecast for thresholding, not a stop rule for weighting. Let the GiGPO control finish before comparing outcomes.
 
 ```bash
 source cluster/omni/resources.env
@@ -54,7 +54,7 @@ If the full control still has no groups with different returns, do not invent th
 ## What to save and report
 
 - `runs/gigpo_seed0/`, `runs/gigpo_threshold_seed0/`, `runs/gigpo_weighted_seed0/`: local logs, checkpoints and diagnostics. Keep these out of Git.
-- `results/diagnostic/`: anchor-group report and the thresholds actually used.
+- `results/diagnostic/`: anchor-group report (including the return-band table) and the thresholds actually used.
 - `results/<condition>_seed0.md`: one record per run, including failures, resumes, allocation and exact command.
 - After the runs: `python3 analysis/summarize.py --runs runs --threshold 0.70 --out results/summary.csv` and `python3 analysis/plot_curves.py --runs runs --out results/figures --threshold 0.70`.
 
