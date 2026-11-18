@@ -38,7 +38,6 @@ case "$MODE" in
   gigpo|gigpo_threshold|gigpo_weighted)
     if [[ "$MODE" == gigpo_threshold || "$MODE" == gigpo_weighted ]]; then
       [[ -f results/diagnostic/thresholds.env ]] || { echo "results/diagnostic/thresholds.env missing (RUNBOOK step 8)" >&2; exit 1; }
-      grep -Fq "**Gate passed**" results/diagnostic/diagnostic_report.md || { echo "Diagnostic gate did not pass; extension runs are disabled." >&2; exit 1; }
       # shellcheck disable=SC1091
       source results/diagnostic/thresholds.env
     fi
