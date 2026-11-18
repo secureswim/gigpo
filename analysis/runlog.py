@@ -118,9 +118,16 @@ def summarize_run(df: pd.DataFrame, threshold: Optional[float], tail_points: int
     return out
 
 
+APPROVED_RUN_NAMES = {"gigpo_seed0", "gigpo_threshold_seed0", "gigpo_weighted_seed0"}
+
+
 def discover_runs(root: Path) -> List[Path]:
+    """Only the three full runs in this handoff; exclude smoke and old runs."""
     root = Path(root)
+    if not root.exists():
+        return []
     return sorted(p for p in root.iterdir() if p.is_dir() and
+                  p.name in APPROVED_RUN_NAMES and
                   ((p / "train.log").exists() or (p / "history.csv").exists()))
 
 
