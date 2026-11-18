@@ -1,6 +1,6 @@
 # Omni runbook: three seed-0 GiGPO experiments
 
-**Scope:** Run only `gigpo`, `gigpo_threshold` and `gigpo_weighted`, all with `SEED=0`. Do not submit GRPO, dynamic GiGPO or another seed. The two extension runs are conditional on the anchor-group diagnostic passing. The `preflight` and `smoke` jobs are setup checks, not experimental conditions.
+**Scope:** Run only `gigpo`, `gigpo_threshold` and `gigpo_weighted`, all with `SEED=0`. Do not submit GRPO, dynamic GiGPO or another seed. Run both extensions after deriving thresholds from the control's training diagnostics, even when the estimated threshold impact is small. The `preflight` and `smoke` jobs are setup checks, not experimental conditions.
 
 This is the only procedure for running the experiments. It is written for a person or an AI agent working on IIIT Delhi's **Omni** Slurm cluster. Follow the steps in order. Do not use any other cluster, script or instruction, including the archived IIIT `gpurun` server notes.
 
@@ -124,7 +124,7 @@ From the smoke log, take `ESTIMATED_HOURS_PER_RUN` (H) and work out:
 
 - **credits per run** = H × price per GPU-hour
 - **jobs per run** = ceil(H / TIME_LIMIT_HOURS) + 1. The extra job covers resume overhead.
-- **Maximum plan:** one seed-0 GiGPO control plus one seed-0 threshold and one seed-0 weighted run, each at 150 steps. If the step-8 diagnostic gate fails, stop after the GiGPO control and report that null result.
+- **Plan:** one seed-0 GiGPO control plus one seed-0 threshold and one seed-0 weighted run, each at 150 steps. A low-impact diagnostic does not cancel either extension. If no anchor groups with return spread exist after the full control, thresholds cannot be derived; report that result and request a revised plan.
 
 **H2 (approval needed):** report H, credits per run, the maximum cost of three runs, and the current balance. Obtain approval for this three-run maximum before submitting the first full run. A shorter shared training budget may be approved, but it must be identical for all three compared conditions. Record the approval in `results/decisions.md`. The scope of this handoff does not include GRPO, dynamic GiGPO or seed 1.
 
@@ -152,7 +152,7 @@ sacct -u $USER --starttime today -o JobID,JobName,State,Elapsed,ExitCode
 - *Chain used up before the last step:* submit one more job with the same condition, seed, resources and budget.
 - *Error signature in `progress.py`:* look it up in the failure table. If the same error appears twice in a row, stop and report.
 
-## Step 8. Anchor-group diagnostic (after `gigpo_seed0` passes step 20)
+## Step 8. Derive extension thresholds (after `gigpo_seed0` passes step 20)
 
 ```bash
 source cluster/omni/env.sh
@@ -161,12 +161,13 @@ python3 analysis/choose_thresholds.py --diag runs/gigpo_seed0/gigpo_diag/step_gr
 
 This writes `results/diagnostic/{thresholds.env,diagnostic_report.md,anchor_groups.png}`. The fixed rule uses training batches only. Do not edit its output.
 
-- **Report says "Gate passed":** finish the control and go to step 9.
-- **Report says "Gate not passed":** do not run either extension condition. Report the diagnostic as a null result, then go to step 10 for analysis of the control. The launch scripts also reject extension submissions when the gate has not passed.
+- **Thresholds written:** finish the control and go to step 9. Run both variants even if the report says **Low threshold impact expected**. That warning predicts a small effect for `gigpo_threshold`; it does not measure whether `gigpo_weighted` is inert.
+- **No groups with return spread in steps 1–20:** the command exits without thresholds. Let `gigpo_seed0` reach step 150, then run `python3 analysis/choose_thresholds.py --diag runs/gigpo_seed0/gigpo_diag/step_groups.jsonl --steps 150`. This fallback is fixed in advance and still uses no validation data.
+- **Still no spread after step 150:** do not invent threshold values or submit extensions that would be equivalent to the control. Record the mechanism result. Ask the team at H3 whether to replace the two runs with a seed-0 GRPO baseline, a GiGPO second seed, or end the study. These alternatives require a new scope decision and code change; they are not authorized by this handoff.
 
 Commit `results/diagnostic/` to the `omni-runs` branch.
 
-## Step 9. Two extension runs (only after the gate passed)
+## Step 9. Two extension runs (after thresholds are written)
 
 ```bash
 source cluster/omni/resources.env
