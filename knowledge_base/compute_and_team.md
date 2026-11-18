@@ -6,13 +6,11 @@ All runs happen on Omni through [`RUNBOOK_OMNI.md`](../RUNBOOK_OMNI.md). Each co
 
 | # | Command | Why | When |
 | --- | --- | --- | --- |
-| 1 | `SEED=0 bash cluster/omni/submit_chain.sh gigpo <jobs> $RESOURCE_FLAGS` | reproduction, control, and source of the diagnostic | runbook step 7 |
-| 2 | `SEED=0 bash cluster/omni/submit_chain.sh grpo <jobs> $RESOURCE_FLAGS` | baseline | step 7, in parallel with run 1 |
-| 3 | `SEED=0 bash cluster/omni/submit_chain.sh gigpo_threshold <jobs> $RESOURCE_FLAGS` | condition (b) | step 9, once run 1 passes step 20 and the gate passes |
-| 4 | `SEED=0 bash cluster/omni/submit_chain.sh gigpo_weighted <jobs> $RESOURCE_FLAGS` | condition (c) | step 9 |
-| 5 | `SEED=1 …` for `gigpo` and the better extension condition | seed variation | step 10, if approved at H2 |
-| 6 | `SEED=0 … gigpo_dynamic` | episode-level filter reference | optional, if approved |
-| 7 | `SEED=1 … grpo` | baseline variation | optional, if approved |
+| 1 | `SEED=0 bash cluster/omni/submit_chain.sh gigpo <jobs> $RESOURCE_FLAGS` | control and source of the diagnostic | runbook step 7 |
+| 2 | `SEED=0 bash cluster/omni/submit_chain.sh gigpo_threshold <jobs> $RESOURCE_FLAGS` | test suppression of weak anchor groups | step 9, after thresholds are derived |
+| 3 | `SEED=0 bash cluster/omni/submit_chain.sh gigpo_weighted <jobs> $RESOURCE_FLAGS` | test graded reweighting of anchor groups | step 9, after thresholds are derived |
+
+All runs use seed 0. A low threshold-impact forecast does not cancel runs 2–3. If no return spread exists even after the full control, the two variants cannot be configured meaningfully; report that result and request a new scope decision. GRPO, dynamic GiGPO and additional seeds are not part of this handoff.
 
 `<jobs>` is ceil(hours per run / `TIME_LIMIT_HOURS`) + 1 (runbook step 6).
 
