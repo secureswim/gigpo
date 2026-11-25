@@ -1,0 +1,52 @@
+Job=10333 step=12 host=dgxh200.cm.cluster
+CUDA_VISIBLE_DEVICES=0
+TARGET SOURCE                               FSTYPE
+/home  172.16.10.201,172.16.10.203/iiitdpfs wekafs
+
+GPU and driver metadata (device enumeration may include other node GPUs)
+name, driver_version, memory.total [MiB]
+NVIDIA H200, 570.172.08, 143771 MiB
+NVIDIA H200, 570.172.08, 143771 MiB
+NVIDIA H200, 570.172.08, 143771 MiB
+NVIDIA H200, 570.172.08, 143771 MiB
+NVIDIA H200, 570.172.08, 143771 MiB
+NVIDIA H200, 570.172.08, 143771 MiB
+NVIDIA H200, 570.172.08, 143771 MiB
+NVIDIA H200, 570.172.08, 143771 MiB
+GPU 0: NVIDIA H200 (UUID: GPU-34c445fe-c5e4-064d-aed9-cac9d3f3f909)
+  MIG 3g.71gb     Device  0: (UUID: MIG-f048da2d-2ca2-56fb-b710-d87a0591e3d3)
+GPU 1: NVIDIA H200 (UUID: GPU-56a4c3d8-dc3d-5b4b-5a6c-51033f0900d2)
+GPU 2: NVIDIA H200 (UUID: GPU-6fdb5d35-6745-1bc3-962f-5192496bd2df)
+GPU 3: NVIDIA H200 (UUID: GPU-d64d35fd-7168-4ac1-6013-16b1b3ffe340)
+GPU 4: NVIDIA H200 (UUID: GPU-8ee63a1e-3f9d-174e-1db9-bd1aec27e921)
+GPU 5: NVIDIA H200 (UUID: GPU-010652c4-e0f6-1cbb-e4ff-3e42a0d25f5b)
+GPU 6: NVIDIA H200 (UUID: GPU-711b2d0a-47b7-1faf-17f6-f3c4480d0722)
+GPU 7: NVIDIA H200 (UUID: GPU-7870b5e1-9c9f-14f7-7d88-67e1ce4f3afa)
+
+Inherited modules
+
+Currently Loaded Modules:
+  1) shared   2) DefaultModules
+
+ 
+
+
+Toolkit module check in a subshell
+/cm/shared/apps/cuda12.8/toolkit/12.8.1/bin/nvcc
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2025 NVIDIA Corporation
+Built on Fri_Feb_21_20:23:50_PST_2025
+Cuda compilation tools, release 12.8, V12.8.93
+Build cuda_12.8.r12.8/compiler.35583870_0
+CUDA_HOME=/cm/shared/apps/cuda12.8/toolkit/12.8.1
+
+Selected Conda environment and PyTorch
+python: /home/vansh23580/rl-project/envs/gigpo/bin/python
+conda_prefix: /home/vansh23580/rl-project/envs/gigpo
+torch: 2.6.0+cu124
+torch_build_cuda: 12.4
+compiled_architectures: ['sm_50', 'sm_60', 'sm_70', 'sm_75', 'sm_80', 'sm_86', 'sm_90']
+cuda_available: True
+visible_devices: 1
+device: 0 NVIDIA H200 MIG 3g.71gb GiB: 69.75 compute_capability: (9, 0)
+tiny_cuda_matmul: PASS

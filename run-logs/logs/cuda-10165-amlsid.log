@@ -1,0 +1,37 @@
+Job=10165 step=1 host=B2002.cm.cluster
+CUDA_VISIBLE_DEVICES=0
+TARGET SOURCE                               FSTYPE
+/home  172.16.10.201,172.16.10.203/iiitdpfs wekafs
+
+GPU and driver metadata (device enumeration may include other node GPUs)
+name, driver_version, memory.total [MiB]
+NVIDIA B200, 570.195.03, 183359 MiB
+GPU 0: NVIDIA B200 (UUID: GPU-15b8145c-388e-f470-fd91-3fa2d5d0214c)
+
+Inherited modules
+
+Currently Loaded Modules:
+  1) shared   2) DefaultModules
+
+ 
+
+
+Toolkit module check in a subshell
+/cm/shared/apps/cuda12.8/toolkit/12.8.1/bin/nvcc
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2025 NVIDIA Corporation
+Built on Fri_Feb_21_20:23:50_PST_2025
+Cuda compilation tools, release 12.8, V12.8.93
+Build cuda_12.8.r12.8/compiler.35583870_0
+CUDA_HOME=/cm/shared/apps/cuda12.8/toolkit/12.8.1
+
+Selected Conda environment and PyTorch
+python: /home/vansh23580/miniconda3/envs/amlsid/bin/python
+conda_prefix: /home/vansh23580/miniconda3/envs/amlsid
+torch: 2.7.0+cu128
+torch_build_cuda: 12.8
+compiled_architectures: ['sm_75', 'sm_80', 'sm_86', 'sm_90', 'sm_100', 'sm_120', 'compute_120']
+cuda_available: True
+visible_devices: 1
+device: 0 NVIDIA B200 GiB: 178.36 compute_capability: (10, 0)
+tiny_cuda_matmul: PASS

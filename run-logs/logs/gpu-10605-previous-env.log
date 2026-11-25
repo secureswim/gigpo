@@ -1,0 +1,50 @@
+Job=10605 step=0 host=B2002.cm.cluster
+CUDA_VISIBLE_DEVICES=0
+TARGET SOURCE                               FSTYPE
+/home  172.16.10.201,172.16.10.203/iiitdpfs wekafs
+
+GPU and driver metadata (device enumeration may include other node GPUs)
+name, driver_version, memory.total [MiB]
+NVIDIA B200, 570.195.03, 183359 MiB
+GPU 0: NVIDIA B200 (UUID: GPU-b6fa3486-e647-d28a-9964-783ace6e50de)
+
+Inherited modules
+
+Currently Loaded Modules:
+  1) shared   2) DefaultModules
+
+ 
+
+
+Toolkit module check in a subshell
+/cm/shared/apps/cuda12.8/toolkit/12.8.1/bin/nvcc
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2025 NVIDIA Corporation
+Built on Fri_Feb_21_20:23:50_PST_2025
+Cuda compilation tools, release 12.8, V12.8.93
+Build cuda_12.8.r12.8/compiler.35583870_0
+CUDA_HOME=/cm/shared/apps/cuda12.8/toolkit/12.8.1
+
+Selected Conda environment and PyTorch
+/home/vansh23580/rl-project/envs/gigpo/lib/python3.12/site-packages/torch/cuda/__init__.py:235: UserWarning: 
+NVIDIA B200 with CUDA capability sm_100 is not compatible with the current PyTorch installation.
+The current PyTorch install supports CUDA capabilities sm_50 sm_60 sm_70 sm_75 sm_80 sm_86 sm_90.
+If you want to use the NVIDIA B200 GPU with PyTorch, please check the instructions at https://pytorch.org/get-started/locally/
+
+  warnings.warn(
+python: /home/vansh23580/rl-project/envs/gigpo/bin/python
+conda_prefix: /home/vansh23580/rl-project/envs/gigpo
+torch: 2.6.0+cu124
+torch_build_cuda: 12.4
+compiled_architectures: ['sm_50', 'sm_60', 'sm_70', 'sm_75', 'sm_80', 'sm_86', 'sm_90']
+cuda_available: True
+visible_devices: 1
+device: 0 NVIDIA B200 GiB: 178.36 compute_capability: (10, 0)
+Traceback (most recent call last):
+  File "<stdin>", line 17, in <module>
+RuntimeError: CUDA error: no kernel image is available for execution on the device
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+srun: error: B2002: task 0: Exited with exit code 1

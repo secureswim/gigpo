@@ -1,0 +1,12 @@
+=== launch 2026-11-19T19:52:36Z slurm_job=10605 node=B2002
+condition=gigpo seed=0 total_epochs=150 save_freq=5
+hardware: n_gpus=1 tp=1 micro_bs=16 gpu_mem_util=0.5 val_batch=128 ref_offload=True
+upstream_commit=f974dc5977908d6007ad178c9f3c48f0c7b39331
+built_utc=2026-11-19T18:15:28Z
+upstream_commit=f974dc5977908d6007ad178c9f3c48f0c7b39331
+patch_sha256=5d8112801e86589349925ffd4292ed47f57c2daceed4111af49ba70dc55e3ec4
+gigpo_ext_sha256=48300e230c4c11f14aae9ec30ee8c71a3bf733185441b7b36af80ab46fd125ab
+project_git=none
+project_dirty=0
+command=bash examples/gigpo_trainer/run_alfworld.sh vllm algorithm.gigpo.group_filter=none actor_rollout_ref.model.path=/home/vansh23580/rl-project/gigpo/cache/huggingface/hub/models--Qwen--Qwen2.5-1.5B-Instruct/snapshots/989aa7980e4cf806f80c7fef2b1adb7bc71aa306 env.seed=0 trainer.n_gpus_per_node=1 actor_rollout_ref.rollout.tensor_model_parallel_size=1 actor_rollout_ref.actor.ppo_micro_batch_size_per_gpu=16 actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=16 actor_rollout_ref.ref.log_prob_micro_batch_size_per_gpu=16 actor_rollout_ref.rollout.gpu_memory_utilization=0.5 actor_rollout_ref.ref.fsdp_config.param_offload=True data.val_batch_size=128 trainer.total_epochs=150 trainer.test_freq=5 trainer.save_freq=5 trainer.max_actor_ckpt_to_keep=2 trainer.resume_mode=auto trainer.default_local_dir=/home/vansh23580/rl-project/runs/full-10605/gigpo_seed0/checkpoints trainer.project_name=gigpo_rl_project trainer.experiment_name=gigpo_seed0 trainer.logger=['console'] algorithm.gigpo.diag_dir=/home/vansh23580/rl-project/runs/full-10605/gigpo_seed0/gigpo_diag 
+NVIDIA B200, 183359 MiB, 570.195.03

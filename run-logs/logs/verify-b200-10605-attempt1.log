@@ -1,0 +1,46 @@
+textworld 1.7.0 is not supported on this platform
+..................................F.............                         [100%]
+=================================== FAILURES ===================================
+_____________________________ test_hardware_knobs ______________________________
+
+env = {'EXT_TREE': '/tmp/pytest-of-vansh23580/pytest-0/launch0/verl-agent-ext', 'RUN_ROOT': '/tmp/pytest-of-vansh23580/pytes.../usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'WANDB': '0', ...}
+
+    def test_hardware_knobs(env):
+        v = launch("gigpo", {**env, "N_GPUS": "2", "MICRO_BS": "8", "VAL_BATCH": "32", "REF_OFFLOAD": "False",
+                             "GPU_MEM_UTIL": "0.4"})
+>       assert (v["gpus"], v["tp"], v["micro"], v["val_bs"], v["ref_offload"], v["mem"]) == (2, 2, 8, 32, False, 0.4)
+E       assert (2, 1, 8, 32, False, 0.4) == (2, 2, 8, 32, False, 0.4)
+E         
+E         At index 1 diff: 1 != 2
+E         Use -v to get more diff
+
+tests/test_launch_compose.py:93: AssertionError
+=============================== warnings summary ===============================
+tests/test_analysis.py::test_rule_constants_match_upstream
+  /home/vansh23580/rl-project/envs/gigpo-b200/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:64: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'
+    prop = Group((name + Suppress("=") + comma_separated(value)) | oneOf(_CONSTANTS))
+
+tests/test_analysis.py::test_rule_constants_match_upstream
+tests/test_analysis.py::test_rule_constants_match_upstream
+tests/test_analysis.py::test_rule_constants_match_upstream
+tests/test_analysis.py::test_rule_constants_match_upstream
+tests/test_analysis.py::test_rule_constants_match_upstream
+tests/test_analysis.py::test_rule_constants_match_upstream
+  /home/vansh23580/rl-project/envs/gigpo-b200/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:85: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+    parse = parser.parseString(pattern)
+
+tests/test_analysis.py::test_rule_constants_match_upstream
+tests/test_analysis.py::test_rule_constants_match_upstream
+tests/test_analysis.py::test_rule_constants_match_upstream
+tests/test_analysis.py::test_rule_constants_match_upstream
+tests/test_analysis.py::test_rule_constants_match_upstream
+tests/test_analysis.py::test_rule_constants_match_upstream
+  /home/vansh23580/rl-project/envs/gigpo-b200/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:89: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+    parser.resetCache()
+
+tests/test_analysis.py::test_rule_constants_match_upstream
+  /home/vansh23580/rl-project/envs/gigpo-b200/lib/python3.12/site-packages/matplotlib/_mathtext.py:45: PyparsingDeprecationWarning: 'enablePackrat' deprecated - use 'enable_packrat'
+    ParserElement.enablePackrat()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+1 failed, 47 passed, 14 warnings in 34.91s

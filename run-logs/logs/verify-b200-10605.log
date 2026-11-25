@@ -1,0 +1,32 @@
+textworld 1.7.0 is not supported on this platform
+................................................                         [100%]
+=============================== warnings summary ===============================
+tests/test_analysis.py::test_rule_constants_match_upstream
+  /home/vansh23580/rl-project/envs/gigpo-b200/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:64: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'
+    prop = Group((name + Suppress("=") + comma_separated(value)) | oneOf(_CONSTANTS))
+
+tests/test_analysis.py::test_rule_constants_match_upstream
+tests/test_analysis.py::test_rule_constants_match_upstream
+tests/test_analysis.py::test_rule_constants_match_upstream
+tests/test_analysis.py::test_rule_constants_match_upstream
+tests/test_analysis.py::test_rule_constants_match_upstream
+tests/test_analysis.py::test_rule_constants_match_upstream
+  /home/vansh23580/rl-project/envs/gigpo-b200/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:85: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+    parse = parser.parseString(pattern)
+
+tests/test_analysis.py::test_rule_constants_match_upstream
+tests/test_analysis.py::test_rule_constants_match_upstream
+tests/test_analysis.py::test_rule_constants_match_upstream
+tests/test_analysis.py::test_rule_constants_match_upstream
+tests/test_analysis.py::test_rule_constants_match_upstream
+tests/test_analysis.py::test_rule_constants_match_upstream
+  /home/vansh23580/rl-project/envs/gigpo-b200/lib/python3.12/site-packages/matplotlib/_fontconfig_pattern.py:89: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+    parser.resetCache()
+
+tests/test_analysis.py::test_rule_constants_match_upstream
+  /home/vansh23580/rl-project/envs/gigpo-b200/lib/python3.12/site-packages/matplotlib/_mathtext.py:45: PyparsingDeprecationWarning: 'enablePackrat' deprecated - use 'enable_packrat'
+    ParserElement.enablePackrat()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+48 passed, 14 warnings in 28.05s
+srun: error: task 0 launch failed: Slurmd could not execve job

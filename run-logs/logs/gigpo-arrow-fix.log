@@ -1,0 +1,49 @@
+Collecting pyarrow==19.0.1
+  Downloading pyarrow-19.0.1-cp312-cp312-manylinux_2_28_x86_64.whl.metadata (3.3 kB)
+Collecting pandas==2.2.3
+  Downloading pandas-2.2.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (89 kB)
+Collecting scipy==1.15.2
+  Downloading scipy-1.15.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (61 kB)
+Collecting matplotlib==3.10.1
+  Downloading matplotlib-3.10.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (11 kB)
+Requirement already satisfied: numpy>=1.26.0 in ./rl-project/envs/gigpo/lib/python3.12/site-packages (from pandas==2.2.3) (1.26.4)
+Requirement already satisfied: python-dateutil>=2.8.2 in ./rl-project/envs/gigpo/lib/python3.12/site-packages (from pandas==2.2.3) (4.0.0)
+Collecting pytz>=2020.1 (from pandas==2.2.3)
+  Downloading pytz-2026.6-py2.py3-none-any.whl.metadata (22 kB)
+Requirement already satisfied: tzdata>=2022.7 in ./rl-project/envs/gigpo/lib/python3.12/site-packages (from pandas==2.2.3) (2026.6)
+Requirement already satisfied: contourpy>=1.0.1 in ./rl-project/envs/gigpo/lib/python3.12/site-packages (from matplotlib==3.10.1) (1.3.2)
+Requirement already satisfied: cycler>=0.10 in ./rl-project/envs/gigpo/lib/python3.12/site-packages (from matplotlib==3.10.1) (0.12.1)
+Requirement already satisfied: fonttools>=4.22.0 in ./rl-project/envs/gigpo/lib/python3.12/site-packages (from matplotlib==3.10.1) (4.68.0)
+Requirement already satisfied: kiwisolver>=1.3.1 in ./rl-project/envs/gigpo/lib/python3.12/site-packages (from matplotlib==3.10.1) (1.5.1)
+Requirement already satisfied: packaging>=20.0 in ./rl-project/envs/gigpo/lib/python3.12/site-packages (from matplotlib==3.10.1) (26.3)
+Requirement already satisfied: pillow>=8 in ./rl-project/envs/gigpo/lib/python3.12/site-packages (from matplotlib==3.10.1) (13.0.0)
+Requirement already satisfied: pyparsing>=2.3.1 in ./rl-project/envs/gigpo/lib/python3.12/site-packages (from matplotlib==3.10.1) (3.3.3)
+Downloading pyarrow-19.0.1-cp312-cp312-manylinux_2_28_x86_64.whl (42.1 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 42.1/42.1 MB 88.6 MB/s  0:00:00
+Downloading pandas-2.2.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (12.7 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 12.7/12.7 MB 92.4 MB/s  0:00:00
+Downloading scipy-1.15.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (37.3 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 37.3/37.3 MB 94.6 MB/s  0:00:00
+Downloading matplotlib-3.10.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (8.6 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 8.6/8.6 MB 95.3 MB/s  0:00:00
+Downloading pytz-2026.6-py2.py3-none-any.whl (506 kB)
+Installing collected packages: pytz, scipy, pyarrow, pandas, matplotlib
+  Attempting uninstall: scipy
+    Found existing installation: scipy 1.17.1
+    Uninstalling scipy-1.17.1:
+      Successfully uninstalled scipy-1.17.1
+  Attempting uninstall: pyarrow
+    Found existing installation: pyarrow 26.0.1
+    Uninstalling pyarrow-26.0.1:
+      Successfully uninstalled pyarrow-26.0.1
+  Attempting uninstall: pandas
+    Found existing installation: pandas 3.0.6
+    Uninstalling pandas-3.0.6:
+      Successfully uninstalled pandas-3.0.6
+  Attempting uninstall: matplotlib
+    Found existing installation: matplotlib 3.11.2
+    Uninstalling matplotlib-3.11.2:
+      Successfully uninstalled matplotlib-3.11.2
+
+Successfully installed matplotlib-3.10.1 pandas-2.2.3 pyarrow-19.0.1 pytz-2026.6 scipy-1.15.2
+exit=0

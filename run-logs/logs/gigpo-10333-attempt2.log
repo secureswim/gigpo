@@ -1,0 +1,487 @@
+Initializing AlfredTWEnv...
+  0%|          | 0/8810 [00:00<?, ?it/s]  1%|          | 78/8810 [00:00<00:11, 774.78it/s]  2%|▏         | 161/8810 [00:00<00:10, 804.28it/s]  3%|▎         | 242/8810 [00:00<00:12, 713.26it/s]  4%|▍         | 332/8810 [00:00<00:10, 778.84it/s]  5%|▌         | 460/8810 [00:00<00:08, 943.51it/s]  6%|▋         | 556/8810 [00:00<00:08, 917.85it/s]  7%|▋         | 649/8810 [00:00<00:10, 749.68it/s]  8%|▊         | 731/8810 [00:00<00:10, 767.00it/s]  9%|▉         | 812/8810 [00:01<00:12, 627.45it/s] 10%|█         | 899/8810 [00:01<00:11, 684.51it/s] 11%|█         | 974/8810 [00:01<00:11, 699.21it/s] 12%|█▏        | 1061/8810 [00:01<00:10, 742.87it/s] 13%|█▎        | 1150/8810 [00:01<00:09, 780.02it/s] 14%|█▍        | 1231/8810 [00:01<00:09, 763.76it/s] 15%|█▍        | 1315/8810 [00:01<00:09, 782.55it/s] 16%|█▌        | 1413/8810 [00:01<00:08, 834.77it/s] 17%|█▋        | 1498/8810 [00:01<00:09, 807.02it/s] 18%|█▊        | 1580/8810 [00:02<00:09, 773.16it/s] 19%|█▉        | 1659/8810 [00:02<00:09, 775.08it/s] 20%|█▉        | 1738/8810 [00:02<00:11, 606.98it/s] 20%|██        | 1805/8810 [00:02<00:11, 598.98it/s] 21%|██▏       | 1879/8810 [00:02<00:10, 632.35it/s] 22%|██▏       | 1980/8810 [00:02<00:09, 728.26it/s] 24%|██▎       | 2074/8810 [00:02<00:08, 785.08it/s] 25%|██▍       | 2172/8810 [00:02<00:07, 837.55it/s] 26%|██▌       | 2265/8810 [00:02<00:07, 862.47it/s] 27%|██▋       | 2354/8810 [00:03<00:07, 851.48it/s] 28%|██▊       | 2441/8810 [00:03<00:07, 856.52it/s] 29%|██▊       | 2528/8810 [00:03<00:07, 829.82it/s] 30%|██▉       | 2612/8810 [00:03<00:07, 795.27it/s] 31%|███       | 2697/8810 [00:03<00:07, 808.46it/s] 32%|███▏      | 2779/8810 [00:03<00:09, 627.66it/s] 33%|███▎      | 2874/8810 [00:03<00:08, 702.92it/s] 33%|███▎      | 2951/8810 [00:03<00:08, 699.14it/s] 35%|███▍      | 3046/8810 [00:04<00:07, 761.97it/s] 36%|███▌      | 3151/8810 [00:04<00:06, 838.96it/s] 37%|███▋      | 3244/8810 [00:04<00:06, 858.81it/s] 38%|███▊      | 3335/8810 [00:04<00:06, 868.18it/s] 39%|███▉      | 3424/8810 [00:04<00:06, 853.57it/s] 40%|███▉      | 3511/8810 [00:04<00:06, 827.29it/s] 41%|████      | 3601/8810 [00:04<00:06, 846.25it/s] 42%|████▏     | 3700/8810 [00:04<00:05, 885.47it/s] 43%|████▎     | 3827/8810 [00:04<00:05, 995.92it/s] 45%|████▍     | 3928/8810 [00:04<00:04, 987.81it/s] 46%|████▌     | 4028/8810 [00:05<00:05, 941.17it/s] 47%|████▋     | 4123/8810 [00:05<00:05, 922.47it/s] 48%|████▊     | 4216/8810 [00:05<00:06, 729.42it/s] 49%|████▉     | 4330/8810 [00:05<00:05, 826.70it/s] 50%|█████     | 4447/8810 [00:05<00:04, 904.04it/s] 52%|█████▏    | 4555/8810 [00:05<00:04, 948.25it/s] 53%|█████▎    | 4655/8810 [00:05<00:04, 869.95it/s] 54%|█████▍    | 4759/8810 [00:05<00:04, 913.32it/s] 55%|█████▌    | 4875/8810 [00:06<00:04, 976.88it/s] 56%|█████▋    | 4976/8810 [00:06<00:04, 887.94it/s] 58%|█████▊    | 5081/8810 [00:06<00:04, 924.09it/s] 59%|█████▉    | 5177/8810 [00:06<00:04, 878.39it/s] 60%|█████▉    | 5273/8810 [00:06<00:05, 675.19it/s] 61%|██████    | 5368/8810 [00:06<00:04, 733.89it/s] 62%|██████▏   | 5461/8810 [00:06<00:04, 779.01it/s] 63%|██████▎   | 5552/8810 [00:06<00:04, 811.20it/s] 64%|██████▍   | 5666/8810 [00:07<00:03, 895.55it/s] 65%|██████▌   | 5761/8810 [00:07<00:03, 771.35it/s] 66%|██████▋   | 5849/8810 [00:07<00:03, 798.06it/s] 67%|██████▋   | 5939/8810 [00:07<00:03, 820.37it/s] 68%|██████▊   | 6029/8810 [00:07<00:03, 838.62it/s] 69%|██████▉   | 6116/8810 [00:07<00:03, 790.48it/s] 71%|███████   | 6232/8810 [00:07<00:02, 887.40it/s] 72%|███████▏  | 6324/8810 [00:07<00:02, 831.74it/s] 73%|███████▎  | 6424/8810 [00:07<00:02, 874.14it/s] 74%|███████▍  | 6514/8810 [00:08<00:03, 678.77it/s] 75%|███████▌  | 6611/8810 [00:08<00:02, 745.48it/s] 76%|███████▌  | 6711/8810 [00:08<00:02, 806.60it/s] 77%|███████▋  | 6798/8810 [00:08<00:02, 808.88it/s] 78%|███████▊  | 6884/8810 [00:08<00:02, 808.94it/s] 79%|███████▉  | 6968/8810 [00:08<00:02, 809.38it/s] 80%|████████  | 7057/8810 [00:08<00:02, 830.16it/s] 81%|████████  | 7142/8810 [00:08<00:02, 810.57it/s] 82%|████████▏ | 7249/8810 [00:08<00:01, 882.87it/s] 83%|████████▎ | 7339/8810 [00:09<00:01, 871.08it/s] 84%|████████▍ | 7427/8810 [00:09<00:01, 871.46it/s] 86%|████████▌ | 7534/8810 [00:09<00:01, 928.27it/s] 87%|████████▋ | 7628/8810 [00:09<00:01, 653.50it/s] 88%|████████▊ | 7729/8810 [00:09<00:01, 732.66it/s] 89%|████████▉ | 7828/8810 [00:09<00:01, 793.49it/s] 90%|████████▉ | 7917/8810 [00:09<00:01, 757.30it/s] 91%|█████████ | 8017/8810 [00:09<00:00, 816.36it/s] 92%|█████████▏| 8116/8810 [00:10<00:00, 858.70it/s] 93%|█████████▎| 8207/8810 [00:10<00:00, 855.07it/s] 95%|█████████▍| 8331/8810 [00:10<00:00, 958.90it/s] 96%|█████████▌| 8430/8810 [00:10<00:00, 942.30it/s] 97%|█████████▋| 8527/8810 [00:10<00:00, 884.88it/s] 98%|█████████▊| 8618/8810 [00:10<00:00, 863.04it/s] 99%|█████████▉| 8706/8810 [00:10<00:00, 705.40it/s]100%|█████████▉| 8798/8810 [00:10<00:00, 755.46it/s]100%|██████████| 8810/8810 [00:10<00:00, 805.26it/s]
+Overall we have 3553 games in split=train
+Training with 3553 games
+use_expert = False
+ALFWorld reset and step: PASS
+Initial observation: '-= Welcome to TextWorld, ALFRED! =-\n\nYou are in the middle of a room. Looking quickly around you, you see a armchair 1, a coffeetable 1, a diningtable 1, a draw'
+Action: 'go to armchair 1'
+Next observation: 'You arrive at armchair 1. On the armchair 1, you see a pillow 1.'
+Reward: 0.0, done: False
++ ENGINE=vllm
++ shift
++ export VLLM_ATTENTION_BACKEND=XFORMERS
++ VLLM_ATTENTION_BACKEND=XFORMERS
++ train_data_size=16
++ val_data_size=128
++ group_size=8
++ mode=mean_std_norm
++ python3 -m verl.trainer.main_ppo algorithm.adv_estimator=gigpo data.train_files=/home/vansh23580/data/verl-agent/text/train.parquet data.val_files=/home/vansh23580/data/verl-agent/text/test.parquet data.train_batch_size=16 data.val_batch_size=128 data.max_prompt_length=2048 data.max_response_length=512 data.filter_overlong_prompts=True data.truncation=error data.return_raw_chat=True actor_rollout_ref.model.path=Qwen/Qwen2.5-1.5B-Instruct actor_rollout_ref.actor.optim.lr=1e-6 actor_rollout_ref.model.use_remove_padding=True actor_rollout_ref.actor.ppo_mini_batch_size=256 actor_rollout_ref.actor.ppo_micro_batch_size_per_gpu=32 actor_rollout_ref.actor.use_kl_loss=True actor_rollout_ref.actor.kl_loss_coef=0.01 actor_rollout_ref.actor.kl_loss_type=low_var_kl actor_rollout_ref.model.enable_gradient_checkpointing=True actor_rollout_ref.actor.fsdp_config.param_offload=False actor_rollout_ref.actor.fsdp_config.optimizer_offload=False actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=32 actor_rollout_ref.rollout.tensor_model_parallel_size=2 actor_rollout_ref.rollout.name=vllm actor_rollout_ref.rollout.gpu_memory_utilization=0.6 actor_rollout_ref.rollout.enable_chunked_prefill=False actor_rollout_ref.rollout.enforce_eager=False actor_rollout_ref.rollout.free_cache_engine=False actor_rollout_ref.rollout.val_kwargs.temperature=0.4 actor_rollout_ref.rollout.val_kwargs.do_sample=True actor_rollout_ref.ref.log_prob_micro_batch_size_per_gpu=32 actor_rollout_ref.ref.fsdp_config.param_offload=True actor_rollout_ref.actor.use_invalid_action_penalty=True actor_rollout_ref.actor.invalid_action_penalty_coef=0.1 algorithm.use_kl_in_reward=False algorithm.gamma=0.95 algorithm.gigpo.step_advantage_w=1.0 algorithm.gigpo.mode=mean_std_norm env.env_name=alfworld/AlfredTWEnv env.seed=0 env.max_steps=50 env.rollout.n=8 trainer.critic_warmup=0 'trainer.logger=[console,wandb]' trainer.project_name=verl_agent_alfworld trainer.experiment_name=gigpo_qwen2.5_1.5b trainer.n_gpus_per_node=2 trainer.nnodes=1 trainer.save_freq=-1 trainer.test_freq=5 trainer.total_epochs=150 trainer.val_before_train=True trainer.n_gpus_per_node=1 actor_rollout_ref.rollout.tensor_model_parallel_size=1 actor_rollout_ref.actor.ppo_micro_batch_size_per_gpu=1 actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=1 actor_rollout_ref.ref.log_prob_micro_batch_size_per_gpu=1 actor_rollout_ref.actor.fsdp_config.param_offload=True actor_rollout_ref.actor.fsdp_config.optimizer_offload=True trainer.total_epochs=1 trainer.total_training_steps=1 trainer.test_freq=1 trainer.val_before_train=False 'trainer.logger=['\''console'\'']' trainer.experiment_name=omni_mig_smoke trainer.default_local_dir=/home/vansh23580/rl-project/gigpo/runs/omni-10333/checkpoints
+2026-11-12 19:23:43,408	INFO worker.py:1832 -- Started a local Ray instance. View the dashboard at [1m[32mhttp://127.0.0.1:8265 [39m[22m
+[36m(TaskRunner pid=939957)[0m {'actor_rollout_ref': {'actor': {'checkpoint': {'contents': ['model',
+[36m(TaskRunner pid=939957)[0m                                                              'optimizer',
+[36m(TaskRunner pid=939957)[0m                                                              'extra']},
+[36m(TaskRunner pid=939957)[0m                                  'clip_ratio': 0.2,
+[36m(TaskRunner pid=939957)[0m                                  'clip_ratio_high': 0.2,
+[36m(TaskRunner pid=939957)[0m                                  'clip_ratio_low': 0.2,
+[36m(TaskRunner pid=939957)[0m                                  'entropy_coeff': 0.001,
+[36m(TaskRunner pid=939957)[0m                                  'fsdp_config': {'fsdp_size': -1,
+[36m(TaskRunner pid=939957)[0m                                                  'optimizer_offload': True,
+[36m(TaskRunner pid=939957)[0m                                                  'param_offload': True,
+[36m(TaskRunner pid=939957)[0m                                                  'wrap_policy': {'min_num_params': 0}},
+[36m(TaskRunner pid=939957)[0m                                  'grad_clip': 1.0,
+[36m(TaskRunner pid=939957)[0m                                  'invalid_action_penalty_coef': 0.1,
+[36m(TaskRunner pid=939957)[0m                                  'kl_loss_coef': 0.01,
+[36m(TaskRunner pid=939957)[0m                                  'kl_loss_type': 'low_var_kl',
+[36m(TaskRunner pid=939957)[0m                                  'optim': {'lr': 1e-06,
+[36m(TaskRunner pid=939957)[0m                                            'lr_warmup_steps': -1,
+[36m(TaskRunner pid=939957)[0m                                            'lr_warmup_steps_ratio': 0.0,
+[36m(TaskRunner pid=939957)[0m                                            'min_lr_ratio': None,
+[36m(TaskRunner pid=939957)[0m                                            'total_training_steps': -1,
+[36m(TaskRunner pid=939957)[0m                                            'warmup_style': 'constant'},
+[36m(TaskRunner pid=939957)[0m                                  'ppo_epochs': 1,
+[36m(TaskRunner pid=939957)[0m                                  'ppo_max_token_len_per_gpu': 16384,
+[36m(TaskRunner pid=939957)[0m                                  'ppo_micro_batch_size': None,
+[36m(TaskRunner pid=939957)[0m                                  'ppo_micro_batch_size_per_gpu': 1,
+[36m(TaskRunner pid=939957)[0m                                  'ppo_mini_batch_size': 256,
+[36m(TaskRunner pid=939957)[0m                                  'shuffle': False,
+[36m(TaskRunner pid=939957)[0m                                  'strategy': 'fsdp',
+[36m(TaskRunner pid=939957)[0m                                  'ulysses_sequence_parallel_size': 1,
+[36m(TaskRunner pid=939957)[0m                                  'use_dynamic_bsz': False,
+[36m(TaskRunner pid=939957)[0m                                  'use_invalid_action_penalty': True,
+[36m(TaskRunner pid=939957)[0m                                  'use_kl_loss': True,
+[36m(TaskRunner pid=939957)[0m                                  'use_torch_compile': True},
+[36m(TaskRunner pid=939957)[0m                        'hybrid_engine': True,
+[36m(TaskRunner pid=939957)[0m                        'model': {'enable_gradient_checkpointing': True,
+[36m(TaskRunner pid=939957)[0m                                  'external_lib': None,
+[36m(TaskRunner pid=939957)[0m                                  'override_config': {},
+[36m(TaskRunner pid=939957)[0m                                  'path': 'Qwen/Qwen2.5-1.5B-Instruct',
+[36m(TaskRunner pid=939957)[0m                                  'use_remove_padding': True},
+[36m(TaskRunner pid=939957)[0m                        'ref': {'fsdp_config': {'param_offload': True,
+[36m(TaskRunner pid=939957)[0m                                                'wrap_policy': {'min_num_params': 0}},
+[36m(TaskRunner pid=939957)[0m                                'log_prob_max_token_len_per_gpu': 16384,
+[36m(TaskRunner pid=939957)[0m                                'log_prob_micro_batch_size': None,
+[36m(TaskRunner pid=939957)[0m                                'log_prob_micro_batch_size_per_gpu': 1,
+[36m(TaskRunner pid=939957)[0m                                'log_prob_use_dynamic_bsz': False,
+[36m(TaskRunner pid=939957)[0m                                'ulysses_sequence_parallel_size': 1},
+[36m(TaskRunner pid=939957)[0m                        'rollout': {'disable_log_stats': True,
+[36m(TaskRunner pid=939957)[0m                                    'do_sample': True,
+[36m(TaskRunner pid=939957)[0m                                    'dtype': 'bfloat16',
+[36m(TaskRunner pid=939957)[0m                                    'enable_chunked_prefill': False,
+[36m(TaskRunner pid=939957)[0m                                    'enforce_eager': False,
+[36m(TaskRunner pid=939957)[0m                                    'free_cache_engine': False,
+[36m(TaskRunner pid=939957)[0m                                    'gpu_memory_utilization': 0.6,
+[36m(TaskRunner pid=939957)[0m                                    'ignore_eos': False,
+[36m(TaskRunner pid=939957)[0m                                    'load_format': 'dummy_dtensor',
+[36m(TaskRunner pid=939957)[0m                                    'log_prob_max_token_len_per_gpu': 16384,
+[36m(TaskRunner pid=939957)[0m                                    'log_prob_micro_batch_size': None,
+[36m(TaskRunner pid=939957)[0m                                    'log_prob_micro_batch_size_per_gpu': 1,
+[36m(TaskRunner pid=939957)[0m                                    'log_prob_use_dynamic_bsz': False,
+[36m(TaskRunner pid=939957)[0m                                    'max_model_len': None,
+[36m(TaskRunner pid=939957)[0m                                    'max_num_batched_tokens': 8192,
+[36m(TaskRunner pid=939957)[0m                                    'max_num_seqs': 1024,
+[36m(TaskRunner pid=939957)[0m                                    'n': 1,
+[36m(TaskRunner pid=939957)[0m                                    'name': 'vllm',
+[36m(TaskRunner pid=939957)[0m                                    'prompt_length': 2048,
+[36m(TaskRunner pid=939957)[0m                                    'response_length': 512,
+[36m(TaskRunner pid=939957)[0m                                    'temperature': 1.0,
+[36m(TaskRunner pid=939957)[0m                                    'tensor_model_parallel_size': 1,
+[36m(TaskRunner pid=939957)[0m                                    'top_k': -1,
+[36m(TaskRunner pid=939957)[0m                                    'top_p': 1,
+[36m(TaskRunner pid=939957)[0m                                    'use_fire_sampling': False,
+[36m(TaskRunner pid=939957)[0m                                    'val_kwargs': {'do_sample': True,
+[36m(TaskRunner pid=939957)[0m                                                   'n': 1,
+[36m(TaskRunner pid=939957)[0m                                                   'temperature': 0.4,
+[36m(TaskRunner pid=939957)[0m                                                   'top_k': -1,
+[36m(TaskRunner pid=939957)[0m                                                   'top_p': 1.0}}},
+[36m(TaskRunner pid=939957)[0m  'algorithm': {'adv_estimator': 'gigpo',
+[36m(TaskRunner pid=939957)[0m                'filter_groups': {'enable': False, 'max_num_gen_batches': 10},
+[36m(TaskRunner pid=939957)[0m                'gamma': 0.95,
+[36m(TaskRunner pid=939957)[0m                'gigpo': {'mode': 'mean_std_norm', 'step_advantage_w': 1.0},
+[36m(TaskRunner pid=939957)[0m                'kl_ctrl': {'horizon': 10000,
+[36m(TaskRunner pid=939957)[0m                            'kl_coef': 0.001,
+[36m(TaskRunner pid=939957)[0m                            'target_kl': 0.1,
+[36m(TaskRunner pid=939957)[0m                            'type': 'fixed'},
+[36m(TaskRunner pid=939957)[0m                'kl_penalty': 'kl',
+[36m(TaskRunner pid=939957)[0m                'lam': 1.0,
+[36m(TaskRunner pid=939957)[0m                'use_kl_in_reward': False},
+[36m(TaskRunner pid=939957)[0m  'critic': {'checkpoint': {'contents': ['model', 'optimizer', 'extra']},
+[36m(TaskRunner pid=939957)[0m             'cliprange_value': 0.5,
+[36m(TaskRunner pid=939957)[0m             'forward_max_token_len_per_gpu': 32768,
+[36m(TaskRunner pid=939957)[0m             'forward_micro_batch_size': None,
+[36m(TaskRunner pid=939957)[0m             'forward_micro_batch_size_per_gpu': None,
+[36m(TaskRunner pid=939957)[0m             'grad_clip': 1.0,
+[36m(TaskRunner pid=939957)[0m             'model': {'enable_gradient_checkpointing': True,
+[36m(TaskRunner pid=939957)[0m                       'external_lib': None,
+[36m(TaskRunner pid=939957)[0m                       'fsdp_config': {'fsdp_size': -1,
+[36m(TaskRunner pid=939957)[0m                                       'optimizer_offload': False,
+[36m(TaskRunner pid=939957)[0m                                       'param_offload': False,
+[36m(TaskRunner pid=939957)[0m                                       'wrap_policy': {'min_num_params': 0}},
+[36m(TaskRunner pid=939957)[0m                       'override_config': {},
+[36m(TaskRunner pid=939957)[0m                       'path': '~/models/deepseek-llm-7b-chat',
+[36m(TaskRunner pid=939957)[0m                       'tokenizer_path': 'Qwen/Qwen2.5-1.5B-Instruct',
+[36m(TaskRunner pid=939957)[0m                       'use_remove_padding': False},
+[36m(TaskRunner pid=939957)[0m             'optim': {'lr': 1e-05,
+[36m(TaskRunner pid=939957)[0m                       'lr_warmup_steps_ratio': 0.0,
+[36m(TaskRunner pid=939957)[0m                       'min_lr_ratio': None,
+[36m(TaskRunner pid=939957)[0m                       'total_training_steps': -1,
+[36m(TaskRunner pid=939957)[0m                       'warmup_style': 'constant'},
+[36m(TaskRunner pid=939957)[0m             'ppo_epochs': 1,
+[36m(TaskRunner pid=939957)[0m             'ppo_max_token_len_per_gpu': 32768,
+[36m(TaskRunner pid=939957)[0m             'ppo_micro_batch_size': None,
+[36m(TaskRunner pid=939957)[0m             'ppo_micro_batch_size_per_gpu': None,
+[36m(TaskRunner pid=939957)[0m             'ppo_mini_batch_size': 256,
+[36m(TaskRunner pid=939957)[0m             'rollout_n': 1,
+[36m(TaskRunner pid=939957)[0m             'shuffle': False,
+[36m(TaskRunner pid=939957)[0m             'strategy': 'fsdp',
+[36m(TaskRunner pid=939957)[0m             'ulysses_sequence_parallel_size': 1,
+[36m(TaskRunner pid=939957)[0m             'use_dynamic_bsz': False},
+[36m(TaskRunner pid=939957)[0m  'custom_reward_function': {'name': 'compute_score', 'path': None},
+[36m(TaskRunner pid=939957)[0m  'data': {'filter_overlong_prompts': True,
+[36m(TaskRunner pid=939957)[0m           'image_key': 'images',
+[36m(TaskRunner pid=939957)[0m           'max_prompt_length': 2048,
+[36m(TaskRunner pid=939957)[0m           'max_response_length': 512,
+[36m(TaskRunner pid=939957)[0m           'prompt_key': 'prompt',
+[36m(TaskRunner pid=939957)[0m           'return_raw_chat': True,
+[36m(TaskRunner pid=939957)[0m           'return_raw_input_ids': False,
+[36m(TaskRunner pid=939957)[0m           'shuffle': True,
+[36m(TaskRunner pid=939957)[0m           'tokenizer': None,
+[36m(TaskRunner pid=939957)[0m           'train_batch_size': 16,
+[36m(TaskRunner pid=939957)[0m           'train_files': '/home/vansh23580/data/verl-agent/text/train.parquet',
+[36m(TaskRunner pid=939957)[0m           'truncation': 'error',
+[36m(TaskRunner pid=939957)[0m           'val_batch_size': 128,
+[36m(TaskRunner pid=939957)[0m           'val_files': '/home/vansh23580/data/verl-agent/text/test.parquet'},
+[36m(TaskRunner pid=939957)[0m  'env': {'env_name': 'alfworld/AlfredTWEnv',
+[36m(TaskRunner pid=939957)[0m          'max_steps': 50,
+[36m(TaskRunner pid=939957)[0m          'rollout': {'n': 8},
+[36m(TaskRunner pid=939957)[0m          'seed': 0,
+[36m(TaskRunner pid=939957)[0m          'sokoban': {'dim_room': [6, 6],
+[36m(TaskRunner pid=939957)[0m                      'mode': 'tiny_rgb_array',
+[36m(TaskRunner pid=939957)[0m                      'num_boxes': 1,
+[36m(TaskRunner pid=939957)[0m                      'search_depth': 30},
+[36m(TaskRunner pid=939957)[0m          'webshop': {'human_goals': False, 'use_small': True}},
+[36m(TaskRunner pid=939957)[0m  'reward_model': {'enable': False,
+[36m(TaskRunner pid=939957)[0m                   'forward_max_token_len_per_gpu': 32768,
+[36m(TaskRunner pid=939957)[0m                   'max_length': None,
+[36m(TaskRunner pid=939957)[0m                   'micro_batch_size': None,
+[36m(TaskRunner pid=939957)[0m                   'micro_batch_size_per_gpu': None,
+[36m(TaskRunner pid=939957)[0m                   'model': {'external_lib': None,
+[36m(TaskRunner pid=939957)[0m                             'fsdp_config': {'fsdp_size': -1,
+[36m(TaskRunner pid=939957)[0m                                             'param_offload': False,
+[36m(TaskRunner pid=939957)[0m                                             'wrap_policy': {'min_num_params': 0}},
+[36m(TaskRunner pid=939957)[0m                             'input_tokenizer': 'Qwen/Qwen2.5-1.5B-Instruct',
+[36m(TaskRunner pid=939957)[0m                             'path': '~/models/FsfairX-LLaMA3-RM-v0.1',
+[36m(TaskRunner pid=939957)[0m                             'use_remove_padding': False},
+[36m(TaskRunner pid=939957)[0m                   'reward_manager': 'episode',
+[36m(TaskRunner pid=939957)[0m                   'strategy': 'fsdp',
+[36m(TaskRunner pid=939957)[0m                   'ulysses_sequence_parallel_size': 1,
+[36m(TaskRunner pid=939957)[0m                   'use_dynamic_bsz': False},
+[36m(TaskRunner pid=939957)[0m  'trainer': {'balance_batch': True,
+[36m(TaskRunner pid=939957)[0m              'critic_warmup': 0,
+[36m(TaskRunner pid=939957)[0m              'default_hdfs_dir': None,
+[36m(TaskRunner pid=939957)[0m              'default_local_dir': '/home/vansh23580/rl-project/gigpo/runs/omni-10333/checkpoints',
+[36m(TaskRunner pid=939957)[0m              'del_local_ckpt_after_load': False,
+[36m(TaskRunner pid=939957)[0m              'experiment_name': 'omni_mig_smoke',
+[36m(TaskRunner pid=939957)[0m              'log_val_generations': 0,
+[36m(TaskRunner pid=939957)[0m              'logger': ['console'],
+[36m(TaskRunner pid=939957)[0m              'max_actor_ckpt_to_keep': None,
+[36m(TaskRunner pid=939957)[0m              'max_critic_ckpt_to_keep': None,
+[36m(TaskRunner pid=939957)[0m              'n_gpus_per_node': 1,
+[36m(TaskRunner pid=939957)[0m              'nnodes': 1,
+[36m(TaskRunner pid=939957)[0m              'project_name': 'verl_agent_alfworld',
+[36m(TaskRunner pid=939957)[0m              'resume_from_path': None,
+[36m(TaskRunner pid=939957)[0m              'resume_mode': 'auto',
+[36m(TaskRunner pid=939957)[0m              'save_freq': -1,
+[36m(TaskRunner pid=939957)[0m              'test_freq': 1,
+[36m(TaskRunner pid=939957)[0m              'total_epochs': 1,
+[36m(TaskRunner pid=939957)[0m              'total_training_steps': 1,
+[36m(TaskRunner pid=939957)[0m              'val_before_train': False}}
+[36m(TaskRunner pid=939957)[0m Initializing AlfredTWEnv...
+[36m(TaskRunner pid=939957)[0m   0%|          | 0/8810 [00:00<?, ?it/s]
+[36m(TaskRunner pid=939957)[0m   1%|          | 99/8810 [00:00<00:08, 986.54it/s]
+[36m(TaskRunner pid=939957)[0m   2%|▏         | 199/8810 [00:00<00:08, 987.49it/s]
+[36m(TaskRunner pid=939957)[0m   3%|▎         | 298/8810 [00:00<00:08, 976.18it/s]
+[36m(TaskRunner pid=939957)[0m   5%|▌         | 441/8810 [00:00<00:07, 1146.10it/s]
+[36m(TaskRunner pid=939957)[0m   6%|▋         | 556/8810 [00:00<00:07, 1106.41it/s]
+[36m(TaskRunner pid=939957)[0m   8%|▊         | 670/8810 [00:00<00:07, 1106.88it/s]
+[36m(TaskRunner pid=939957)[0m   9%|▉         | 781/8810 [00:00<00:09, 826.94it/s] 
+[36m(TaskRunner pid=939957)[0m  10%|▉         | 874/8810 [00:00<00:09, 809.26it/s]
+[36m(TaskRunner pid=939957)[0m  11%|█         | 967/8810 [00:01<00:09, 839.85it/s]
+[36m(TaskRunner pid=939957)[0m  12%|█▏        | 1067/8810 [00:01<00:08, 880.52it/s]
+[36m(TaskRunner pid=939957)[0m  13%|█▎        | 1160/8810 [00:01<00:09, 814.30it/s]
+[36m(TaskRunner pid=939957)[0m  14%|█▍        | 1246/8810 [00:01<00:09, 824.56it/s]
+[36m(TaskRunner pid=939957)[0m  15%|█▌        | 1332/8810 [00:01<00:13, 568.80it/s]
+[36m(TaskRunner pid=939957)[0m  16%|█▌        | 1410/8810 [00:01<00:12, 612.77it/s]
+[36m(TaskRunner pid=939957)[0m  17%|█▋        | 1511/8810 [00:01<00:10, 703.63it/s]
+[36m(TaskRunner pid=939957)[0m  18%|█▊        | 1592/8810 [00:01<00:10, 718.56it/s]
+[36m(TaskRunner pid=939957)[0m  19%|█▉        | 1694/8810 [00:02<00:08, 795.43it/s]
+[36m(TaskRunner pid=939957)[0m  20%|██        | 1800/8810 [00:02<00:08, 864.99it/s]
+[36m(TaskRunner pid=939957)[0m  21%|██▏       | 1892/8810 [00:02<00:09, 761.19it/s]
+[36m(TaskRunner pid=939957)[0m  23%|██▎       | 2005/8810 [00:02<00:07, 853.13it/s]
+[36m(TaskRunner pid=939957)[0m  24%|██▍       | 2123/8810 [00:02<00:07, 936.89it/s]
+[36m(TaskRunner pid=939957)[0m  25%|██▌       | 2228/8810 [00:02<00:06, 962.73it/s]
+[36m(TaskRunner pid=939957)[0m  26%|██▋       | 2332/8810 [00:02<00:06, 981.65it/s]
+[36m(TaskRunner pid=939957)[0m  28%|██▊       | 2433/8810 [00:02<00:07, 909.04it/s]
+[36m(TaskRunner pid=939957)[0m  29%|██▊       | 2531/8810 [00:02<00:06, 924.83it/s]
+[36m(TaskRunner pid=939957)[0m  30%|██▉       | 2637/8810 [00:03<00:06, 960.28it/s]
+[36m(TaskRunner pid=939957)[0m  31%|███       | 2742/8810 [00:03<00:06, 982.45it/s]
+[36m(TaskRunner pid=939957)[0m  32%|███▏      | 2842/8810 [00:03<00:06, 983.90it/s]
+[36m(TaskRunner pid=939957)[0m  33%|███▎      | 2942/8810 [00:03<00:09, 617.60it/s]
+[36m(TaskRunner pid=939957)[0m  35%|███▍      | 3061/8810 [00:03<00:07, 734.72it/s]
+[36m(TaskRunner pid=939957)[0m  36%|███▌      | 3180/8810 [00:03<00:06, 837.79it/s]
+[36m(TaskRunner pid=939957)[0m  37%|███▋      | 3280/8810 [00:03<00:06, 790.48it/s]
+[36m(TaskRunner pid=939957)[0m  39%|███▊      | 3393/8810 [00:04<00:06, 870.74it/s]
+[36m(TaskRunner pid=939957)[0m  40%|███▉      | 3490/8810 [00:04<00:06, 879.27it/s]
+[36m(TaskRunner pid=939957)[0m  41%|████      | 3595/8810 [00:04<00:05, 919.22it/s]
+[36m(TaskRunner pid=939957)[0m  42%|████▏     | 3702/8810 [00:04<00:05, 958.76it/s]
+[36m(TaskRunner pid=939957)[0m  43%|████▎     | 3830/8810 [00:04<00:04, 1045.59it/s]
+[36m(TaskRunner pid=939957)[0m  45%|████▍     | 3940/8810 [00:04<00:04, 1057.19it/s]
+[36m(TaskRunner pid=939957)[0m  46%|████▌     | 4053/8810 [00:04<00:04, 1038.06it/s]
+[36m(TaskRunner pid=939957)[0m  47%|████▋     | 4159/8810 [00:04<00:04, 1027.38it/s]
+[36m(TaskRunner pid=939957)[0m  48%|████▊     | 4272/8810 [00:04<00:04, 1056.46it/s]
+[36m(TaskRunner pid=939957)[0m  50%|████▉     | 4379/8810 [00:04<00:04, 982.97it/s] 
+[36m(TaskRunner pid=939957)[0m  51%|█████     | 4505/8810 [00:05<00:04, 1058.07it/s]
+[36m(TaskRunner pid=939957)[0m  52%|█████▏    | 4613/8810 [00:05<00:04, 1039.30it/s]
+[36m(TaskRunner pid=939957)[0m  54%|█████▎    | 4719/8810 [00:05<00:06, 667.94it/s] 
+[36m(TaskRunner pid=939957)[0m  55%|█████▍    | 4832/8810 [00:05<00:05, 762.71it/s] 56%|█████▌    | 4953/8810 [00:05<00:04, 863.39it/s]
+[36m(TaskRunner pid=939957)[0m  57%|█████▋    | 5063/8810 [00:05<00:04, 920.68it/s]
+[36m(TaskRunner pid=939957)[0m  59%|█████▊    | 5167/8810 [00:05<00:03, 928.71it/s]
+[36m(TaskRunner pid=939957)[0m  60%|█████▉    | 5277/8810 [00:05<00:03, 973.23it/s]
+[36m(TaskRunner pid=939957)[0m  61%|██████    | 5393/8810 [00:06<00:03, 1023.11it/s]
+[36m(TaskRunner pid=939957)[0m  63%|██████▎   | 5510/8810 [00:06<00:03, 1060.89it/s]
+[36m(TaskRunner pid=939957)[0m  64%|██████▍   | 5620/8810 [00:06<00:02, 1071.14it/s]
+[36m(TaskRunner pid=939957)[0m  65%|██████▌   | 5743/8810 [00:06<00:02, 1113.56it/s]
+[36m(TaskRunner pid=939957)[0m  66%|██████▋   | 5857/8810 [00:06<00:02, 1008.35it/s]
+[36m(TaskRunner pid=939957)[0m  68%|██████▊   | 5969/8810 [00:06<00:02, 1037.21it/s]
+[36m(TaskRunner pid=939957)[0m  69%|██████▉   | 6076/8810 [00:06<00:02, 1026.46it/s]
+[36m(TaskRunner pid=939957)[0m  70%|███████   | 6190/8810 [00:06<00:02, 1056.63it/s]
+[36m(TaskRunner pid=939957)[0m  71%|███████▏  | 6298/8810 [00:06<00:02, 940.22it/s] 
+[36m(TaskRunner pid=939957)[0m  73%|███████▎  | 6413/8810 [00:07<00:02, 993.87it/s]
+[36m(TaskRunner pid=939957)[0m  74%|███████▍  | 6516/8810 [00:07<00:03, 669.24it/s]
+[36m(TaskRunner pid=939957)[0m  75%|███████▌  | 6632/8810 [00:07<00:02, 768.36it/s]
+[36m(TaskRunner pid=939957)[0m  76%|███████▋  | 6737/8810 [00:07<00:02, 828.20it/s]
+[36m(TaskRunner pid=939957)[0m  78%|███████▊  | 6833/8810 [00:07<00:02, 852.44it/s]
+[36m(TaskRunner pid=939957)[0m  79%|███████▉  | 6941/8810 [00:07<00:02, 908.05it/s]
+[36m(TaskRunner pid=939957)[0m  80%|███████▉  | 7043/8810 [00:07<00:01, 935.78it/s]
+[36m(TaskRunner pid=939957)[0m  81%|████████  | 7142/8810 [00:07<00:01, 925.00it/s]
+[36m(TaskRunner pid=939957)[0m  83%|████████▎ | 7269/8810 [00:08<00:01, 1017.76it/s]
+[36m(TaskRunner pid=939957)[0m  84%|████████▎ | 7375/8810 [00:08<00:01, 994.13it/s] 
+[36m(TaskRunner pid=939957)[0m  85%|████████▌ | 7500/8810 [00:08<00:01, 1061.26it/s]
+[36m(TaskRunner pid=939957)[0m  86%|████████▋ | 7613/8810 [00:08<00:01, 1080.48it/s]
+[36m(TaskRunner pid=939957)[0m  88%|████████▊ | 7723/8810 [00:08<00:01, 1009.38it/s]
+[36m(TaskRunner pid=939957)[0m  89%|████████▉ | 7834/8810 [00:08<00:00, 1034.79it/s]
+[36m(TaskRunner pid=939957)[0m  90%|█████████ | 7939/8810 [00:08<00:00, 1002.47it/s]
+[36m(TaskRunner pid=939957)[0m  91%|█████████▏| 8041/8810 [00:09<00:01, 700.86it/s] 
+[36m(TaskRunner pid=939957)[0m  93%|█████████▎| 8158/8810 [00:09<00:00, 802.16it/s]
+[36m(TaskRunner pid=939957)[0m  94%|█████████▍| 8266/8810 [00:09<00:00, 864.60it/s]
+[36m(TaskRunner pid=939957)[0m  95%|█████████▌| 8384/8810 [00:09<00:00, 939.36it/s]
+[36m(TaskRunner pid=939957)[0m  96%|█████████▋| 8488/8810 [00:09<00:00, 960.91it/s]
+[36m(TaskRunner pid=939957)[0m  98%|█████████▊| 8594/8810 [00:09<00:00, 985.31it/s]
+[36m(TaskRunner pid=939957)[0m  99%|█████████▊| 8698/8810 [00:09<00:00, 935.31it/s]
+[36m(TaskRunner pid=939957)[0m 100%|█████████▉| 8806/8810 [00:09<00:00, 973.64it/s]100%|██████████| 8810/8810 [00:09<00:00, 904.67it/s]
+[36m(TaskRunner pid=939957)[0m Overall we have 3553 games in split=train
+[36m(TaskRunner pid=939957)[0m Training with 3553 games
+[36m(TaskRunner pid=939957)[0m use_expert = False
+[36m(TaskRunner pid=939957)[0m Initializing AlfredTWEnv...
+[36m(TaskRunner pid=939957)[0m   0%|          | 0/494 [00:00<?, ?it/s]
+[36m(TaskRunner pid=939957)[0m  13%|█▎        | 62/494 [00:00<00:00, 619.78it/s]
+[36m(TaskRunner pid=939957)[0m  25%|██▌       | 125/494 [00:00<00:00, 621.04it/s]
+[36m(TaskRunner pid=939957)[0m  38%|███▊      | 188/494 [00:00<00:00, 620.24it/s]
+[36m(TaskRunner pid=939957)[0m  62%|██████▏   | 307/494 [00:00<00:00, 843.53it/s]
+[36m(TaskRunner pid=939957)[0m  79%|███████▉  | 392/494 [00:00<00:00, 839.73it/s]
+[36m(TaskRunner pid=939957)[0m 100%|██████████| 494/494 [00:00<00:00, 822.85it/s]
+[36m(TaskRunner pid=939957)[0m Overall we have 140 games in split=eval_in_distribution
+[36m(TaskRunner pid=939957)[0m Evaluating with 140 games
+[36m(TaskRunner pid=939957)[0m use_expert = False
+[36m(TaskRunner pid=939957)[0m WARNING: val_batch_size is deprecated. Validation datasets are sent to inference engines as a whole batch, which will schedule the memory themselves.
+[36m(TaskRunner pid=939957)[0m [validate_config] All configuration checks passed successfully!
+[36m(TaskRunner pid=939957)[0m DeprecationWarning: `ray.state.available_resources_per_node` is a private attribute and access will be removed in a future Ray version.
+[36m(TaskRunner pid=939957)[0m dataset len: 16
+[36m(TaskRunner pid=939957)[0m filter dataset len: 16
+[36m(TaskRunner pid=939957)[0m dataset len: 128
+[36m(TaskRunner pid=939957)[0m filter dataset len: 128
+[36m(TaskRunner pid=939957)[0m Size of train dataloader: 1
+[36m(TaskRunner pid=939957)[0m Total training steps: 1
+[36m(WorkerDict pid=941425)[0m Model config after override: Qwen2Config {
+[36m(WorkerDict pid=941425)[0m   "architectures": [
+[36m(WorkerDict pid=941425)[0m     "Qwen2ForCausalLM"
+[36m(WorkerDict pid=941425)[0m   ],
+[36m(WorkerDict pid=941425)[0m   "attention_dropout": 0.0,
+[36m(WorkerDict pid=941425)[0m   "eos_token_id": 151645,
+[36m(WorkerDict pid=941425)[0m   "hidden_act": "silu",
+[36m(WorkerDict pid=941425)[0m   "hidden_size": 1536,
+[36m(WorkerDict pid=941425)[0m   "initializer_range": 0.02,
+[36m(WorkerDict pid=941425)[0m   "intermediate_size": 8960,
+[36m(WorkerDict pid=941425)[0m   "max_position_embeddings": 32768,
+[36m(WorkerDict pid=941425)[0m   "max_window_layers": 21,
+[36m(WorkerDict pid=941425)[0m   "model_type": "qwen2",
+[36m(WorkerDict pid=941425)[0m   "num_attention_heads": 12,
+[36m(WorkerDict pid=941425)[0m   "num_hidden_layers": 28,
+[36m(WorkerDict pid=941425)[0m   "num_key_value_heads": 2,
+[36m(WorkerDict pid=941425)[0m   "pad_token_id": 151643,
+[36m(WorkerDict pid=941425)[0m   "rms_norm_eps": 1e-06,
+[36m(WorkerDict pid=941425)[0m   "rope_scaling": null,
+[36m(WorkerDict pid=941425)[0m   "rope_theta": 1000000.0,
+[36m(WorkerDict pid=941425)[0m   "sliding_window": 32768,
+[36m(WorkerDict pid=941425)[0m   "tie_word_embeddings": true,
+[36m(WorkerDict pid=941425)[0m   "torch_dtype": "bfloat16",
+[36m(WorkerDict pid=941425)[0m   "transformers_version": "4.51.1",
+[36m(WorkerDict pid=941425)[0m   "use_cache": true,
+[36m(WorkerDict pid=941425)[0m   "use_sliding_window": false,
+[36m(WorkerDict pid=941425)[0m   "vocab_size": 151936
+[36m(WorkerDict pid=941425)[0m }
+[36m(WorkerDict pid=941425)[0m 
+[36m(WorkerDict pid=941425)[0m You are attempting to use Flash Attention 2.0 with a model not initialized on GPU. Make sure to move the model to GPU after initializing it on CPU with `model.to('cuda')`.
+[36m(WorkerDict pid=941425)[0m Monkey patch _flash_attention_forward in transformers.integrations.flash_attention
+[36m(WorkerDict pid=941425)[0m [rank0]:[W1112 19:24:43.631203349 ProcessGroupNCCL.cpp:4561] [PG ID 0 PG GUID 0 Rank 0]  using GPU 0 to perform barrier as devices used by this process are currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect. Specify device_ids in barrier() to force use of a particular device, or call init_process_group() with a device_id.
+[36m(WorkerDict pid=941425)[0m NCCL version 2.21.5+cuda12.4
+[36m(WorkerDict pid=941425)[0m /home/vansh23580/rl-project/envs/gigpo/lib/python3.12/site-packages/torch/distributed/fsdp/_init_utils.py:444: UserWarning: FSDP is switching to use `NO_SHARD` instead of ShardingStrategy.FULL_SHARD since the world size is 1.
+[36m(WorkerDict pid=941425)[0m   warnings.warn(
+[36m(WorkerDict pid=941425)[0m Qwen2ForCausalLM contains 1.54B parameters
+[36m(WorkerDict pid=941425)[0m wrap_policy: functools.partial(<function _or_policy at 0x1525204942c0>, policies=[functools.partial(<function transformer_auto_wrap_policy at 0x152520494180>, transformer_layer_cls={<class 'transformers.models.qwen2.modeling_qwen2.Qwen2DecoderLayer'>})])
+[36m(WorkerDict pid=941425)[0m Actor use_remove_padding=True
+[36m(WorkerDict pid=941425)[0m Flash Attention 2.0 only supports torch.float16 and torch.bfloat16 dtypes, but the current dype in Qwen2ForCausalLM is torch.float32. You should run training or inference using Automatic Mixed-Precision via the `with torch.autocast(device_type='torch_device'):` decorator, or load the model with the `torch_dtype` argument. Example: `model = AutoModel.from_pretrained("openai/whisper-tiny", attn_implementation="flash_attention_2", torch_dtype=torch.float16)`
+[36m(WorkerDict pid=941425)[0m Model config after override: Qwen2Config {
+[36m(WorkerDict pid=941425)[0m   "architectures": [
+[36m(WorkerDict pid=941425)[0m     "Qwen2ForCausalLM"
+[36m(WorkerDict pid=941425)[0m   ],
+[36m(WorkerDict pid=941425)[0m   "attention_dropout": 0.0,
+[36m(WorkerDict pid=941425)[0m   "eos_token_id": 151645,
+[36m(WorkerDict pid=941425)[0m   "hidden_act": "silu",
+[36m(WorkerDict pid=941425)[0m   "hidden_size": 1536,
+[36m(WorkerDict pid=941425)[0m   "initializer_range": 0.02,
+[36m(WorkerDict pid=941425)[0m   "intermediate_size": 8960,
+[36m(WorkerDict pid=941425)[0m   "max_position_embeddings": 32768,
+[36m(WorkerDict pid=941425)[0m   "max_window_layers": 21,
+[36m(WorkerDict pid=941425)[0m   "model_type": "qwen2",
+[36m(WorkerDict pid=941425)[0m   "num_attention_heads": 12,
+[36m(WorkerDict pid=941425)[0m   "num_hidden_layers": 28,
+[36m(WorkerDict pid=941425)[0m   "num_key_value_heads": 2,
+[36m(WorkerDict pid=941425)[0m   "pad_token_id": 151643,
+[36m(WorkerDict pid=941425)[0m   "rms_norm_eps": 1e-06,
+[36m(WorkerDict pid=941425)[0m   "rope_scaling": null,
+[36m(WorkerDict pid=941425)[0m   "rope_theta": 1000000.0,
+[36m(WorkerDict pid=941425)[0m   "sliding_window": 32768,
+[36m(WorkerDict pid=941425)[0m   "tie_word_embeddings": true,
+[36m(WorkerDict pid=941425)[0m   "torch_dtype": "bfloat16",
+[36m(WorkerDict pid=941425)[0m   "transformers_version": "4.51.1",
+[36m(WorkerDict pid=941425)[0m   "use_cache": true,
+[36m(WorkerDict pid=941425)[0m   "use_sliding_window": false,
+[36m(WorkerDict pid=941425)[0m   "vocab_size": 151936
+[36m(WorkerDict pid=941425)[0m }
+[36m(WorkerDict pid=941425)[0m 
+[36m(WorkerDict pid=941425)[0m /home/vansh23580/rl-project/envs/gigpo/lib/python3.12/site-packages/torch/distributed/fsdp/_init_utils.py:444: UserWarning: FSDP is switching to use `NO_SHARD` instead of ShardingStrategy.FULL_SHARD since the world size is 1.
+[36m(WorkerDict pid=941425)[0m   warnings.warn(
+[36m(WorkerDict pid=941425)[0m Monkey patch _flash_attention_forward in transformers.integrations.flash_attention
+[36m(WorkerDict pid=941425)[0m Qwen2ForCausalLM contains 1.54B parameters
+[36m(WorkerDict pid=941425)[0m wrap_policy: functools.partial(<function _or_policy at 0x1525204942c0>, policies=[functools.partial(<function transformer_auto_wrap_policy at 0x152520494180>, transformer_layer_cls={<class 'transformers.models.qwen2.modeling_qwen2.Qwen2DecoderLayer'>})])
+[36m(WorkerDict pid=941425)[0m Total steps: 1, num_warmup_steps: 0
+[36m(WorkerDict pid=941425)[0m Actor use_remove_padding=True
+[36m(WorkerDict pid=941425)[0m Before building vllm rollout, memory allocated (GB): 8.64726972579956, memory reserved (GB): 10.0078125
+[36m(WorkerDict pid=941425)[0m Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+[36m(WorkerDict pid=941425)[0m Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:00<00:00,  2.08it/s]
+[36m(WorkerDict pid=941425)[0m Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:00<00:00,  2.08it/s]
+[36m(WorkerDict pid=941425)[0m 
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:   0%|          | 0/35 [00:00<?, ?it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:   3%|▎         | 1/35 [00:00<00:19,  1.77it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:   6%|▌         | 2/35 [00:01<00:17,  1.83it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:   9%|▊         | 3/35 [00:01<00:16,  1.90it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  11%|█▏        | 4/35 [00:02<00:15,  1.94it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  14%|█▍        | 5/35 [00:02<00:15,  1.96it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  17%|█▋        | 6/35 [00:03<00:14,  1.98it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  20%|██        | 7/35 [00:03<00:13,  2.00it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  23%|██▎       | 8/35 [00:04<00:13,  2.00it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  26%|██▌       | 9/35 [00:04<00:12,  2.01it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  29%|██▊       | 10/35 [00:05<00:12,  2.01it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  31%|███▏      | 11/35 [00:05<00:12,  1.99it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  34%|███▍      | 12/35 [00:06<00:11,  1.98it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  37%|███▋      | 13/35 [00:06<00:11,  1.98it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  40%|████      | 14/35 [00:07<00:10,  1.99it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  43%|████▎     | 15/35 [00:07<00:10,  2.00it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  46%|████▌     | 16/35 [00:08<00:09,  2.01it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  49%|████▊     | 17/35 [00:08<00:08,  2.23it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  51%|█████▏    | 18/35 [00:08<00:07,  2.40it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  54%|█████▍    | 19/35 [00:09<00:06,  2.44it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  57%|█████▋    | 20/35 [00:09<00:05,  2.68it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  60%|██████    | 21/35 [00:09<00:05,  2.66it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  63%|██████▎   | 22/35 [00:10<00:04,  2.61it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  66%|██████▌   | 23/35 [00:10<00:05,  2.35it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  69%|██████▊   | 24/35 [00:11<00:04,  2.27it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  71%|███████▏  | 25/35 [00:11<00:04,  2.31it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  74%|███████▍  | 26/35 [00:12<00:03,  2.33it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  77%|███████▋  | 27/35 [00:12<00:03,  2.44it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  80%|████████  | 28/35 [00:12<00:02,  2.44it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  83%|████████▎ | 29/35 [00:13<00:02,  2.49it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  86%|████████▌ | 30/35 [00:13<00:01,  2.56it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  89%|████████▊ | 31/35 [00:13<00:01,  2.62it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  91%|█████████▏| 32/35 [00:14<00:01,  2.65it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  94%|█████████▍| 33/35 [00:14<00:00,  2.71it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes:  97%|█████████▋| 34/35 [00:15<00:00,  2.64it/s]
+[36m(WorkerDict pid=941425)[0m Capturing CUDA graph shapes: 100%|██████████| 35/35 [00:15<00:00,  2.61it/s]Capturing CUDA graph shapes: 100%|██████████| 35/35 [00:15<00:00,  2.26it/s]
+[36m(TaskRunner pid=939957)[0m Training Progress:   0%|          | 0/1 [00:00<?, ?it/s]
+[36m(TaskRunner pid=939957)[0m Using LocalLogger is deprecated. The constructor API will change 
+[36m(TaskRunner pid=939957)[0m Checkpoint tracker file does not exist: %s /home/vansh23580/rl-project/gigpo/runs/omni-10333/checkpoints/latest_checkpointed_iteration.txt
+[36m(TaskRunner pid=939957)[0m Training from scratch
+[36m(WorkerDict pid=941425)[0m /home/vansh23580/rl-project/envs/gigpo/lib/python3.12/site-packages/torch/distributed/fsdp/fully_sharded_data_parallel.py:690: FutureWarning: FSDP.state_dict_type() and FSDP.set_state_dict_type() are being deprecated. Please use APIs, get_state_dict() and set_state_dict(), which can support different parallelisms, FSDP1, FSDP2, DDP. API doc: https://pytorch.org/docs/stable/distributed.checkpoint.html#torch.distributed.checkpoint.state_dict.get_state_dict .Tutorial: https://pytorch.org/tutorials/recipes/distributed_checkpoint_recipe.html .
+[36m(WorkerDict pid=941425)[0m   warnings.warn(
+[36m(WorkerDict pid=941425)[0m kwargs: {'n': 1, 'logprobs': 0, 'max_tokens': 512, 'detokenize': False, 'temperature': 1.0, 'top_k': -1, 'top_p': 1, 'ignore_eos': False}
+[36m(WorkerDict pid=941425)[0m After building vllm rollout, memory allocated (GB): 49.06312799453735, memory reserved (GB): 49.63671875
+[36m(WorkerDict pid=941425)[0m After building sharding manager, memory allocated (GB): 49.06312799453735, memory reserved (GB): 49.63671875
+[36m(WorkerDict pid=941425)[0m /home/vansh23580/rl-project/envs/gigpo/lib/python3.12/site-packages/torch/distributed/fsdp/_state_dict_utils.py:773: UserWarning: When using ``NO_SHARD`` for ``ShardingStrategy``, full_state_dict willbe returned.
+[36m(WorkerDict pid=941425)[0m   warnings.warn(
+[36m(WorkerDict pid=941425)[0m /home/vansh23580/rl-project/envs/gigpo/lib/python3.12/site-packages/torch/distributed/fsdp/_state_dict_utils.py:711: UserWarning: When using ``NO_SHARD`` for ``ShardingStrategy``, full_state_dict willbe returned.
+[36m(WorkerDict pid=941425)[0m   warnings.warn(
+[36m(WorkerDict pid=941425)[0m /home/vansh23580/rl-project/envs/gigpo/lib/python3.12/site-packages/torch/distributed/fsdp/_state_dict_utils.py:773: UserWarning: When using ``NO_SHARD`` for ``ShardingStrategy``, full_state_dict willbe returned.
+[36m(WorkerDict pid=941425)[0m   warnings.warn(
+[36m(WorkerDict pid=941425)[0m /home/vansh23580/rl-project/envs/gigpo/lib/python3.12/site-packages/torch/distributed/fsdp/_state_dict_utils.py:711: UserWarning: When using ``NO_SHARD`` for ``ShardingStrategy``, full_state_dict willbe returned.
+[36m(WorkerDict pid=941425)[0m   warnings.warn(
+[36m(WorkerDict pid=941425)[0m /home/vansh23580/rl-project/envs/gigpo/lib/python3.12/site-packages/torch/distributed/fsdp/_state_dict_utils.py:773: UserWarning: When using ``NO_SHARD`` for ``ShardingStrategy``, full_state_dict willbe returned.
+[36m(WorkerDict pid=941425)[0m   warnings.warn(
+[36m(WorkerDict pid=941425)[0m /home/vansh23580/rl-project/envs/gigpo/lib/python3.12/site-packages/torch/distributed/fsdp/_state_dict_utils.py:711: UserWarning: When using ``NO_SHARD`` for ``ShardingStrategy``, full_state_dict willbe returned.
+[36m(WorkerDict pid=941425)[0m   warnings.warn(
+slurmstepd: error: _handle_stat_jobacct: Took usec=10925848, which is more than MessageTimeout (10s). The result won't be delivered
+[36m(pid=gcs_server)[0m E1112 19:37:01.549144497  950320 chttp2_transport.cc:2890]             keepalive_ping_end state error: 0 (expect: 1)
+[33m(raylet)[0m A worker died or was killed while executing a task by an unexpected system error. To troubleshoot the problem, check the logs for the dead worker. RayTask ID: ffffffffffffffff5b5151dffb9e1f3c77bbfd9601000000 Worker ID: 4f826f6741579408483474900bd2008bb52204c3a27c75acbb2f0ccf Node ID: 99c2589048f566f40ccdf2f3384c194b113a51b119ce312ba30bbdfc Worker IP address: 10.10.10.3 Worker port: 35323 Worker PID: 941425 Worker exit type: SYSTEM_ERROR Worker exit detail: Worker unexpectedly exits with a connection error code 2. End of file. There are some potential root causes. (1) The process is killed by SIGKILL by OOM killer due to high memory usage. (2) ray stop --force is called. (3) The worker is crashed unexpectedly due to SIGSEGV or other unexpected errors.
+Error executing job with overrides: ['algorithm.adv_estimator=gigpo', 'data.train_files=/home/vansh23580/data/verl-agent/text/train.parquet', 'data.val_files=/home/vansh23580/data/verl-agent/text/test.parquet', 'data.train_batch_size=16', 'data.val_batch_size=128', 'data.max_prompt_length=2048', 'data.max_response_length=512', 'data.filter_overlong_prompts=True', 'data.truncation=error', 'data.return_raw_chat=True', 'actor_rollout_ref.model.path=Qwen/Qwen2.5-1.5B-Instruct', 'actor_rollout_ref.actor.optim.lr=1e-6', 'actor_rollout_ref.model.use_remove_padding=True', 'actor_rollout_ref.actor.ppo_mini_batch_size=256', 'actor_rollout_ref.actor.ppo_micro_batch_size_per_gpu=32', 'actor_rollout_ref.actor.use_kl_loss=True', 'actor_rollout_ref.actor.kl_loss_coef=0.01', 'actor_rollout_ref.actor.kl_loss_type=low_var_kl', 'actor_rollout_ref.model.enable_gradient_checkpointing=True', 'actor_rollout_ref.actor.fsdp_config.param_offload=False', 'actor_rollout_ref.actor.fsdp_config.optimizer_offload=False', 'actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=32', 'actor_rollout_ref.rollout.tensor_model_parallel_size=2', 'actor_rollout_ref.rollout.name=vllm', 'actor_rollout_ref.rollout.gpu_memory_utilization=0.6', 'actor_rollout_ref.rollout.enable_chunked_prefill=False', 'actor_rollout_ref.rollout.enforce_eager=False', 'actor_rollout_ref.rollout.free_cache_engine=False', 'actor_rollout_ref.rollout.val_kwargs.temperature=0.4', 'actor_rollout_ref.rollout.val_kwargs.do_sample=True', 'actor_rollout_ref.ref.log_prob_micro_batch_size_per_gpu=32', 'actor_rollout_ref.ref.fsdp_config.param_offload=True', 'actor_rollout_ref.actor.use_invalid_action_penalty=True', 'actor_rollout_ref.actor.invalid_action_penalty_coef=0.1', 'algorithm.use_kl_in_reward=False', 'algorithm.gamma=0.95', 'algorithm.gigpo.step_advantage_w=1.0', 'algorithm.gigpo.mode=mean_std_norm', 'env.env_name=alfworld/AlfredTWEnv', 'env.seed=0', 'env.max_steps=50', 'env.rollout.n=8', 'trainer.critic_warmup=0', 'trainer.logger=[console,wandb]', 'trainer.project_name=verl_agent_alfworld', 'trainer.experiment_name=gigpo_qwen2.5_1.5b', 'trainer.n_gpus_per_node=2', 'trainer.nnodes=1', 'trainer.save_freq=-1', 'trainer.test_freq=5', 'trainer.total_epochs=150', 'trainer.val_before_train=True', 'trainer.n_gpus_per_node=1', 'actor_rollout_ref.rollout.tensor_model_parallel_size=1', 'actor_rollout_ref.actor.ppo_micro_batch_size_per_gpu=1', 'actor_rollout_ref.rollout.log_prob_micro_batch_size_per_gpu=1', 'actor_rollout_ref.ref.log_prob_micro_batch_size_per_gpu=1', 'actor_rollout_ref.actor.fsdp_config.param_offload=True', 'actor_rollout_ref.actor.fsdp_config.optimizer_offload=True', 'trainer.total_epochs=1', 'trainer.total_training_steps=1', 'trainer.test_freq=1', 'trainer.val_before_train=False', "trainer.logger=['console']", 'trainer.experiment_name=omni_mig_smoke', 'trainer.default_local_dir=/home/vansh23580/rl-project/gigpo/runs/omni-10333/checkpoints']
+Traceback (most recent call last):
+  File "/home/vansh23580/rl-project/gigpo/upstream-verl-agent/verl/trainer/main_ppo.py", line 54, in main
+    run_ppo(config)
+  File "/home/vansh23580/rl-project/gigpo/upstream-verl-agent/verl/trainer/main_ppo.py", line 72, in run_ppo
+    ray.get(runner.run.remote(config))
+  File "/home/vansh23580/rl-project/envs/gigpo/lib/python3.12/site-packages/ray/_private/auto_init_hook.py", line 21, in auto_init_wrapper
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/vansh23580/rl-project/envs/gigpo/lib/python3.12/site-packages/ray/_private/client_mode_hook.py", line 103, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vansh23580/rl-project/envs/gigpo/lib/python3.12/site-packages/ray/_private/worker.py", line 2771, in get
+    values, debugger_breakpoint = worker.get_objects(object_refs, timeout=timeout)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vansh23580/rl-project/envs/gigpo/lib/python3.12/site-packages/ray/_private/worker.py", line 919, in get_objects
+    raise value.as_instanceof_cause()
+ray.exceptions.RayTaskError(ActorDiedError): [36mray::TaskRunner.run()[39m (pid=939957, ip=10.10.10.3, actor_id=fd65d279da49b0a874c53a9601000000, repr=<main_ppo.TaskRunner object at 0x155550605820>)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vansh23580/rl-project/gigpo/upstream-verl-agent/verl/trainer/main_ppo.py", line 182, in run
+    trainer.fit()
+  File "/home/vansh23580/rl-project/gigpo/upstream-verl-agent/verl/trainer/ppo/ray_trainer.py", line 955, in fit
+    ref_log_prob = self.ref_policy_wg.compute_ref_log_prob(batch)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vansh23580/rl-project/gigpo/upstream-verl-agent/verl/single_controller/ray/base.py", line 42, in func
+    output = ray.get(output)
+             ^^^^^^^^^^^^^^^
+           ^^^^^^^^^^^^^^^^^^^
+           ^^^^^^^^^^^^^^^^^^^^^
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ray.exceptions.ActorDiedError: The actor died unexpectedly before finishing this task.
+	class_name: create_colocated_worker_cls.<locals>.WorkerDict
+	actor_id: 5b5151dffb9e1f3c77bbfd9601000000
+	pid: 941425
+	name: qIyTuHWorkerDict_0:0
+	namespace: 3211e102-8c24-42ef-a338-38963be4701e
+	ip: 10.10.10.3
+The actor is dead because its worker process has died. Worker exit type: SYSTEM_ERROR Worker exit detail: Worker unexpectedly exits with a connection error code 2. End of file. There are some potential root causes. (1) The process is killed by SIGKILL by OOM killer due to high memory usage. (2) ray stop --force is called. (3) The worker is crashed unexpectedly due to SIGSEGV or other unexpected errors.
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
+slurmstepd: error: Detected 1 oom_kill event in StepId=10333.3. Some of the step tasks have been OOM Killed.
+srun: error: dgxh200: task 0: Out Of Memory

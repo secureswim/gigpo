@@ -1,0 +1,16 @@
+{
+  "checkpoint": "/home/vansh23580/rl-project/runs/extensions-10605/gigpo_threshold_seed0/checkpoints/global_step_150",
+  "decoding_seed": 2,
+  "environment_seed_base": 1256,
+  "success_rate": 0.84375,
+  "validation_metrics": {
+    "val/test_score/text": 5.027349577324714,
+    "val/success_rate": 0.84375,
+    "val/pick_cool_then_place_in_recep_success_rate": 0.7222222222222222,
+    "val/pick_two_obj_and_place_success_rate": 0.8888888888888888,
+    "val/pick_and_place_success_rate": 0.7894736842105263,
+    "val/pick_heat_then_place_in_recep_success_rate": 0.9230769230769231,
+    "val/pick_clean_then_place_in_recep_success_rate": 0.9629629629629629,
+    "val/look_at_obj_in_light_success_rate": 0.7857142857142857
+  }
+}

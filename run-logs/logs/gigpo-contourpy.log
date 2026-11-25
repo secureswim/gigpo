@@ -1,0 +1,10 @@
+Collecting contourpy==1.3.2
+  Downloading contourpy-1.3.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (5.5 kB)
+Requirement already satisfied: numpy>=1.23 in ./rl-project/envs/gigpo/lib/python3.12/site-packages (from contourpy==1.3.2) (1.26.4)
+Downloading contourpy-1.3.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (323 kB)
+Installing collected packages: contourpy
+  Attempting uninstall: contourpy
+    Found existing installation: contourpy 1.4.0
+    Uninstalling contourpy-1.4.0:
+      Successfully uninstalled contourpy-1.4.0
+Successfully installed contourpy-1.3.2

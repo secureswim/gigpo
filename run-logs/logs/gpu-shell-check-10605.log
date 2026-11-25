@@ -1,0 +1,36 @@
+INFO 11-20 00:01:36 [__init__.py:243] Automatically detected platform cuda.
+VERSIONS 2.7.0+cu128 0.9.0 2.8.3
+MATMUL 0.1906091570854187
+FLASH FWD/BWD PASS
+You are attempting to use Flash Attention 2.0 with a model not initialized on GPU. Make sure to move the model to GPU after initializing it on CPU with `model.to('cuda')`.
+MODEL FWD/BWD PASS 3.566556215286255
+.                                                                        [100%]
+1 passed in 27.46s
+INFO 11-20 00:02:32 [__init__.py:243] Automatically detected platform cuda.
+INFO 11-20 00:02:38 [__init__.py:31] Available plugins for group vllm.general_plugins:
+INFO 11-20 00:02:38 [__init__.py:33] - lora_filesystem_resolver -> vllm.plugins.lora_resolvers.filesystem_resolver:register_filesystem_resolver
+INFO 11-20 00:02:38 [__init__.py:36] All plugins in this group will be loaded. Set `VLLM_PLUGINS` to control which plugins to load.
+Traceback (most recent call last):
+  File "<stdin>", line 4, in <module>
+  File "/home/vansh23580/rl-project/envs/gigpo-b200/lib/python3.12/site-packages/vllm/utils.py", line 1183, in inner
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/vansh23580/rl-project/envs/gigpo-b200/lib/python3.12/site-packages/vllm/entrypoints/llm.py", line 253, in __init__
+    self.llm_engine = LLMEngine.from_engine_args(
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vansh23580/rl-project/envs/gigpo-b200/lib/python3.12/site-packages/vllm/engine/llm_engine.py", line 494, in from_engine_args
+    vllm_config = engine_args.create_engine_config(usage_context)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vansh23580/rl-project/envs/gigpo-b200/lib/python3.12/site-packages/vllm/engine/arg_utils.py", line 983, in create_engine_config
+    model_config = self.create_model_config()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vansh23580/rl-project/envs/gigpo-b200/lib/python3.12/site-packages/vllm/engine/arg_utils.py", line 875, in create_model_config
+    return ModelConfig(
+           ^^^^^^^^^^^^
+  File "<string>", line 42, in __init__
+  File "/home/vansh23580/rl-project/envs/gigpo-b200/lib/python3.12/site-packages/vllm/config.py", line 583, in __post_init__
+    self.multimodal_config = self._init_multimodal_config()
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vansh23580/rl-project/envs/gigpo-b200/lib/python3.12/site-packages/vllm/config.py", line 665, in _init_multimodal_config
+    raise ValueError("`disable_mm_preprocessor_cache` is only "
+ValueError: `disable_mm_preprocessor_cache` is only supported for multimodal models.
