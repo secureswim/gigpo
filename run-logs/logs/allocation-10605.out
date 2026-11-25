@@ -1,0 +1,4 @@
+Persistent allocation 10605 on B2002 is ready.
+Use guarded steps from the master. Releasing this job ends all its steps.
+Expiry is approaching; checkpoint active work now.
+slurmstepd: error: *** JOB 10605 ON B2002 CANCELLED AT 2026-11-22T23:45:01 DUE TO TIME LIMIT ***
