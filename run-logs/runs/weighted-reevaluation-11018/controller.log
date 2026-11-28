@@ -1,0 +1,16 @@
+2026-11-28T14:55:31+05:30 START weighted 1
+{"evaluation_seed": 1, "environment_seed_base": 1128, "checkpoint_step": 150, "training_seed": 0, "split": "valid_seen", "episodes": 128, "unique_games": 85, "baseline_wins": 109, "threshold_wins": 116, "weighted_wins": 99, "tasks_match_original_at_each_slot": true}
+2026-11-28T15:01:49+05:30 DONE weighted 1
+2026-11-28T15:01:49+05:30 START weighted 2
+{"evaluation_seed": 2, "environment_seed_base": 1256, "checkpoint_step": 150, "training_seed": 0, "split": "valid_seen", "episodes": 128, "unique_games": 92, "baseline_wins": 115, "threshold_wins": 108, "weighted_wins": 95, "tasks_match_original_at_each_slot": true}
+2026-11-28T15:07:43+05:30 DONE weighted 2
+2026-11-28T15:07:43+05:30 START weighted 3
+{"evaluation_seed": 3, "environment_seed_base": 1384, "checkpoint_step": 150, "training_seed": 0, "split": "valid_seen", "episodes": 128, "unique_games": 81, "baseline_wins": 111, "threshold_wins": 111, "weighted_wins": 101, "tasks_match_original_at_each_slot": true}
+2026-11-28T15:14:09+05:30 DONE weighted 3
+2026-11-28T15:14:09+05:30 START weighted 4
+{"evaluation_seed": 4, "environment_seed_base": 1512, "checkpoint_step": 150, "training_seed": 0, "split": "valid_seen", "episodes": 128, "unique_games": 84, "baseline_wins": 107, "threshold_wins": 101, "weighted_wins": 97, "tasks_match_original_at_each_slot": true}
+2026-11-28T15:20:03+05:30 DONE weighted 4
+2026-11-28T15:20:03+05:30 START weighted 5
+{"evaluation_seed": 5, "environment_seed_base": 1640, "checkpoint_step": 150, "training_seed": 0, "split": "valid_seen", "episodes": 128, "unique_games": 86, "baseline_wins": 115, "threshold_wins": 104, "weighted_wins": 106, "tasks_match_original_at_each_slot": true}
+2026-11-28T15:26:18+05:30 DONE weighted 5
+2026-11-28T15:26:18+05:30 COMPLETE

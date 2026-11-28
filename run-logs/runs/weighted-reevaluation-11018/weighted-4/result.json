@@ -1,0 +1,13 @@
+{
+  "evaluation_seed": 4,
+  "environment_seed_base": 1512,
+  "checkpoint_step": 150,
+  "training_seed": 0,
+  "split": "valid_seen",
+  "episodes": 128,
+  "unique_games": 84,
+  "baseline_wins": 107,
+  "threshold_wins": 101,
+  "weighted_wins": 97,
+  "tasks_match_original_at_each_slot": true
+}
